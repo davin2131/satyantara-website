@@ -1,8 +1,10 @@
 import { Reveal } from "../ui/Reveal";
+import { Gunungan } from "../Gunungan";
 
 export function AboutBrief() {
   return (
-    <section className="relative px-5 py-24 lg:px-10">
+    <section className="section-glow relative px-5 py-24 lg:px-10">
+      <Gunungan className="pointer-events-none absolute -right-20 top-1/2 h-[420px] w-[420px] -translate-y-1/2 opacity-[0.04] sm:opacity-[0.06]" />
       <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2">
         <Reveal>
           <p className="mb-3 text-[11px] uppercase tracking-[0.45em] text-gold-400/80">

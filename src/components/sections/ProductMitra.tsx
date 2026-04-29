@@ -2,11 +2,13 @@
 
 import { mitraProducts, type MitraProduct } from "@/data/products";
 import { Reveal } from "../ui/Reveal";
+import { Ornament } from "../ui/Ornament";
 import { useMitraModal } from "../AppShell";
 
 export function ProductMitra() {
   return (
-    <section className="relative px-5 py-24 lg:px-10">
+    <section className="section-glow relative px-5 py-24 lg:px-10">
+      <Ornament className="pointer-events-none absolute left-1/2 top-10 w-56 -translate-x-1/2 opacity-50" />
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <div className="mb-12 flex items-end justify-between gap-6">

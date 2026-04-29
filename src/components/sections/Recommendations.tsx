@@ -4,7 +4,7 @@ import { Reveal } from "../ui/Reveal";
 
 export function Recommendations() {
   return (
-    <section className="relative px-5 py-20 lg:px-10">
+    <section className="section-glow relative px-5 py-20 lg:px-10">
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <div className="mb-10 flex items-end justify-between gap-6">

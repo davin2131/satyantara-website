@@ -30,11 +30,87 @@
 
 html,
 body {
-  background-color: var(--color-coffee-900);
+  background-color: var(--color-coffee-950);
   color: #f4ead5;
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Luxe global backdrop: layered gold orbs + batik weave + vignette */
+body {
+  position: relative;
+  background-image:
+    radial-gradient(
+      ellipse 70% 45% at 12% 8%,
+      rgba(212, 162, 78, 0.16) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 60% 40% at 88% 22%,
+      rgba(184, 134, 47, 0.12) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 80% 50% at 50% 100%,
+      rgba(212, 162, 78, 0.1) 0%,
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 100% 70% at 50% 50%,
+      rgba(42, 26, 14, 0) 30%,
+      rgba(20, 11, 5, 0.55) 100%
+    );
+  background-attachment: fixed;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent 0,
+      transparent 36px,
+      rgba(212, 162, 78, 0.035) 36px,
+      rgba(212, 162, 78, 0.035) 37px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent 0,
+      transparent 36px,
+      rgba(212, 162, 78, 0.025) 36px,
+      rgba(212, 162, 78, 0.025) 37px
+    ),
+    radial-gradient(
+      circle at 25% 25%,
+      rgba(245, 214, 145, 0.06) 0,
+      transparent 0.6px
+    ),
+    radial-gradient(
+      circle at 75% 75%,
+      rgba(245, 214, 145, 0.06) 0,
+      transparent 0.6px
+    );
+  background-size: auto, auto, 28px 28px, 28px 28px;
+  mask-image: radial-gradient(
+    ellipse 100% 80% at 50% 40%,
+    black 30%,
+    transparent 95%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 100% 80% at 50% 40%,
+    black 30%,
+    transparent 95%
+  );
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* Selection */
@@ -104,6 +180,33 @@ body {
   background-clip: text;
   color: transparent;
   animation: shimmer 6s linear infinite;
+}
+
+/* Section-level luxe glow — drop into a `relative` section to get warm gold backlight */
+.section-glow {
+  position: relative;
+}
+.section-glow::before {
+  content: "";
+  position: absolute;
+  inset: -10% 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 55% 35% at 18% 20%,
+      rgba(212, 162, 78, 0.13) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 45% 35% at 85% 80%,
+      rgba(184, 134, 47, 0.12) 0%,
+      transparent 60%
+    );
+}
+.section-glow > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* Subtle batik-inspired pattern for decorative blocks */
