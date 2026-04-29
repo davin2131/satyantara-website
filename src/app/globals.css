@@ -108,10 +108,8 @@ body::before {
   );
 }
 
-body > * {
-  position: relative;
-  z-index: 1;
-}
+/* Ensure body decorative ::before sits behind page content without trapping
+   fixed-position overlays (splash, modal) in a child stacking context. */
 
 /* Selection */
 ::selection {

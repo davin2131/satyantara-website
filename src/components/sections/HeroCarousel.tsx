@@ -3,16 +3,15 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { heroSlides } from "@/data/products";
 
-const AUTOPLAY_MS = 5500;
-const SNAP_DISTANCE = 0.18; // 18% of width to commit a slide
-const SNAP_VELOCITY = 0.45; // px/ms
+const AUTOPLAY_MS = 6000;
+const SNAP_DISTANCE = 0.18; // % of width to commit to next slide
+const SNAP_VELOCITY = 0.4;
 
 export function HeroCarousel() {
   const [active, setActive] = useState(0);
   const [dragPercent, setDragPercent] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [hover, setHover] = useState(false);
-  const trackRef = useRef<HTMLDivElement | null>(null);
   const pointerStartX = useRef(0);
   const pointerStartW = useRef(1);
   const lastMoveX = useRef(0);
@@ -24,13 +23,11 @@ export function HeroCarousel() {
     [],
   );
   const prev = useCallback(
-    () =>
-      setActive((i) => (i - 1 + heroSlides.length) % heroSlides.length),
+    () => setActive((i) => (i - 1 + heroSlides.length) % heroSlides.length),
     [],
   );
   const goTo = useCallback((i: number) => setActive(i), []);
 
-  // Auto-play (paused while hovering or dragging)
   useEffect(() => {
     if (hover || isDragging) return;
     const id = setInterval(next, AUTOPLAY_MS);
@@ -62,7 +59,7 @@ export function HeroCarousel() {
     const delta = e.clientX - pointerStartX.current;
     const dt = Math.max(performance.now() - lastMoveT.current, 1);
     const recentDx = e.clientX - lastMoveX.current;
-    const velocity = recentDx / dt; // px/ms
+    const velocity = recentDx / dt;
     const past = Math.abs(delta) / pointerStartW.current >= SNAP_DISTANCE;
     const fast = Math.abs(velocity) >= SNAP_VELOCITY;
     if (past || fast) {
@@ -73,7 +70,7 @@ export function HeroCarousel() {
     setDragPercent(0);
   };
 
-  const trackTranslate = -active * 100 + (isDragging ? dragPercent : 0);
+  const dragOffset = isDragging ? dragPercent / 100 : 0;
 
   return (
     <section
@@ -82,87 +79,101 @@ export function HeroCarousel() {
     >
       <div className="mx-auto max-w-6xl">
         <div
-          className="group/carousel relative h-[280px] select-none overflow-hidden rounded-3xl border border-gold-500/25 bg-coffee-950 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.7),inset_0_0_0_1px_rgba(212,162,78,0.05)] sm:h-[380px] md:h-[460px]"
+          className="group/carousel relative h-[320px] select-none overflow-hidden rounded-3xl border border-gold-500/25 bg-coffee-950 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8),inset_0_0_0_1px_rgba(212,162,78,0.06)] sm:h-[420px] md:h-[520px]"
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
+          style={{ perspective: "1600px" }}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={finishDrag}
+          onPointerCancel={finishDrag}
         >
-          {/* Track */}
+          {/* 3D Coverflow stage */}
           <div
-            ref={trackRef}
-            onPointerDown={onPointerDown}
-            onPointerMove={onPointerMove}
-            onPointerUp={finishDrag}
-            onPointerCancel={finishDrag}
-            className={`flex h-full w-full touch-pan-y ${
-              isDragging
-                ? "cursor-grabbing"
-                : "cursor-grab transition-transform duration-[850ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
+            className={`absolute inset-0 ${
+              isDragging ? "cursor-grabbing" : "cursor-grab"
             }`}
-            style={{
-              transform: `translate3d(${trackTranslate}%, 0, 0)`,
-            }}
+            style={{ transformStyle: "preserve-3d" }}
           >
             {heroSlides.map((slide, i) => {
-              const offset = i - active - (isDragging ? dragPercent / 100 : 0);
+              const offset = i - active - dragOffset;
+              const abs = Math.abs(offset);
+              // 3D layout
+              const tx = offset * 56; // % horizontal shift per step
+              const tz = -abs * 220; // recede deeper for distant slides
+              const ry = offset * -22; // rotateY per step
+              const scale = Math.max(1 - abs * 0.12, 0.6);
+              const opacity = abs > 2.5 ? 0 : Math.max(1 - abs * 0.32, 0.18);
+              const blur = abs >= 1 ? Math.min(abs * 1.4, 4) : 0;
+              const z = 100 - Math.round(abs * 10);
+              const transition = isDragging
+                ? "none"
+                : "transform 950ms cubic-bezier(0.22, 1, 0.36, 1), opacity 700ms ease-out, filter 700ms ease-out";
               return (
                 <div
                   key={slide.title}
-                  className="relative h-full w-full shrink-0 overflow-hidden"
                   aria-hidden={i !== active}
+                  className="absolute left-1/2 top-1/2 h-[88%] w-[78%] sm:w-[68%] md:w-[62%]"
+                  style={{
+                    transform: `translate(-50%, -50%) translate3d(${tx}%, 0, ${tz}px) rotateY(${ry}deg) scale(${scale})`,
+                    opacity,
+                    filter: blur ? `blur(${blur}px)` : undefined,
+                    zIndex: z,
+                    transition,
+                    pointerEvents: i === active ? "auto" : "none",
+                  }}
                 >
-                  {/* Parallax art layer */}
-                  <div
-                    className={`absolute inset-0 will-change-transform ${
-                      isDragging
-                        ? ""
-                        : "transition-transform duration-[850ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
-                    }`}
-                    style={{
-                      transform: `translate3d(${offset * 18}%, 0, 0) scale(${
-                        1 + Math.min(Math.abs(offset), 1) * 0.06
-                      })`,
-                    }}
-                  >
+                  <div className="relative h-full w-full overflow-hidden rounded-2xl border border-gold-500/30 shadow-[0_30px_60px_-25px_rgba(0,0,0,0.7),0_0_0_1px_rgba(212,162,78,0.1)]">
                     <CarouselArt index={i} />
-                  </div>
 
-                  {/* Vignette overlay */}
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-coffee-950 via-coffee-950/55 to-transparent" />
-                  <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_50%,transparent_50%,rgba(20,11,5,0.55)_100%)]" />
+                    {/* Vignette + active glow */}
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-coffee-950 via-coffee-950/55 to-transparent" />
+                    {i === active && (
+                      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_55%,rgba(212,162,78,0.16)_0%,transparent_70%)]" />
+                    )}
 
-                  {/* Caption (parallax-counter for subtle depth) */}
-                  <div
-                    className={`pointer-events-none absolute inset-x-0 bottom-0 p-6 sm:p-10 ${
-                      isDragging
-                        ? ""
-                        : "transition-all duration-[850ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
-                    }`}
-                    style={{
-                      transform: `translate3d(${offset * -28}%, 0, 0)`,
-                      opacity: 1 - Math.min(Math.abs(offset), 1) * 0.7,
-                    }}
-                  >
-                    <p className="mb-2 text-[11px] uppercase tracking-[0.45em] text-gold-300">
-                      Lakon {String(i + 1).padStart(2, "0")} / 05
-                    </p>
-                    <h3 className="font-display text-2xl text-cream sm:text-4xl md:text-5xl">
-                      {slide.title}
-                    </h3>
-                    <p className="mt-2 max-w-xl text-sm text-parchment/75 sm:text-base">
-                      {slide.caption}
-                    </p>
+                    {/* Caption */}
+                    <div
+                      className="absolute inset-x-0 bottom-0 p-5 sm:p-8"
+                      style={{
+                        opacity: i === active ? 1 - Math.abs(dragOffset) * 0.6 : 0.45,
+                        transition: isDragging
+                          ? "none"
+                          : "opacity 700ms ease-out",
+                      }}
+                    >
+                      <p className="mb-2 text-[10px] uppercase tracking-[0.45em] text-gold-300 sm:text-[11px]">
+                        Lakon {String(i + 1).padStart(2, "0")} / 05
+                      </p>
+                      <h3 className="font-display text-2xl text-cream sm:text-4xl md:text-5xl">
+                        {slide.title}
+                      </h3>
+                      <p className="mt-2 max-w-xl text-sm text-parchment/75 sm:text-base">
+                        {slide.caption}
+                      </p>
+                      {i === active && (
+                        <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-gold-500/40 bg-coffee-950/60 px-3 py-1 text-[10px] uppercase tracking-[0.32em] text-gold-300 backdrop-blur sm:text-[11px]">
+                          <SparkIcon className="h-3 w-3" />
+                          Geser untuk lakon lain
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               );
             })}
           </div>
 
+          {/* Side fade masks for cinematic depth */}
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-coffee-950 via-coffee-950/70 to-transparent sm:w-48" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-coffee-950 via-coffee-950/70 to-transparent sm:w-48" />
+
           {/* Prev / Next arrows */}
           <button
             type="button"
             aria-label="Lakon sebelumnya"
             onClick={prev}
-            className="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-full border border-gold-500/30 bg-coffee-950/60 p-2 text-gold-200 opacity-0 backdrop-blur transition hover:border-gold-400 hover:bg-coffee-900 hover:text-gold-300 focus:opacity-100 group-hover/carousel:opacity-100 sm:p-3"
+            className="absolute left-3 top-1/2 z-50 -translate-y-1/2 rounded-full border border-gold-500/40 bg-coffee-950/70 p-2.5 text-gold-200 backdrop-blur transition hover:border-gold-400 hover:bg-coffee-900 hover:text-gold-300 sm:p-3.5"
           >
             <ArrowIcon className="h-4 w-4 sm:h-5 sm:w-5" direction="left" />
           </button>
@@ -170,28 +181,29 @@ export function HeroCarousel() {
             type="button"
             aria-label="Lakon berikutnya"
             onClick={next}
-            className="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full border border-gold-500/30 bg-coffee-950/60 p-2 text-gold-200 opacity-0 backdrop-blur transition hover:border-gold-400 hover:bg-coffee-900 hover:text-gold-300 focus:opacity-100 group-hover/carousel:opacity-100 sm:p-3"
+            className="absolute right-3 top-1/2 z-50 -translate-y-1/2 rounded-full border border-gold-500/40 bg-coffee-950/70 p-2.5 text-gold-200 backdrop-blur transition hover:border-gold-400 hover:bg-coffee-900 hover:text-gold-300 sm:p-3.5"
           >
             <ArrowIcon className="h-4 w-4 sm:h-5 sm:w-5" direction="right" />
           </button>
 
-          {/* Swipe hint */}
-          <div className="pointer-events-none absolute right-5 top-5 hidden items-center gap-2 rounded-full border border-gold-500/20 bg-coffee-950/60 px-3 py-1.5 text-[10px] uppercase tracking-[0.32em] text-gold-300/80 backdrop-blur sm:flex">
-            <SwipeIcon className="h-3.5 w-3.5" />
-            Geser
+          {/* Slide counter — big cinematic number */}
+          <div className="pointer-events-none absolute right-5 top-4 z-50 flex items-baseline gap-1 font-display sm:right-8 sm:top-6">
+            <span className="text-3xl text-gold-300 sm:text-5xl">
+              {String(active + 1).padStart(2, "0")}
+            </span>
+            <span className="text-sm text-gold-500/40 sm:text-base">
+              / {String(heroSlides.length).padStart(2, "0")}
+            </span>
           </div>
 
-          {/* Slide counter */}
-          <div className="pointer-events-none absolute left-5 top-5 font-display text-xs text-gold-300/80">
-            <span className="text-gold-200">{String(active + 1).padStart(2, "0")}</span>
-            <span className="mx-1 text-gold-500/40">/</span>
-            <span className="text-gold-300/60">
-              {String(heroSlides.length).padStart(2, "0")}
-            </span>
+          {/* Section eyebrow */}
+          <div className="pointer-events-none absolute left-5 top-5 z-50 flex items-center gap-2 text-[10px] uppercase tracking-[0.45em] text-gold-300/90 sm:left-8 sm:top-7">
+            <span className="block h-px w-10 bg-gold-500/60" />
+            Lakon Budaya Solo
           </div>
         </div>
 
-        {/* Indicators */}
+        {/* Indicators (progress dashes) */}
         <div className="mt-6 flex items-center justify-center gap-2.5">
           {heroSlides.map((s, i) => (
             <button
@@ -200,9 +212,9 @@ export function HeroCarousel() {
               aria-label={`Tampilkan ${s.title}`}
               aria-current={i === active}
               onClick={() => goTo(i)}
-              className={`h-1.5 rounded-full transition-all duration-500 ${
+              className={`h-1.5 rounded-full transition-all duration-700 ease-out ${
                 i === active
-                  ? "w-10 bg-gold-400 shadow-[0_0_12px_rgba(212,162,78,0.6)]"
+                  ? "w-12 bg-gold-400 shadow-[0_0_14px_rgba(212,162,78,0.7)]"
                   : "w-3 bg-gold-500/30 hover:bg-gold-400/60"
               }`}
             />
@@ -238,19 +250,15 @@ function ArrowIcon({
   );
 }
 
-function SwipeIcon({ className }: { className?: string }) {
+function SparkIcon({ className }: { className?: string }) {
   return (
     <svg
       viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.6"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+      fill="currentColor"
       className={className}
+      aria-hidden
     >
-      <path d="M4 12h12M11 7l5 5-5 5" />
-      <path d="M20 6v12" opacity="0.5" />
+      <path d="M12 2 L13.5 9 L20 10.5 L13.5 12 L12 19 L10.5 12 L4 10.5 L10.5 9 Z" />
     </svg>
   );
 }
@@ -269,7 +277,7 @@ function CarouselArt({ index }: { index: number }) {
 
   return (
     <svg
-      viewBox="0 0 1200 560"
+      viewBox="0 0 1200 700"
       preserveAspectRatio="xMidYMid slice"
       className="h-full w-full"
     >
@@ -284,11 +292,11 @@ function CarouselArt({ index }: { index: number }) {
         </radialGradient>
       </defs>
 
-      <rect width="1200" height="560" fill={`url(#${id})`} />
-      <rect width="1200" height="560" fill={`url(#${id}-spot)`} />
+      <rect width="1200" height="700" fill={`url(#${id})`} />
+      <rect width="1200" height="700" fill={`url(#${id}-spot)`} />
 
       {/* Wayang silhouette */}
-      <g transform="translate(820,80)" opacity="0.85">
+      <g transform="translate(820,140)" opacity="0.85">
         <path
           d="M120 0 Q150 80 140 160 Q200 200 200 280 Q200 360 150 420 L120 460 L90 420 Q40 360 40 280 Q40 200 100 160 Q90 80 120 0 Z"
           fill={p.accent}
@@ -298,38 +306,41 @@ function CarouselArt({ index }: { index: number }) {
           d="M120 0 Q150 80 140 160 Q200 200 200 280 Q200 360 150 420 L120 460 L90 420 Q40 360 40 280 Q40 200 100 160 Q90 80 120 0 Z"
           fill="none"
           stroke={p.accent}
-          strokeOpacity="0.6"
-          strokeWidth="2"
+          strokeOpacity="0.7"
+          strokeWidth="2.5"
         />
       </g>
 
-      {/* Patternal arcs */}
-      <g
-        fill="none"
-        stroke={p.accent}
-        strokeOpacity="0.2"
-        strokeWidth="1.5"
-      >
-        {[80, 160, 240, 320, 400, 480].map((r) => (
-          <circle key={r} cx="180" cy="520" r={r} />
+      {/* Concentric arcs */}
+      <g fill="none" stroke={p.accent} strokeOpacity="0.22" strokeWidth="1.5">
+        {[80, 160, 240, 320, 400, 480, 560].map((r) => (
+          <circle key={r} cx="180" cy="640" r={r} />
         ))}
       </g>
 
       {/* Batik diagonal weave */}
-      <g stroke={p.accent} strokeOpacity="0.08" strokeWidth="1">
-        {Array.from({ length: 14 }).map((_, k) => (
-          <line key={k} x1={-100 + k * 120} y1={0} x2={300 + k * 120} y2={560} />
+      <g stroke={p.accent} strokeOpacity="0.1" strokeWidth="1">
+        {Array.from({ length: 16 }).map((_, k) => (
+          <line
+            key={k}
+            x1={-100 + k * 120}
+            y1={0}
+            x2={300 + k * 120}
+            y2={700}
+          />
         ))}
       </g>
 
       {/* Floating motifs */}
-      <g fill={p.accent} opacity="0.45">
+      <g fill={p.accent} opacity="0.5">
         <circle cx="320" cy="200" r="3" />
         <circle cx="380" cy="160" r="2" />
         <circle cx="420" cy="240" r="2.5" />
         <circle cx="500" cy="180" r="2" />
         <circle cx="600" cy="220" r="3" />
         <circle cx="700" cy="180" r="2" />
+        <circle cx="280" cy="500" r="2.5" />
+        <circle cx="500" cy="540" r="2" />
       </g>
     </svg>
   );

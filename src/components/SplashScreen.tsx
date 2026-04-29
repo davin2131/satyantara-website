@@ -1,40 +1,45 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Gunungan } from "./Gunungan";
 
-const TOTAL_DURATION = 3200;
-const FADE_OUT_AT = 2700;
+const TOTAL_DURATION = 3600;
+const FADE_OUT_AT = 3000;
 
 export function SplashScreen() {
   const [stage, setStage] = useState<"in" | "out" | "done">("in");
 
   useEffect(() => {
-    // Lock body scroll while splash is visible
     const original = document.body.style.overflow;
+    const originalHtml = document.documentElement.style.overflow;
     document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
 
     const fadeOut = window.setTimeout(() => setStage("out"), FADE_OUT_AT);
     const remove = window.setTimeout(() => {
       setStage("done");
       document.body.style.overflow = original;
+      document.documentElement.style.overflow = originalHtml;
     }, TOTAL_DURATION);
 
     return () => {
       window.clearTimeout(fadeOut);
       window.clearTimeout(remove);
       document.body.style.overflow = original;
+      document.documentElement.style.overflow = originalHtml;
     };
   }, []);
 
-  if (stage === "done") return null;
+  if (stage === "done" || typeof document === "undefined") return null;
 
-  return (
+  return createPortal(
     <div
       aria-hidden
-      className={`fixed inset-0 z-[200] flex items-center justify-center overflow-hidden transition-opacity duration-500 ease-out ${
+      className={`fixed inset-0 z-[2147483000] flex h-screen w-screen items-center justify-center overflow-hidden transition-opacity duration-700 ease-out ${
         stage === "out" ? "opacity-0" : "opacity-100"
       }`}
+      style={{ backgroundColor: "#1a0f06" }}
     >
       {/* Layered backgrounds */}
       <div className="absolute inset-0 bg-coffee-950" />
@@ -179,7 +184,8 @@ export function SplashScreen() {
           }
         }
       `}</style>
-    </div>
+    </div>,
+    document.body,
   );
 }
 
