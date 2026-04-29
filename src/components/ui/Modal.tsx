@@ -46,7 +46,7 @@ export function Modal({ open, onClose, children, ariaLabel, size = "lg" }: Props
   return createPortal(
     <div
       aria-hidden={!open}
-      className={`fixed inset-0 z-[100] flex items-center justify-center px-4 py-6 transition-all duration-500 ${
+      className={`fixed inset-0 z-[100] flex items-center justify-center px-3 py-4 transition-all duration-500 sm:px-4 sm:py-6 ${
         open
           ? "pointer-events-auto opacity-100"
           : "pointer-events-none opacity-0"
@@ -70,7 +70,7 @@ export function Modal({ open, onClose, children, ariaLabel, size = "lg" }: Props
         aria-modal="true"
         aria-label={ariaLabel}
         tabIndex={-1}
-        className={`relative z-10 w-full ${widthClass} max-h-[90vh] overflow-hidden rounded-3xl border border-gold-500/30 bg-gradient-to-br from-coffee-800 via-coffee-900 to-coffee-950 shadow-[0_50px_120px_-20px_rgba(0,0,0,0.8),0_0_0_1px_rgba(212,162,78,0.15)] outline-none transition-all duration-500 ${
+        className={`relative z-10 w-full ${widthClass} max-h-[92vh] overflow-hidden rounded-2xl border border-gold-500/30 bg-gradient-to-br from-coffee-800 via-coffee-900 to-coffee-950 shadow-[0_50px_120px_-20px_rgba(0,0,0,0.8),0_0_0_1px_rgba(212,162,78,0.15)] outline-none transition-all duration-500 sm:rounded-3xl ${
           open
             ? "translate-y-0 scale-100 opacity-100"
             : "pointer-events-none translate-y-6 scale-95 opacity-0"
@@ -90,12 +90,12 @@ export function Modal({ open, onClose, children, ariaLabel, size = "lg" }: Props
           type="button"
           onClick={onClose}
           aria-label="Tutup"
-          className="absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-gold-500/30 bg-coffee-950/70 text-cream/85 backdrop-blur transition hover:rotate-90 hover:border-gold-300 hover:text-gold-300"
+          className="absolute right-3 top-3 z-10 inline-flex h-11 w-11 items-center justify-center rounded-full border border-gold-500/30 bg-coffee-950/70 text-cream/85 backdrop-blur transition hover:rotate-90 hover:border-gold-300 hover:text-gold-300 sm:right-4 sm:top-4 sm:h-10 sm:w-10"
         >
           <CloseIcon className="h-4 w-4" />
         </button>
 
-        <div className="max-h-[90vh] overflow-y-auto">{children}</div>
+        <div className="max-h-[92vh] overflow-y-auto overscroll-contain">{children}</div>
       </div>
     </div>,
     document.body,

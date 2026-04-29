@@ -60,16 +60,16 @@ export function SplashScreen() {
       <Particles />
 
       {/* Main content */}
-      <div className="relative flex flex-col items-center gap-6 px-6 text-center">
+      <div className="relative flex w-full max-w-[92vw] flex-col items-center gap-4 px-4 text-center min-[400px]:gap-5 sm:max-w-none sm:gap-6 sm:px-6">
         <div className="splash-logo">
-          <Gunungan className="h-64 w-auto sm:h-80" />
+          <Gunungan className="h-40 w-auto min-[400px]:h-48 sm:h-64 md:h-80" />
         </div>
 
-        <div className="splash-eyebrow text-[11px] uppercase tracking-[0.6em] text-gold-300">
+        <div className="splash-eyebrow text-[9px] uppercase tracking-[0.45em] text-gold-300 min-[400px]:text-[10px] min-[400px]:tracking-[0.55em] sm:text-[11px] sm:tracking-[0.6em]">
           Persembahan Dari
         </div>
 
-        <h1 className="splash-title font-display text-5xl tracking-[0.05em] sm:text-7xl md:text-8xl">
+        <h1 className="splash-title font-display text-[2.1rem] leading-none tracking-[0.04em] min-[400px]:text-4xl sm:text-6xl md:text-7xl lg:text-8xl">
           {"SATYANTARA".split("").map((char, i) => (
             <span
               key={i}
@@ -83,7 +83,7 @@ export function SplashScreen() {
 
         <div className="splash-line h-px w-0 bg-gradient-to-r from-transparent via-gold-400 to-transparent" />
 
-        <div className="splash-tagline text-sm italic tracking-wider text-cream/75 sm:text-base">
+        <div className="splash-tagline text-xs italic tracking-wider text-cream/75 sm:text-sm md:text-base">
           Sugeng Rawuh, Sayners.
         </div>
       </div>
@@ -152,7 +152,7 @@ export function SplashScreen() {
         }
         @keyframes lineGrow {
           to {
-            width: 220px;
+            width: min(220px, 60%);
           }
         }
 

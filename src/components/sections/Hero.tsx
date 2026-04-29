@@ -4,7 +4,7 @@ export function Hero() {
   return (
     <section
       id="beranda"
-      className="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden pt-28 pb-20"
+      className="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden pt-24 pb-16 sm:pt-28 sm:pb-20"
     >
       {/* Background layers */}
       <div className="absolute inset-0 -z-20 bg-coffee-900" />
@@ -24,35 +24,35 @@ export function Hero() {
         }}
       />
 
-      <div className="relative mx-auto flex max-w-5xl flex-col items-center gap-8 px-6 text-center">
-        <div className="flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.5em] text-gold-400/80">
-          <span className="h-px w-10 bg-gold-500/60" />
+      <div className="relative mx-auto flex max-w-5xl flex-col items-center gap-6 px-4 text-center sm:gap-8 sm:px-6">
+        <div className="flex items-center gap-2 text-[9px] font-medium uppercase tracking-[0.4em] text-gold-400/80 sm:gap-3 sm:text-[11px] sm:tracking-[0.5em]">
+          <span className="h-px w-6 bg-gold-500/60 sm:w-10" />
           Lakon Budaya Solo
-          <span className="h-px w-10 bg-gold-500/60" />
+          <span className="h-px w-6 bg-gold-500/60 sm:w-10" />
         </div>
 
-        <Gunungan className="h-72 w-auto sm:h-96 drop-shadow-[0_0_60px_rgba(212,162,78,0.45)]" />
+        <Gunungan className="h-44 w-auto drop-shadow-[0_0_40px_rgba(212,162,78,0.4)] min-[400px]:h-56 sm:h-72 md:h-96 sm:drop-shadow-[0_0_60px_rgba(212,162,78,0.45)]" />
 
-        <h1 className="font-display text-6xl leading-none tracking-tight text-cream sm:text-7xl md:text-8xl">
+        <h1 className="font-display text-[2.4rem] leading-none tracking-tight text-cream min-[400px]:text-5xl sm:text-7xl md:text-8xl">
           <span className="shimmer-text">SATYANTARA</span>
         </h1>
 
-        <p className="max-w-2xl text-base leading-relaxed text-parchment/80 sm:text-lg">
+        <p className="max-w-2xl text-sm leading-relaxed text-parchment/80 sm:text-base md:text-lg">
           Ruang digital yang merangkai cerita Wayang dan kearifan Solo menjadi
           pengalaman, produk, dan kreasi yang siap menemani harimu.
         </p>
 
-        <div className="mt-2 flex flex-col gap-3 sm:flex-row">
+        <div className="mt-2 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
           <a
             href="#layanan"
-            className="group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-b from-gold-300 to-gold-500 px-7 py-3 text-sm font-semibold tracking-[0.18em] uppercase text-coffee-950 shadow-[0_10px_30px_-8px_rgba(212,162,78,0.6)] transition-transform hover:scale-[1.02] hover:from-gold-400 hover:to-gold-600"
+            className="group inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full bg-gradient-to-b from-gold-300 to-gold-500 px-6 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-coffee-950 shadow-[0_10px_30px_-8px_rgba(212,162,78,0.6)] transition-transform hover:scale-[1.02] hover:from-gold-400 hover:to-gold-600 sm:px-7 sm:text-sm"
           >
             Jelajahi Cerita
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </a>
           <a
             href="#tentang-kami"
-            className="inline-flex items-center justify-center rounded-full border border-gold-500/40 px-7 py-3 text-sm font-semibold tracking-[0.18em] uppercase text-cream transition hover:border-gold-300 hover:bg-gold-500/10 hover:text-gold-200"
+            className="inline-flex min-h-[44px] items-center justify-center rounded-full border border-gold-500/40 px-6 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-cream transition hover:border-gold-300 hover:bg-gold-500/10 hover:text-gold-200 sm:px-7 sm:text-sm"
           >
             Tentang Kami
           </a>

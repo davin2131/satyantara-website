@@ -38,13 +38,13 @@ export function SectionDivider({
     <div
       role="separator"
       aria-hidden
-      className={`relative mx-auto flex w-full max-w-6xl items-center justify-center px-5 py-10 lg:px-10 ${className ?? ""}`}
+      className={`relative mx-auto flex w-full max-w-6xl items-center justify-center px-4 py-6 sm:px-5 sm:py-10 lg:px-10 ${className ?? ""}`}
     >
       <span className="h-px flex-1 bg-gradient-to-r from-transparent via-gold-500/60 to-gold-400/30" />
-      <span className="mx-4 inline-flex h-10 w-10 items-center justify-center">
-        {variant === "diamond" && <DiamondMark className="h-9 w-9" />}
-        {variant === "lotus" && <LotusMark className="h-10 w-10" />}
-        {variant === "wayang" && <WayangMark className="h-10 w-10" />}
+      <span className="mx-3 inline-flex h-8 w-8 items-center justify-center sm:mx-4 sm:h-10 sm:w-10">
+        {variant === "diamond" && <DiamondMark className="h-7 w-7 sm:h-9 sm:w-9" />}
+        {variant === "lotus" && <LotusMark className="h-8 w-8 sm:h-10 sm:w-10" />}
+        {variant === "wayang" && <WayangMark className="h-8 w-8 sm:h-10 sm:w-10" />}
       </span>
       <span className="h-px flex-1 bg-gradient-to-l from-transparent via-gold-500/60 to-gold-400/30" />
     </div>

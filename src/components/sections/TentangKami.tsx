@@ -4,15 +4,15 @@ export function TentangKami() {
   return (
     <section
       id="tentang-kami"
-      className="relative px-5 py-24 lg:px-10"
+      className="relative px-4 py-16 sm:px-5 sm:py-24 lg:px-10"
     >
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <div className="flex flex-col items-center text-center">
-            <span className="text-[11px] uppercase tracking-[0.45em] text-gold-400/80">
+            <span className="text-[10px] uppercase tracking-[0.4em] text-gold-400/80 sm:text-[11px] sm:tracking-[0.45em]">
               Akar Cerita Kami
             </span>
-            <h2 className="mt-3 font-display text-5xl tracking-[0.18em] text-cream sm:text-6xl md:text-7xl">
+            <h2 className="mt-3 font-display text-3xl tracking-[0.14em] text-cream min-[400px]:text-4xl sm:text-6xl sm:tracking-[0.18em] md:text-7xl">
               TENTANG KAMI
             </h2>
             <div className="gold-divider mt-6 w-40" />
@@ -20,13 +20,13 @@ export function TentangKami() {
         </Reveal>
 
         <Reveal delay={120}>
-          <div className="mt-12 overflow-hidden rounded-3xl border border-gold-500/20 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.7)]">
+          <div className="mt-8 overflow-hidden rounded-2xl border border-gold-500/20 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.7)] sm:mt-12 sm:rounded-3xl">
             <SoloMural />
           </div>
         </Reveal>
 
         <Reveal delay={200}>
-          <p className="mx-auto mt-10 max-w-4xl text-center text-base leading-relaxed text-parchment/85 sm:text-lg">
+          <p className="mx-auto mt-8 max-w-4xl text-center text-sm leading-relaxed text-parchment/85 sm:mt-10 sm:text-lg">
             Di tengah kota Surakarta atau yang lebih dikenal dengan nama{" "}
             <span className="font-semibold text-gold-300">Solo</span>, budaya
             menjadi denyut yang menghidupkan seluruh kegiatan masyarakat. Kota
@@ -51,7 +51,7 @@ export function TentangKami() {
         </Reveal>
 
         <Reveal delay={300}>
-          <div className="mt-14 grid gap-5 sm:grid-cols-3">
+          <div className="mt-10 grid gap-4 sm:mt-14 sm:gap-5 sm:grid-cols-3">
             <ValueCard
               icon={<WayangIcon className="h-5 w-5" />}
               title="Wayang & Dalang"

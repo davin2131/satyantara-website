@@ -30,14 +30,14 @@ export function Navbar() {
           : "bg-coffee-900/40 backdrop-blur-sm border-b border-transparent"
       }`}
     >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-3 lg:px-10">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-3 py-2.5 sm:gap-6 sm:px-5 sm:py-3 lg:px-10">
         <Link
           href="#beranda"
-          className="flex items-center gap-3"
+          className="flex min-h-[44px] items-center gap-2 sm:gap-3"
           aria-label="Satyantara — beranda"
         >
-          <Gunungan className="h-12 w-auto drop-shadow-[0_0_18px_rgba(212,162,78,0.35)]" />
-          <span className="hidden font-display text-lg font-semibold tracking-[0.32em] text-cream sm:block">
+          <Gunungan className="h-9 w-auto drop-shadow-[0_0_18px_rgba(212,162,78,0.35)] sm:h-12" />
+          <span className="hidden font-display text-base font-semibold tracking-[0.28em] text-cream min-[400px]:block sm:text-lg sm:tracking-[0.32em]">
             SATYANTARA
           </span>
         </Link>
@@ -56,25 +56,25 @@ export function Navbar() {
           ))}
         </ul>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           <button
             type="button"
             aria-label="Pencarian"
-            className="group hidden rounded-full border border-gold-500/30 p-2 text-cream/80 transition-all hover:border-gold-400 hover:text-gold-300 sm:inline-flex"
+            className="hidden h-10 w-10 items-center justify-center rounded-full border border-gold-500/30 text-cream/80 transition-all hover:border-gold-400 hover:text-gold-300 sm:inline-flex"
           >
             <SearchIcon className="h-4 w-4" />
           </button>
           <button
             type="button"
             aria-label="Wishlist"
-            className="hidden rounded-full border border-gold-500/30 p-2 text-cream/80 transition-all hover:border-gold-400 hover:text-gold-300 sm:inline-flex"
+            className="hidden h-10 w-10 items-center justify-center rounded-full border border-gold-500/30 text-cream/80 transition-all hover:border-gold-400 hover:text-gold-300 sm:inline-flex"
           >
             <HeartIcon className="h-4 w-4" />
           </button>
           <button
             type="button"
             aria-label="Keranjang"
-            className="relative rounded-full border border-gold-500/30 p-2 text-cream/80 transition-all hover:border-gold-400 hover:text-gold-300"
+            className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-gold-500/30 text-cream/80 transition-all hover:border-gold-400 hover:text-gold-300"
           >
             <BagIcon className="h-4 w-4" />
             <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-gold-500 px-1 text-[10px] font-semibold text-coffee-950">
@@ -87,7 +87,7 @@ export function Navbar() {
             aria-label="Toggle menu"
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
-            className="ml-1 inline-flex items-center justify-center rounded-full border border-gold-500/30 p-2 text-cream/90 transition hover:border-gold-400 lg:hidden"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-gold-500/30 text-cream/90 transition hover:border-gold-400 lg:hidden"
           >
             {open ? <XIcon className="h-4 w-4" /> : <MenuIcon className="h-4 w-4" />}
           </button>

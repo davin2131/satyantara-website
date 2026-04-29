@@ -7,16 +7,27 @@ const AUTOPLAY_MS = 6000;
 const SNAP_DISTANCE = 0.18; // % of width to commit to next slide
 const SNAP_VELOCITY = 0.4;
 
+const SM_BREAKPOINT = 640;
+
 export function HeroCarousel() {
   const [active, setActive] = useState(0);
   const [dragPercent, setDragPercent] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [hover, setHover] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const pointerStartX = useRef(0);
   const pointerStartW = useRef(1);
   const lastMoveX = useRef(0);
   const lastMoveT = useRef(0);
   const pointerId = useRef<number | null>(null);
+
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${SM_BREAKPOINT - 1}px)`);
+    const handler = () => setIsMobile(mq.matches);
+    handler();
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
 
   const next = useCallback(
     () => setActive((i) => (i + 1) % heroSlides.length),
@@ -75,11 +86,11 @@ export function HeroCarousel() {
   return (
     <section
       aria-label="Galeri budaya Satyantara"
-      className="relative px-5 lg:px-10"
+      className="relative px-3 sm:px-5 lg:px-10"
     >
       <div className="mx-auto max-w-6xl">
         <div
-          className="group/carousel relative h-[320px] select-none overflow-hidden rounded-3xl border border-gold-500/25 bg-coffee-950 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8),inset_0_0_0_1px_rgba(212,162,78,0.06)] sm:h-[420px] md:h-[520px]"
+          className="group/carousel relative h-[280px] select-none overflow-hidden rounded-2xl border border-gold-500/25 bg-coffee-950 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8),inset_0_0_0_1px_rgba(212,162,78,0.06)] min-[400px]:h-[320px] sm:h-[420px] sm:rounded-3xl md:h-[520px]"
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
           style={{ perspective: "1600px" }}
@@ -98,11 +109,11 @@ export function HeroCarousel() {
             {heroSlides.map((slide, i) => {
               const offset = i - active - dragOffset;
               const abs = Math.abs(offset);
-              // 3D layout
-              const tx = offset * 56; // % horizontal shift per step
-              const tz = -abs * 220; // recede deeper for distant slides
-              const ry = offset * -22; // rotateY per step
-              const scale = Math.max(1 - abs * 0.12, 0.6);
+              // 3D layout (mobile: gentler so slide is bigger / less obscured)
+              const tx = offset * (isMobile ? 70 : 56);
+              const tz = -abs * (isMobile ? 120 : 220);
+              const ry = offset * (isMobile ? -14 : -22);
+              const scale = Math.max(1 - abs * (isMobile ? 0.08 : 0.12), 0.6);
               const opacity = abs > 2.5 ? 0 : Math.max(1 - abs * 0.32, 0.18);
               const blur = abs >= 1 ? Math.min(abs * 1.4, 4) : 0;
               const z = 100 - Math.round(abs * 10);
@@ -113,7 +124,7 @@ export function HeroCarousel() {
                 <div
                   key={slide.title}
                   aria-hidden={i !== active}
-                  className="absolute left-1/2 top-1/2 h-[88%] w-[78%] sm:w-[68%] md:w-[62%]"
+                  className="absolute left-1/2 top-1/2 h-[88%] w-[88%] min-[400px]:w-[82%] sm:w-[68%] md:w-[62%]"
                   style={{
                     transform: `translate(-50%, -50%) translate3d(${tx}%, 0, ${tz}px) rotateY(${ry}deg) scale(${scale})`,
                     opacity,
@@ -123,7 +134,7 @@ export function HeroCarousel() {
                     pointerEvents: i === active ? "auto" : "none",
                   }}
                 >
-                  <div className="relative h-full w-full overflow-hidden rounded-2xl border border-gold-500/30 shadow-[0_30px_60px_-25px_rgba(0,0,0,0.7),0_0_0_1px_rgba(212,162,78,0.1)]">
+                  <div className="relative h-full w-full overflow-hidden rounded-xl border border-gold-500/30 shadow-[0_30px_60px_-25px_rgba(0,0,0,0.7),0_0_0_1px_rgba(212,162,78,0.1)] sm:rounded-2xl">
                     <CarouselArt index={i} />
 
                     {/* Vignette + active glow */}
@@ -134,7 +145,7 @@ export function HeroCarousel() {
 
                     {/* Caption */}
                     <div
-                      className="absolute inset-x-0 bottom-0 p-5 sm:p-8"
+                      className="absolute inset-x-0 bottom-0 p-4 min-[400px]:p-5 sm:p-8"
                       style={{
                         opacity: i === active ? 1 - Math.abs(dragOffset) * 0.6 : 0.45,
                         transition: isDragging
@@ -142,17 +153,17 @@ export function HeroCarousel() {
                           : "opacity 700ms ease-out",
                       }}
                     >
-                      <p className="mb-2 text-[10px] uppercase tracking-[0.45em] text-gold-300 sm:text-[11px]">
+                      <p className="mb-1.5 text-[9px] uppercase tracking-[0.4em] text-gold-300 min-[400px]:text-[10px] sm:mb-2 sm:text-[11px] sm:tracking-[0.45em]">
                         Lakon {String(i + 1).padStart(2, "0")} / 05
                       </p>
-                      <h3 className="font-display text-2xl text-cream sm:text-4xl md:text-5xl">
+                      <h3 className="font-display text-xl leading-tight text-cream min-[400px]:text-2xl sm:text-4xl md:text-5xl">
                         {slide.title}
                       </h3>
-                      <p className="mt-2 max-w-xl text-sm text-parchment/75 sm:text-base">
+                      <p className="mt-1.5 line-clamp-2 max-w-xl text-xs text-parchment/75 sm:mt-2 sm:line-clamp-none sm:text-base">
                         {slide.caption}
                       </p>
                       {i === active && (
-                        <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-gold-500/40 bg-coffee-950/60 px-3 py-1 text-[10px] uppercase tracking-[0.32em] text-gold-300 backdrop-blur sm:text-[11px]">
+                        <div className="mt-2.5 hidden items-center gap-2 rounded-full border border-gold-500/40 bg-coffee-950/60 px-3 py-1 text-[10px] uppercase tracking-[0.32em] text-gold-300 backdrop-blur min-[400px]:inline-flex sm:text-[11px]">
                           <SparkIcon className="h-3 w-3" />
                           Geser untuk lakon lain
                         </div>
@@ -165,15 +176,15 @@ export function HeroCarousel() {
           </div>
 
           {/* Side fade masks for cinematic depth */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-coffee-950 via-coffee-950/70 to-transparent sm:w-48" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-coffee-950 via-coffee-950/70 to-transparent sm:w-48" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-coffee-950 via-coffee-950/70 to-transparent min-[400px]:w-20 sm:w-48" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-coffee-950 via-coffee-950/70 to-transparent min-[400px]:w-20 sm:w-48" />
 
           {/* Prev / Next arrows */}
           <button
             type="button"
             aria-label="Lakon sebelumnya"
             onClick={prev}
-            className="absolute left-3 top-1/2 z-50 -translate-y-1/2 rounded-full border border-gold-500/40 bg-coffee-950/70 p-2.5 text-gold-200 backdrop-blur transition hover:border-gold-400 hover:bg-coffee-900 hover:text-gold-300 sm:p-3.5"
+            className="absolute left-2 top-1/2 z-50 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-gold-500/40 bg-coffee-950/70 text-gold-200 backdrop-blur transition hover:border-gold-400 hover:bg-coffee-900 hover:text-gold-300 sm:left-3 sm:h-12 sm:w-12"
           >
             <ArrowIcon className="h-4 w-4 sm:h-5 sm:w-5" direction="left" />
           </button>
@@ -181,24 +192,24 @@ export function HeroCarousel() {
             type="button"
             aria-label="Lakon berikutnya"
             onClick={next}
-            className="absolute right-3 top-1/2 z-50 -translate-y-1/2 rounded-full border border-gold-500/40 bg-coffee-950/70 p-2.5 text-gold-200 backdrop-blur transition hover:border-gold-400 hover:bg-coffee-900 hover:text-gold-300 sm:p-3.5"
+            className="absolute right-2 top-1/2 z-50 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-gold-500/40 bg-coffee-950/70 text-gold-200 backdrop-blur transition hover:border-gold-400 hover:bg-coffee-900 hover:text-gold-300 sm:right-3 sm:h-12 sm:w-12"
           >
             <ArrowIcon className="h-4 w-4 sm:h-5 sm:w-5" direction="right" />
           </button>
 
           {/* Slide counter — big cinematic number */}
-          <div className="pointer-events-none absolute right-5 top-4 z-50 flex items-baseline gap-1 font-display sm:right-8 sm:top-6">
-            <span className="text-3xl text-gold-300 sm:text-5xl">
+          <div className="pointer-events-none absolute right-3 top-3 z-50 flex items-baseline gap-1 font-display sm:right-8 sm:top-6">
+            <span className="text-2xl text-gold-300 min-[400px]:text-3xl sm:text-5xl">
               {String(active + 1).padStart(2, "0")}
             </span>
-            <span className="text-sm text-gold-500/40 sm:text-base">
+            <span className="text-xs text-gold-500/40 sm:text-base">
               / {String(heroSlides.length).padStart(2, "0")}
             </span>
           </div>
 
           {/* Section eyebrow */}
-          <div className="pointer-events-none absolute left-5 top-5 z-50 flex items-center gap-2 text-[10px] uppercase tracking-[0.45em] text-gold-300/90 sm:left-8 sm:top-7">
-            <span className="block h-px w-10 bg-gold-500/60" />
+          <div className="pointer-events-none absolute left-3 top-4 z-50 flex items-center gap-2 text-[9px] uppercase tracking-[0.35em] text-gold-300/90 min-[400px]:left-4 min-[400px]:text-[10px] min-[400px]:tracking-[0.45em] sm:left-8 sm:top-7">
+            <span className="block h-px w-6 bg-gold-500/60 sm:w-10" />
             Lakon Budaya Solo
           </div>
         </div>

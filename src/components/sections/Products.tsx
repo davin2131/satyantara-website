@@ -7,21 +7,21 @@ export function Products() {
   return (
     <section
       id="layanan"
-      className="section-glow relative px-5 py-24 lg:px-10"
+      className="section-glow relative px-4 py-16 sm:px-5 sm:py-24 lg:px-10"
     >
-      <CornerMotif className="absolute left-6 top-8 h-12 w-12 opacity-70" />
-      <CornerMotif className="absolute right-6 top-8 h-12 w-12 -scale-x-100 opacity-70" />
+      <CornerMotif className="absolute left-3 top-5 h-8 w-8 opacity-60 sm:left-6 sm:top-8 sm:h-12 sm:w-12 sm:opacity-70" />
+      <CornerMotif className="absolute right-3 top-5 h-8 w-8 -scale-x-100 opacity-60 sm:right-6 sm:top-8 sm:h-12 sm:w-12 sm:opacity-70" />
       <div className="mx-auto max-w-6xl">
         <Reveal>
-          <div className="mb-14 flex flex-col items-center gap-3 text-center">
-            <Ornament className="mb-2 w-44 opacity-80" />
-            <span className="text-[11px] uppercase tracking-[0.45em] text-gold-400/80">
+          <div className="mb-10 flex flex-col items-center gap-3 text-center sm:mb-14">
+            <Ornament className="mb-2 w-32 opacity-80 sm:w-44" />
+            <span className="text-[10px] uppercase tracking-[0.4em] text-gold-400/80 sm:text-[11px] sm:tracking-[0.45em]">
               Lakon Pilihan
             </span>
-            <h2 className="font-display text-4xl tracking-tight text-cream sm:text-5xl md:text-6xl">
+            <h2 className="font-display text-3xl leading-tight tracking-tight text-cream min-[400px]:text-4xl sm:text-5xl md:text-6xl">
               Satyantara&rsquo;s Products
             </h2>
-            <p className="max-w-2xl text-parchment/75">
+            <p className="max-w-2xl text-sm text-parchment/75 sm:text-base">
               Tiga lakon yang menjadi pintu masuk pengalaman budaya — dari
               kelahiran sang Werkudara hingga lima saudara penegak dharma.
             </p>
@@ -29,7 +29,7 @@ export function Products() {
           </div>
         </Reveal>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {stories.map((s, i) => (
             <StoryCard
               key={s.slug}

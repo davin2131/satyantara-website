@@ -4,15 +4,15 @@ import { Reveal } from "../ui/Reveal";
 
 export function Recommendations() {
   return (
-    <section className="section-glow relative px-5 py-20 lg:px-10">
+    <section className="section-glow relative px-4 py-14 sm:px-5 sm:py-20 lg:px-10">
       <div className="mx-auto max-w-6xl">
         <Reveal>
-          <div className="mb-10 flex items-end justify-between gap-6">
+          <div className="mb-8 flex items-end justify-between gap-4 sm:mb-10 sm:gap-6">
             <div>
-              <p className="text-[11px] uppercase tracking-[0.45em] text-gold-400/80">
+              <p className="text-[10px] uppercase tracking-[0.4em] text-gold-400/80 sm:text-[11px] sm:tracking-[0.45em]">
                 Untuk Sayners
               </p>
-              <h3 className="mt-2 font-display text-3xl text-cream sm:text-4xl">
+              <h3 className="mt-2 font-display text-2xl leading-tight text-cream min-[400px]:text-3xl sm:text-4xl">
                 Rekomendasi Produk
               </h3>
             </div>
@@ -25,7 +25,7 @@ export function Recommendations() {
           </div>
         </Reveal>
 
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-6">
           {recommendations.map((r, i) => (
             <StoryCard
               key={`${r.slug}-${i}`}

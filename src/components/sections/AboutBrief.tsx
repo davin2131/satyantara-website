@@ -3,15 +3,15 @@ import { Gunungan } from "../Gunungan";
 
 export function AboutBrief() {
   return (
-    <section className="section-glow relative px-5 py-24 lg:px-10">
-      <Gunungan className="pointer-events-none absolute -right-20 top-1/2 h-[420px] w-[420px] -translate-y-1/2 opacity-[0.04] sm:opacity-[0.06]" />
-      <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2">
+    <section className="section-glow relative px-4 py-16 sm:px-5 sm:py-24 lg:px-10">
+      <Gunungan className="pointer-events-none absolute -right-20 top-1/2 h-[280px] w-[280px] -translate-y-1/2 opacity-[0.04] sm:h-[420px] sm:w-[420px] sm:opacity-[0.06]" />
+      <div className="mx-auto grid max-w-6xl items-center gap-8 sm:gap-12 md:grid-cols-2">
         <Reveal>
-          <p className="mb-3 text-[11px] uppercase tracking-[0.45em] text-gold-400/80">
+          <p className="mb-3 text-[10px] uppercase tracking-[0.4em] text-gold-400/80 sm:text-[11px] sm:tracking-[0.45em]">
             Selamat Datang
           </p>
-          <h2 className="font-display text-5xl leading-[1.05] text-cream sm:text-6xl md:text-7xl">
-            <span className="block text-3xl font-medium tracking-[0.3em] uppercase text-cream/85 sm:text-4xl">
+          <h2 className="font-display text-3xl leading-[1.1] text-cream min-[400px]:text-4xl sm:text-6xl md:text-7xl">
+            <span className="block text-xl font-medium uppercase tracking-[0.25em] text-cream/85 min-[400px]:text-2xl min-[400px]:tracking-[0.3em] sm:text-4xl">
               Satyantara
             </span>
             <span className="mt-2 block">Brand Budaya</span>
@@ -22,7 +22,7 @@ export function AboutBrief() {
         <Reveal delay={120}>
           <div className="relative">
             <span className="absolute -left-4 top-0 h-full w-px bg-gradient-to-b from-gold-500/60 via-gold-400/30 to-transparent" />
-            <p className="text-base leading-relaxed text-parchment/85 sm:text-lg">
+            <p className="text-sm leading-relaxed text-parchment/85 sm:text-lg">
               <span className="font-semibold text-gold-300">
                 Halo, Sayners!
               </span>{" "}
@@ -31,7 +31,7 @@ export function AboutBrief() {
               positif yang kaya akan pengetahuan. Isi hari hari mu dengan{" "}
               <span className="italic text-gold-200">SATYANTARA</span>.
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-6 text-xs uppercase tracking-[0.32em] text-cream/70">
+            <div className="mt-6 flex flex-wrap items-center gap-4 text-[10px] uppercase tracking-[0.28em] text-cream/70 sm:mt-8 sm:gap-6 sm:text-xs sm:tracking-[0.32em]">
               <Stat label="Sanggar Mitra" value="12+" />
               <Stat label="Lakon Cerita" value="40+" />
               <Stat label="Sayners" value="5K+" />
@@ -46,7 +46,7 @@ export function AboutBrief() {
 function Stat({ value, label }: { value: string; label: string }) {
   return (
     <div className="flex items-baseline gap-2">
-      <span className="font-display text-3xl text-gold-300">{value}</span>
+      <span className="font-display text-2xl text-gold-300 sm:text-3xl">{value}</span>
       <span>{label}</span>
     </div>
   );

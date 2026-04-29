@@ -102,12 +102,12 @@ function StoryModalBody({ story }: { story: Story }) {
         </p>
       </div>
 
-      <div className="p-6 sm:p-8">
-        <p className="text-[11px] uppercase tracking-[0.45em] text-gold-400/80">
+      <div className="p-5 pt-14 min-[400px]:p-6 sm:p-8 sm:pt-8">
+        <p className="text-[10px] uppercase tracking-[0.4em] text-gold-400/80 sm:text-[11px] sm:tracking-[0.45em]">
           Featured Lakon
         </p>
-        <div className="mt-2 flex flex-wrap items-baseline gap-x-5 gap-y-2">
-          <h3 className="font-display text-3xl text-cream sm:text-4xl">
+        <div className="mt-2 flex flex-wrap items-baseline gap-x-4 gap-y-2 sm:gap-x-5">
+          <h3 className="font-display text-2xl leading-tight text-cream min-[400px]:text-3xl sm:text-4xl">
             {story.title}
           </h3>
           <span className="text-base font-medium tracking-wide text-gold-300">
@@ -144,10 +144,10 @@ function StoryModalBody({ story }: { story: Story }) {
           </ul>
         </div>
 
-        <div className="mt-7 flex flex-wrap items-center gap-3">
+        <div className="mt-6 flex flex-wrap items-center gap-3 sm:mt-7">
           <button
             type="button"
-            className="group inline-flex items-center gap-3 rounded-full bg-gradient-to-b from-cream to-coffee-100 px-7 py-3 text-sm font-semibold tracking-[0.18em] uppercase text-coffee-950 shadow-[0_15px_40px_-15px_rgba(232,221,184,0.6)] transition-transform hover:scale-[1.02]"
+            className="group inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-full bg-gradient-to-b from-cream to-coffee-100 px-5 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-coffee-950 shadow-[0_15px_40px_-15px_rgba(232,221,184,0.6)] transition-transform hover:scale-[1.02] sm:flex-none sm:gap-3 sm:px-7 sm:text-sm sm:tracking-[0.18em]"
           >
             <BagPlusIcon className="h-4 w-4" />
             Masukkan ke Keranjang
@@ -178,12 +178,12 @@ function MitraModalBody({ product }: { product: MitraProduct }) {
         )}
       </div>
 
-      <div className="p-6 sm:p-8">
-        <p className="text-[11px] uppercase tracking-[0.45em] text-gold-400/80">
+      <div className="p-5 pt-14 min-[400px]:p-6 sm:p-8 sm:pt-8">
+        <p className="text-[10px] uppercase tracking-[0.4em] text-gold-400/80 sm:text-[11px] sm:tracking-[0.45em]">
           Product Mitra
         </p>
-        <div className="mt-2 flex flex-wrap items-baseline gap-x-5 gap-y-2">
-          <h3 className="font-display text-3xl text-cream sm:text-4xl">
+        <div className="mt-2 flex flex-wrap items-baseline gap-x-4 gap-y-2 sm:gap-x-5">
+          <h3 className="font-display text-2xl leading-tight text-cream min-[400px]:text-3xl sm:text-4xl">
             {product.name}
           </h3>
           <span className="text-base font-medium tracking-wide text-gold-300">
@@ -215,7 +215,7 @@ function MitraModalBody({ product }: { product: MitraProduct }) {
           </ul>
         </div>
 
-        <div className="mt-7 flex flex-wrap items-center gap-3">
+        <div className="mt-6 flex flex-wrap items-center gap-3 sm:mt-7">
           <button
             type="button"
             className="inline-flex items-center gap-3 rounded-full bg-gradient-to-b from-gold-300 to-gold-500 px-6 py-2.5 text-sm font-semibold tracking-[0.18em] uppercase text-coffee-950 shadow-[0_15px_40px_-15px_rgba(212,162,78,0.6)] transition-transform hover:scale-[1.02]"

@@ -7,19 +7,19 @@ import { useMitraModal } from "../AppShell";
 
 export function ProductMitra() {
   return (
-    <section className="section-glow relative px-5 py-24 lg:px-10">
-      <Ornament className="pointer-events-none absolute left-1/2 top-10 w-56 -translate-x-1/2 opacity-50" />
+    <section className="section-glow relative px-4 py-16 sm:px-5 sm:py-24 lg:px-10">
+      <Ornament className="pointer-events-none absolute left-1/2 top-6 w-40 -translate-x-1/2 opacity-50 sm:top-10 sm:w-56" />
       <div className="mx-auto max-w-6xl">
         <Reveal>
-          <div className="mb-12 flex items-end justify-between gap-6">
+          <div className="mb-9 flex items-end justify-between gap-4 sm:mb-12 sm:gap-6">
             <div>
-              <p className="text-[11px] uppercase tracking-[0.45em] text-gold-400/80">
+              <p className="text-[10px] uppercase tracking-[0.4em] text-gold-400/80 sm:text-[11px] sm:tracking-[0.45em]">
                 Karya Sanggar
               </p>
-              <h2 className="mt-2 font-display text-4xl text-cream sm:text-5xl md:text-6xl">
+              <h2 className="mt-2 font-display text-2xl leading-tight text-cream min-[400px]:text-3xl sm:text-5xl md:text-6xl">
                 Product Mitra
               </h2>
-              <p className="mt-3 max-w-xl text-parchment/75">
+              <p className="mt-3 max-w-xl text-sm text-parchment/75 sm:text-base">
                 Kerajinan tangan dari para perajin Solo dan sekitarnya — setiap
                 karya membawa cerita dan nilai luhur Nusantara.
               </p>
@@ -33,13 +33,13 @@ export function ProductMitra() {
           </div>
         </Reveal>
 
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+        <div className="grid grid-cols-2 gap-3 min-[400px]:gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
           {mitraProducts.map((p, i) => (
             <MitraCard key={p.slug} product={p} delay={i * 50} />
           ))}
         </div>
 
-        <div className="mt-10 text-center">
+        <div className="mt-8 text-center sm:mt-10">
           <a
             href="#layanan"
             className="inline-flex items-center gap-2 text-sm italic text-cream/70 transition hover:text-gold-300"

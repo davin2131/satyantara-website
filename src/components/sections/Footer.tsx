@@ -4,12 +4,12 @@ export function Footer() {
   return (
     <footer
       id="kontak"
-      className="relative mt-12 px-5 pb-10 lg:px-10"
+      className="relative mt-8 px-4 pb-8 sm:mt-12 sm:px-5 sm:pb-10 lg:px-10"
     >
       <div className="mx-auto max-w-6xl space-y-6">
         {/* Brand watermark + socials */}
         <Reveal>
-          <div className="batik-pattern relative overflow-hidden rounded-3xl border border-gold-500/20 px-6 py-14 sm:px-12">
+          <div className="batik-pattern relative overflow-hidden rounded-2xl border border-gold-500/20 px-5 py-10 sm:rounded-3xl sm:px-12 sm:py-14">
             <div
               className="pointer-events-none absolute inset-0 flex items-center justify-center"
               aria-hidden
@@ -19,11 +19,11 @@ export function Footer() {
               </span>
             </div>
 
-            <div className="relative flex flex-col items-center gap-8">
-              <p className="text-[11px] uppercase tracking-[0.45em] text-gold-400/80">
+            <div className="relative flex flex-col items-center gap-6 sm:gap-8">
+              <p className="text-[10px] uppercase tracking-[0.4em] text-gold-400/80 sm:text-[11px] sm:tracking-[0.45em]">
                 Ikuti Cerita Kami
               </p>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3 sm:gap-4">
                 <SocialButton label="YouTube" href="#" tone="rose">
                   <YouTubeIcon className="h-5 w-5" />
                 </SocialButton>
@@ -43,13 +43,13 @@ export function Footer() {
 
         {/* Contact */}
         <Reveal delay={120}>
-          <div className="rounded-3xl border border-gold-500/20 bg-coffee-800/50 p-8 sm:p-12">
-            <h3 className="text-center font-display text-3xl tracking-[0.2em] text-cream sm:text-4xl">
+          <div className="rounded-2xl border border-gold-500/20 bg-coffee-800/50 p-6 sm:rounded-3xl sm:p-12">
+            <h3 className="text-center font-display text-2xl tracking-[0.16em] text-cream min-[400px]:text-3xl sm:text-4xl sm:tracking-[0.2em]">
               CONTACT PERSON
             </h3>
             <div className="gold-divider mx-auto mt-5 w-32" />
 
-            <div className="mt-8 flex flex-col items-center justify-center gap-8 sm:flex-row">
+            <div className="mt-6 flex flex-col items-center justify-center gap-6 sm:mt-8 sm:flex-row sm:gap-8">
               <ContactItem
                 icon={<WhatsAppIcon className="h-6 w-6" />}
                 label="WhatsApp"
