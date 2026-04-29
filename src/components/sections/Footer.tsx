@@ -4,7 +4,7 @@ export function Footer() {
   return (
     <footer
       id="kontak"
-      className="relative mt-8 px-4 pb-8 sm:mt-12 sm:px-5 sm:pb-10 lg:px-10"
+      className="relative mt-12 px-4 pb-10 sm:mt-16 sm:px-6 sm:pb-12 md:px-8 lg:mt-20 lg:px-10"
     >
       <div className="mx-auto max-w-6xl space-y-6">
         {/* Brand watermark + socials */}

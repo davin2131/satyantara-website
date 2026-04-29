@@ -47,6 +47,11 @@ export function HeroCarousel() {
 
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if (e.pointerType === "mouse" && e.button !== 0) return;
+    // Skip drag init when interacting with arrows / dot indicators so
+    // the click reaches the button instead of being redirected by
+    // setPointerCapture below.
+    const target = e.target as HTMLElement | null;
+    if (target?.closest("button, a, [data-no-drag]")) return;
     pointerId.current = e.pointerId;
     e.currentTarget.setPointerCapture(e.pointerId);
     pointerStartX.current = e.clientX;
@@ -86,7 +91,7 @@ export function HeroCarousel() {
   return (
     <section
       aria-label="Galeri budaya Satyantara"
-      className="relative px-3 sm:px-5 lg:px-10"
+      className="relative px-4 sm:px-6 md:px-8 lg:px-10"
     >
       <div className="mx-auto max-w-6xl">
         <div

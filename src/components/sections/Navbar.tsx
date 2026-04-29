@@ -30,7 +30,7 @@ export function Navbar() {
           : "bg-coffee-900/40 backdrop-blur-sm border-b border-transparent"
       }`}
     >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-3 py-2.5 sm:gap-6 sm:px-5 sm:py-3 lg:px-10">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2.5 sm:gap-6 sm:px-6 sm:py-3 md:px-8 lg:px-10">
         <Link
           href="#beranda"
           className="flex min-h-[44px] items-center gap-2 sm:gap-3"

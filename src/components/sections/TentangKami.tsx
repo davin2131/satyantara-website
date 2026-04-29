@@ -4,7 +4,7 @@ export function TentangKami() {
   return (
     <section
       id="tentang-kami"
-      className="relative px-4 py-16 sm:px-5 sm:py-24 lg:px-10"
+      className="relative px-4 py-16 sm:px-6 sm:py-20 md:px-8 lg:px-10 lg:py-24"
     >
       <div className="mx-auto max-w-6xl">
         <Reveal>
