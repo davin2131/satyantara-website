@@ -30,6 +30,7 @@ export function Recommendations() {
             <StoryCard
               key={`${r.slug}-${i}`}
               index={i}
+              slug={r.slug}
               title={r.title}
               price={r.price}
               delay={i * 70}

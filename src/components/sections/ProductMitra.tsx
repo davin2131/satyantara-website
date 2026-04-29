@@ -1,5 +1,8 @@
+"use client";
+
 import { mitraProducts, type MitraProduct } from "@/data/products";
 import { Reveal } from "../ui/Reveal";
+import { useMitraModal } from "../AppShell";
 
 export function ProductMitra() {
   return (
@@ -30,7 +33,7 @@ export function ProductMitra() {
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
           {mitraProducts.map((p, i) => (
-            <MitraCard key={p.name} product={p} delay={i * 50} />
+            <MitraCard key={p.slug} product={p} delay={i * 50} />
           ))}
         </div>
 
@@ -50,10 +53,16 @@ export function ProductMitra() {
 
 function MitraCard({ product, delay }: { product: MitraProduct; delay: number }) {
   const palette = TONE_PALETTE[product.tone];
+  const { openMitra } = useMitraModal();
 
   return (
     <Reveal delay={delay}>
-      <article className="group relative overflow-hidden rounded-2xl border border-gold-500/15 bg-coffee-800/40 p-2 transition-all duration-500 hover:-translate-y-1 hover:border-gold-400/50">
+      <button
+        type="button"
+        onClick={() => openMitra(product.slug)}
+        className="group block w-full text-left"
+      >
+      <article className="relative overflow-hidden rounded-2xl border border-gold-500/15 bg-coffee-800/40 p-2 transition-all duration-500 group-hover:-translate-y-1 group-hover:border-gold-400/50 group-hover:shadow-[0_20px_40px_-15px_rgba(212,162,78,0.25)]">
         <div className="relative aspect-square overflow-hidden rounded-xl">
           <MitraArt palette={palette} />
           {product.badge && (
@@ -61,9 +70,12 @@ function MitraCard({ product, delay }: { product: MitraProduct; delay: number })
               {product.badge}
             </span>
           )}
+          <span className="absolute right-2 top-2 inline-flex h-7 w-7 items-center justify-center rounded-full bg-coffee-950/80 text-gold-300 opacity-0 backdrop-blur transition-opacity group-hover:opacity-100">
+            <PlusIcon className="h-3.5 w-3.5" />
+          </span>
         </div>
         <div className="px-2 pb-2 pt-3">
-          <h4 className="text-sm font-semibold text-cream group-hover:text-gold-200 transition-colors">
+          <h4 className="text-sm font-semibold text-cream transition-colors group-hover:text-gold-200">
             {product.name}
           </h4>
           <p className="mt-0.5 text-[11px] text-gold-300/90">
@@ -74,7 +86,24 @@ function MitraCard({ product, delay }: { product: MitraProduct; delay: number })
           </p>
         </div>
       </article>
+      </button>
     </Reveal>
+  );
+}
+
+function PlusIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.4"
+      strokeLinecap="round"
+      {...props}
+    >
+      <line x1="12" y1="6" x2="12" y2="18" />
+      <line x1="6" y1="12" x2="18" y2="12" />
+    </svg>
   );
 }
 

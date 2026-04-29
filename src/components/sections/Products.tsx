@@ -30,6 +30,7 @@ export function Products() {
             <StoryCard
               key={s.slug}
               index={i}
+              slug={s.slug}
               title={s.title}
               subtitle={s.subtitle}
               price={s.price}
