@@ -1,6 +1,8 @@
 import { Gunungan } from "../Gunungan";
+import { siteCopy } from "@/data/site";
 
 export function Hero() {
+  const c = siteCopy.hero;
   return (
     <section
       id="beranda"
@@ -27,7 +29,7 @@ export function Hero() {
       <div className="relative mx-auto flex max-w-5xl flex-col items-center gap-6 px-4 text-center sm:gap-8 sm:px-6">
         <div className="flex items-center gap-2 text-[9px] font-medium uppercase tracking-[0.4em] text-gold-400/80 sm:gap-3 sm:text-[11px] sm:tracking-[0.5em]">
           <span className="h-px w-6 bg-gold-500/60 sm:w-10" />
-          Lakon Budaya Solo
+          {c.eyebrow}
           <span className="h-px w-6 bg-gold-500/60 sm:w-10" />
         </div>
 
@@ -38,8 +40,7 @@ export function Hero() {
         </h1>
 
         <p className="max-w-2xl text-sm leading-relaxed text-parchment/80 sm:text-base md:text-lg">
-          Ruang digital yang merangkai cerita Wayang dan kearifan Solo menjadi
-          pengalaman, produk, dan kreasi yang siap menemani harimu.
+          {c.tagline}
         </p>
 
         <div className="mt-2 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
@@ -47,14 +48,14 @@ export function Hero() {
             href="#layanan"
             className="group inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full bg-gradient-to-b from-gold-300 to-gold-500 px-6 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-coffee-950 shadow-[0_10px_30px_-8px_rgba(212,162,78,0.6)] transition-transform hover:scale-[1.02] hover:from-gold-400 hover:to-gold-600 sm:px-7 sm:text-sm"
           >
-            Jelajahi Cerita
+            {c.primaryCta}
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </a>
           <a
             href="#tentang-kami"
             className="inline-flex min-h-[44px] items-center justify-center rounded-full border border-gold-500/40 px-6 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-cream transition hover:border-gold-300 hover:bg-gold-500/10 hover:text-gold-200 sm:px-7 sm:text-sm"
           >
-            Tentang Kami
+            {c.secondaryCta}
           </a>
         </div>
 

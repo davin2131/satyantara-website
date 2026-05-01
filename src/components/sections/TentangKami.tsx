@@ -1,6 +1,8 @@
 import { Reveal } from "../ui/Reveal";
+import { siteCopy } from "@/data/site";
 
 export function TentangKami() {
+  const c = siteCopy.tentangKami;
   return (
     <section
       id="tentang-kami"
@@ -10,10 +12,10 @@ export function TentangKami() {
         <Reveal>
           <div className="flex flex-col items-center text-center">
             <span className="text-[10px] uppercase tracking-[0.4em] text-gold-400/80 sm:text-[11px] sm:tracking-[0.45em]">
-              Akar Cerita Kami
+              {c.eyebrow}
             </span>
             <h2 className="mt-3 font-display text-3xl tracking-[0.14em] text-cream min-[400px]:text-4xl sm:text-6xl sm:tracking-[0.18em] md:text-7xl">
-              TENTANG KAMI
+              {c.heading}
             </h2>
             <div className="gold-divider mt-6 w-40" />
           </div>
@@ -52,21 +54,14 @@ export function TentangKami() {
 
         <Reveal delay={300}>
           <div className="mt-10 grid gap-4 sm:mt-14 sm:gap-5 sm:grid-cols-3">
-            <ValueCard
-              icon={<WayangIcon className="h-5 w-5" />}
-              title="Wayang & Dalang"
-              text="Setiap lakon dijaga oleh dalang sebagai penjaga cerita."
-            />
-            <ValueCard
-              icon={<TopengIcon className="h-5 w-5" />}
-              title="Topeng & Blangkon"
-              text="Identitas Jawa yang dirawat antar generasi."
-            />
-            <ValueCard
-              icon={<GamelanIcon className="h-5 w-5" />}
-              title="Gamelan & Tradisi"
-              text="Upacara dan sajian kuliner yang hidup setiap hari."
-            />
+            {c.valueCards.map((card) => (
+              <ValueCard
+                key={card.title}
+                icon={iconFor(card.icon)}
+                title={card.title}
+                text={card.text}
+              />
+            ))}
           </div>
         </Reveal>
       </div>
@@ -181,6 +176,12 @@ function SoloMural() {
       </text>
     </svg>
   );
+}
+
+function iconFor(name: "wayang" | "topeng" | "gamelan") {
+  if (name === "topeng") return <TopengIcon className="h-5 w-5" />;
+  if (name === "gamelan") return <GamelanIcon className="h-5 w-5" />;
+  return <WayangIcon className="h-5 w-5" />;
 }
 
 function WayangIcon(props: React.SVGProps<SVGSVGElement>) {

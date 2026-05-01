@@ -1,6 +1,8 @@
 import { Reveal } from "../ui/Reveal";
+import { siteCopy } from "@/data/site";
 
 export function Footer() {
+  const c = siteCopy.footer;
   return (
     <footer
       id="kontak"
@@ -21,21 +23,19 @@ export function Footer() {
 
             <div className="relative flex flex-col items-center gap-6 sm:gap-8">
               <p className="text-[10px] uppercase tracking-[0.4em] text-gold-400/80 sm:text-[11px] sm:tracking-[0.45em]">
-                Ikuti Cerita Kami
+                {c.callout}
               </p>
               <div className="flex items-center gap-3 sm:gap-4">
-                <SocialButton label="YouTube" href="#" tone="rose">
-                  <YouTubeIcon className="h-5 w-5" />
-                </SocialButton>
-                <SocialButton label="Telegram" href="#" tone="sky">
-                  <TelegramIcon className="h-5 w-5" />
-                </SocialButton>
-                <SocialButton label="Instagram" href="#" tone="amber">
-                  <InstagramIcon className="h-5 w-5" />
-                </SocialButton>
-                <SocialButton label="Facebook" href="#" tone="blue">
-                  <FacebookIcon className="h-5 w-5" />
-                </SocialButton>
+                {c.socials.map((s) => (
+                  <SocialButton
+                    key={s.platform}
+                    label={socialLabel(s.platform)}
+                    href={s.href}
+                    tone={socialTone(s.platform)}
+                  >
+                    {socialIcon(s.platform)}
+                  </SocialButton>
+                ))}
               </div>
             </div>
           </div>
@@ -50,42 +50,61 @@ export function Footer() {
             <div className="gold-divider mx-auto mt-5 w-32" />
 
             <div className="mt-6 flex flex-col items-center justify-center gap-6 sm:mt-8 sm:flex-row sm:gap-8">
-              <ContactItem
-                icon={<WhatsAppIcon className="h-6 w-6" />}
-                label="WhatsApp"
-                value="+62 8xx-xxxx-xxxx"
-                href="https://wa.me/"
-                accent="emerald"
-              />
-              <ContactItem
-                icon={<MailIcon className="h-6 w-6" />}
-                label="Email"
-                value="hello@satyantara.id"
-                href="mailto:hello@satyantara.id"
-                accent="amber"
-              />
-              <ContactItem
-                icon={<PinIcon className="h-6 w-6" />}
-                label="Sanggar"
-                value="Solo · Surakarta"
-                href="#"
-                accent="rose"
-              />
+              {c.contacts.map((ct) => (
+                <ContactItem
+                  key={ct.kind}
+                  icon={contactIcon(ct.kind)}
+                  label={ct.label}
+                  value={ct.value}
+                  href={ct.href}
+                  accent={contactAccent(ct.kind)}
+                />
+              ))}
             </div>
           </div>
         </Reveal>
 
         <div className="flex flex-col items-center justify-between gap-3 border-t border-gold-500/15 pt-6 text-center text-xs text-cream/55 sm:flex-row sm:text-left">
-          <p>
-            © {new Date().getFullYear()} SATYANTARA. Semua hak cipta dilindungi.
-          </p>
-          <p className="tracking-[0.3em] uppercase text-gold-400/60">
-            Crafted in Solo · Indonesia
-          </p>
+          <p>{c.copyright.replace(/^©\s*/, `© ${new Date().getFullYear()} `)}</p>
+          <p className="tracking-[0.3em] uppercase text-gold-400/60">{c.tagline}</p>
         </div>
       </div>
     </footer>
   );
+}
+
+function socialIcon(p: "youtube" | "telegram" | "instagram" | "facebook") {
+  if (p === "telegram") return <TelegramIcon className="h-5 w-5" />;
+  if (p === "instagram") return <InstagramIcon className="h-5 w-5" />;
+  if (p === "facebook") return <FacebookIcon className="h-5 w-5" />;
+  return <YouTubeIcon className="h-5 w-5" />;
+}
+
+function socialLabel(p: "youtube" | "telegram" | "instagram" | "facebook") {
+  return p.charAt(0).toUpperCase() + p.slice(1);
+}
+
+function socialTone(
+  p: "youtube" | "telegram" | "instagram" | "facebook",
+): "rose" | "sky" | "amber" | "blue" {
+  if (p === "telegram") return "sky";
+  if (p === "instagram") return "amber";
+  if (p === "facebook") return "blue";
+  return "rose";
+}
+
+function contactIcon(k: "whatsapp" | "email" | "sanggar") {
+  if (k === "email") return <MailIcon className="h-6 w-6" />;
+  if (k === "sanggar") return <PinIcon className="h-6 w-6" />;
+  return <WhatsAppIcon className="h-6 w-6" />;
+}
+
+function contactAccent(
+  k: "whatsapp" | "email" | "sanggar",
+): "emerald" | "amber" | "rose" {
+  if (k === "email") return "amber";
+  if (k === "sanggar") return "rose";
+  return "emerald";
 }
 
 function SocialButton({

@@ -6,21 +6,34 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "sanity:sync": "tsx scripts/sanity-sync.ts",
+    "sanity:seed": "tsx scripts/sanity-seed.ts",
+    "sanity:dev": "cd sanity && sanity dev",
+    "sanity:build-studio": "cd sanity && sanity build dist -y && rm -rf ../public/studio && mkdir -p ../public/studio && cp -r dist/. ../public/studio/ && cd ../public/studio && find . -type f \\( -name '*.html' -o -name '*.js' -o -name '*.css' -o -name '*.webmanifest' \\) -exec sed -i 's|\"/static/|\"/studio/static/|g; s|\"/vendor/|\"/studio/vendor/|g' {} +",
+    "build:full": "npm run sanity:sync && npm run sanity:build-studio && next build"
   },
   "dependencies": {
+    "@sanity/client": "^7.22.0",
+    "groq": "^5.23.0",
     "next": "16.2.4",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
   "devDependencies": {
+    "@sanity/cli": "^6.4.0",
+    "@sanity/vision": "^5.23.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv": "^17.4.2",
     "eslint": "^9",
     "eslint-config-next": "16.2.4",
+    "sanity": "^5.23.0",
+    "styled-components": "^6.4.1",
     "tailwindcss": "^4",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   }
 }

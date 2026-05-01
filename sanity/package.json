@@ -1,0 +1,22 @@
+{
+  "name": "satyantara-studio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@sanity/cli": "^6.4.0",
+    "@sanity/vision": "^5.23.0",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "sanity": "^5.23.0",
+    "styled-components": "^6.4.1"
+  }
+}
