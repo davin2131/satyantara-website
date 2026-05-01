@@ -7,7 +7,7 @@ export function Products() {
   return (
     <section
       id="layanan"
-      className="section-glow relative px-4 py-16 sm:px-6 sm:py-20 md:px-8 lg:px-10 lg:py-24"
+      className="section-glow relative px-4 py-10 sm:px-6 sm:py-12 md:px-8 lg:px-10 lg:py-16"
     >
       <CornerMotif className="absolute left-3 top-5 h-8 w-8 opacity-60 sm:left-6 sm:top-8 sm:h-12 sm:w-12 sm:opacity-70" />
       <CornerMotif className="absolute right-3 top-5 h-8 w-8 -scale-x-100 opacity-60 sm:right-6 sm:top-8 sm:h-12 sm:w-12 sm:opacity-70" />
