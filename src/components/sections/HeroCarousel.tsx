@@ -91,7 +91,7 @@ export function HeroCarousel() {
   return (
     <section
       aria-label="Galeri budaya Satyantara"
-      className="relative px-4 sm:px-6 md:px-8 lg:px-10"
+      className="relative px-4 py-12 sm:px-6 sm:py-16 md:px-8 lg:px-10 lg:py-24"
     >
       <div className="mx-auto max-w-6xl">
         <div

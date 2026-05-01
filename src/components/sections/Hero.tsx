@@ -4,7 +4,7 @@ export function Hero() {
   return (
     <section
       id="beranda"
-      className="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden px-4 pt-24 pb-16 sm:px-6 sm:pt-28 sm:pb-20 md:px-8 lg:px-10 lg:pt-32 lg:pb-24"
+      className="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden px-4 pt-24 pb-12 sm:px-6 sm:pt-28 sm:pb-16 md:px-8 lg:px-10 lg:pt-32 lg:pb-20"
     >
       {/* Background layers */}
       <div className="absolute inset-0 -z-20 bg-coffee-900" />
