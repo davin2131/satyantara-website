@@ -6,7 +6,7 @@ import { schemaTypes } from "./schemas";
 const projectId =
   process.env.SANITY_STUDIO_PROJECT_ID ||
   process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ||
-  "";
+  "4tij5rov";
 const dataset =
   process.env.SANITY_STUDIO_DATASET ||
   process.env.NEXT_PUBLIC_SANITY_DATASET ||
