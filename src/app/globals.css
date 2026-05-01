@@ -203,8 +203,10 @@ body::before {
       transparent 60%
     );
 }
-.section-glow > * {
+.section-glow > *:where(:not(.absolute):not(.fixed):not(.sticky)) {
   position: relative;
+}
+.section-glow > * {
   z-index: 1;
 }
 
