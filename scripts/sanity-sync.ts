@@ -86,6 +86,30 @@ type WayangEntrySrc = {
   imageAlt?: string;
 };
 
+type ProvinceCultureSrc = {
+  code: string;
+  name?: string;
+  slug?: { current?: string };
+  capital?: string;
+  region?:
+    | "sumatera"
+    | "jawa"
+    | "bali-nusa-tenggara"
+    | "kalimantan"
+    | "sulawesi"
+    | "maluku"
+    | "papua";
+  dance?: string;
+  music?: string;
+  house?: string;
+  attire?: string;
+  food?: string;
+  performingArt?: string;
+  description?: string;
+  imageUrl?: string;
+  imageAlt?: string;
+};
+
 type SiteSettingsSrc = {
   hero?: {
     eyebrow?: string;
@@ -174,6 +198,22 @@ const QUERY = /* groq */ `{
     origin,
     weapon,
     summary,
+    description,
+    "imageUrl": image.asset->url,
+    "imageAlt": image.alt
+  },
+  "provinceCultures": *[_type == "provinceCulture" && !(_id in path("drafts.**"))]{
+    code,
+    name,
+    "slug": slug,
+    capital,
+    region,
+    dance,
+    music,
+    house,
+    attire,
+    food,
+    performingArt,
     description,
     "imageUrl": image.asset->url,
     "imageAlt": image.alt
@@ -435,6 +475,78 @@ ${entries}
 `;
 }
 
+function buildProvincesTs(items: ProvinceCultureSrc[]) {
+  const overrides = items.filter((p) => p.code);
+  if (overrides.length === 0) {
+    return `// AUTO-GENERATED FROM SANITY. Edit content via Sanity Studio.
+// Run \`npm run sanity:sync\` to refresh from Sanity.
+// Seed (default 38 provinsi) berasal dari \`provincesSeed.ts\`.
+
+export {
+  provinces,
+  provincesById,
+  provinceRegionLabels,
+} from "./provincesSeed";
+export type { ProvinceCulture, ProvinceRegion } from "./provincesSeed";
+`;
+  }
+
+  const overridesObj = overrides
+    .map((p) => {
+      const fields: string[] = [];
+      const push = (k: string, v?: string) => {
+        if (v !== undefined && v !== null && v !== "") {
+          fields.push(`    ${k}: ${lit(v)},`);
+        }
+      };
+      push("name", p.name);
+      push("slug", p.slug?.current);
+      push("capital", p.capital);
+      push("region", p.region);
+      push("dance", p.dance);
+      push("music", p.music);
+      push("house", p.house);
+      push("attire", p.attire);
+      push("food", p.food);
+      push("performingArt", p.performingArt);
+      push("description", p.description);
+      push("imageUrl", p.imageUrl);
+      push("imageAlt", p.imageAlt);
+      return `  ${lit(p.code)}: {\n${fields.join("\n")}\n  },`;
+    })
+    .join("\n");
+
+  return `// AUTO-GENERATED FROM SANITY. Edit content via Sanity Studio.
+// Run \`npm run sanity:sync\` to refresh from Sanity.
+// Seed (default 38 provinsi) berasal dari \`provincesSeed.ts\`,
+// kemudian di-override dengan data dari Sanity Studio per kode provinsi.
+
+import {
+  provinces as seedProvinces,
+  provinceRegionLabels,
+  type ProvinceCulture,
+  type ProvinceRegion,
+} from "./provincesSeed";
+
+export type { ProvinceCulture, ProvinceRegion };
+export { provinceRegionLabels };
+
+const overrides: Record<string, Partial<ProvinceCulture>> = {
+${overridesObj}
+};
+
+export const provinces: ProvinceCulture[] = seedProvinces.map((seed) => {
+  const ovr = overrides[seed.id];
+  if (!ovr) return seed;
+  return { ...seed, ...ovr };
+});
+
+export const provincesById: Record<string, ProvinceCulture> = Object.fromEntries(
+  provinces.map((p) => [p.id, p]),
+);
+`;
+}
+
 function buildSiteTs(s: SiteSettingsSrc | undefined) {
   const v = s ?? {};
   return `// AUTO-GENERATED FROM SANITY. Edit content via Sanity Studio.
@@ -532,6 +644,14 @@ async function main() {
 
   writeFileSync(wayangPath, buildWayangTs(data.wayangEntries ?? []), "utf8");
   console.log(`[sanity-sync] wrote ${wayangPath}`);
+
+  const provincesPath = path.join(ROOT, "src/data/provinces.ts");
+  writeFileSync(
+    provincesPath,
+    buildProvincesTs(data.provinceCultures ?? []),
+    "utf8",
+  );
+  console.log(`[sanity-sync] wrote ${provincesPath}`);
 
   console.log("[sanity-sync] done.");
 }

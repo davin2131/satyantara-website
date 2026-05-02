@@ -5,6 +5,7 @@ import { heroSlide } from "./heroSlide";
 import { siteSettings } from "./siteSettings";
 import { galleryItem } from "./gallery";
 import { wayangEntry } from "./wayangEntry";
+import { provinceCulture } from "./provinceCulture";
 
 export const schemaTypes = [
   story,
@@ -13,5 +14,6 @@ export const schemaTypes = [
   heroSlide,
   galleryItem,
   wayangEntry,
+  provinceCulture,
   siteSettings,
 ];

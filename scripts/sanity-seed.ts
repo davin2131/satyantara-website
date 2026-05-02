@@ -9,6 +9,7 @@ import {
 } from "../src/data/products";
 import { galleryItems } from "../src/data/gallery";
 import { wayangEntries } from "../src/data/wayang";
+import { provinces } from "../src/data/provincesSeed";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
@@ -232,6 +233,30 @@ async function seedWayang() {
   await tx.commit();
 }
 
+async function seedProvinces() {
+  console.log(`Seeding ${provinces.length} province cultures…`);
+  const tx = client.transaction();
+  provinces.forEach((p) => {
+    tx.createOrReplace({
+      _id: k("provinceCulture", p.slug),
+      _type: "provinceCulture",
+      code: p.id,
+      name: p.name,
+      slug: { _type: "slug", current: p.slug },
+      capital: p.capital,
+      region: p.region,
+      dance: p.dance,
+      music: p.music,
+      house: p.house,
+      attire: p.attire,
+      food: p.food,
+      performingArt: p.performingArt,
+      description: p.description,
+    });
+  });
+  await tx.commit();
+}
+
 async function main() {
   await seedStories();
   await seedRecommendations();
@@ -239,6 +264,7 @@ async function main() {
   await seedHeroSlides();
   await seedGallery();
   await seedWayang();
+  await seedProvinces();
   await seedSiteSettings();
   console.log("Seed selesai.");
 }
