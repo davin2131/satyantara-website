@@ -29,7 +29,7 @@ export function Products() {
           </div>
         </Reveal>
 
-        <div className="grid items-stretch gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+        <div className="mx-auto grid max-w-4xl items-stretch gap-5 sm:grid-cols-2 sm:gap-6">
           {stories.map((s, i) => (
             <StoryCard
               key={s.slug}
