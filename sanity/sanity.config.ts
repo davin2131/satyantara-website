@@ -39,6 +39,7 @@ export default defineConfig({
             S.documentTypeListItem("heroSlide").title("Slide Carousel"),
             S.documentTypeListItem("galleryItem").title("Galeri"),
             S.documentTypeListItem("wayangEntry").title("Ensiklopedia Wayang"),
+            S.documentTypeListItem("provinceCulture").title("Peta Budaya - Provinsi"),
           ]),
     }),
     visionTool(),
