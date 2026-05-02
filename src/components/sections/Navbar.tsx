@@ -18,6 +18,7 @@ const navItems: NavItem[] = [
   { label: "Layanan", href: "#layanan" },
   { label: "Galeri", href: "/galeri", page: true },
   { label: "Ensiklopedia", href: "/ensiklopedia-wayang", page: true },
+  { label: "Permainan", href: "/permainan", page: true },
   { label: "Kontak", href: "#kontak" },
 ];
 
