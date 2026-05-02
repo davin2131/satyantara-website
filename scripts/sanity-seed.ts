@@ -8,6 +8,7 @@ import {
   heroSlides,
 } from "../src/data/products";
 import { galleryItems } from "../src/data/gallery";
+import { wayangEntries } from "../src/data/wayang";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
@@ -210,12 +211,34 @@ async function seedGallery() {
   await tx.commit();
 }
 
+async function seedWayang() {
+  console.log(`Seeding ${wayangEntries.length} wayang entries…`);
+  const tx = client.transaction();
+  wayangEntries.forEach((w, i) => {
+    tx.createOrReplace({
+      _id: k("wayangEntry", w.slug),
+      _type: "wayangEntry",
+      order: i,
+      name: w.name,
+      ...(w.alias ? { alias: w.alias } : {}),
+      slug: { _type: "slug", current: w.slug },
+      category: w.category,
+      origin: w.origin,
+      ...(w.weapon ? { weapon: w.weapon } : {}),
+      summary: w.summary,
+      description: w.description,
+    });
+  });
+  await tx.commit();
+}
+
 async function main() {
   await seedStories();
   await seedRecommendations();
   await seedMitra();
   await seedHeroSlides();
   await seedGallery();
+  await seedWayang();
   await seedSiteSettings();
   console.log("Seed selesai.");
 }
