@@ -22,6 +22,17 @@ export const heroSlide = defineType({
       title: "Caption",
       type: "string",
     }),
+    defineField({
+      name: "image",
+      title: "Foto background slide (opsional)",
+      type: "image",
+      options: { hotspot: true },
+      description:
+        "Kalau kosong, slide pakai ilustrasi SVG otomatis. Upload foto untuk ganti.",
+      fields: [
+        { name: "alt", title: "Alt text", type: "string" },
+      ],
+    }),
   ],
   orderings: [
     { title: "Urutan", name: "orderAsc", by: [{ field: "order", direction: "asc" }] },

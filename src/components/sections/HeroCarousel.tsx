@@ -140,7 +140,17 @@ export function HeroCarousel() {
                   }}
                 >
                   <div className="relative h-full w-full overflow-hidden rounded-xl border border-gold-500/30 shadow-[0_30px_60px_-25px_rgba(0,0,0,0.7),0_0_0_1px_rgba(212,162,78,0.1)] sm:rounded-2xl">
-                    <CarouselArt index={i} />
+                    {slide.imageUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={slide.imageUrl}
+                        alt={slide.imageAlt ?? slide.title}
+                        className="absolute inset-0 h-full w-full object-cover"
+                        draggable={false}
+                      />
+                    ) : (
+                      <CarouselArt index={i} />
+                    )}
 
                     {/* Vignette + active glow */}
                     <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-coffee-950 via-coffee-950/55 to-transparent" />

@@ -46,6 +46,17 @@ export const story = defineType({
       validation: (r) => r.required(),
     }),
     defineField({
+      name: "image",
+      title: "Foto utama (opsional)",
+      type: "image",
+      options: { hotspot: true },
+      description:
+        "Kalau kosong, card pakai ilustrasi SVG otomatis. Upload foto untuk ganti.",
+      fields: [
+        { name: "alt", title: "Alt text (deskripsi untuk aksesibilitas)", type: "string" },
+      ],
+    }),
+    defineField({
       name: "activities",
       title: "Activity",
       type: "array",

@@ -34,6 +34,8 @@ export function Recommendations() {
               title={r.title}
               price={r.price}
               delay={i * 70}
+              imageUrl={r.imageUrl}
+              imageAlt={r.imageAlt}
             />
           ))}
         </div>

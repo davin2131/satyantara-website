@@ -66,7 +66,17 @@ function MitraCard({ product, delay }: { product: MitraProduct; delay: number })
       >
       <article className="relative overflow-hidden rounded-2xl border border-gold-500/15 bg-coffee-800/40 p-2 transition-all duration-500 group-hover:-translate-y-1 group-hover:border-gold-400/50 group-hover:shadow-[0_20px_40px_-15px_rgba(212,162,78,0.25)]">
         <div className="relative aspect-square overflow-hidden rounded-xl">
-          <MitraArt palette={palette} />
+          {product.imageUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={product.imageUrl}
+              alt={product.imageAlt ?? product.name}
+              loading="lazy"
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+            />
+          ) : (
+            <MitraArt palette={palette} />
+          )}
           {product.badge && (
             <span className="absolute left-2 top-2 rounded-full bg-coffee-950/80 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-gold-300 backdrop-blur">
               {product.badge}

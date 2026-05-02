@@ -33,8 +33,8 @@ export type SiteCopy = {
 
 export const siteCopy: SiteCopy = {
   "hero": {
-    "eyebrow": "Lakon Budaya Solo",
-    "tagline": "Ruang digital yang merangkai cerita Wayang dan kearifan Solo menjadi pengalaman, produk, dan kreasi yang siap menemani harimu.",
+    "eyebrow": "Halo Teman Satya",
+    "tagline": "Ruang digital yang merangkai cerita Wayang dan kearifan Solo menjadi pengalaman, produk, dan kreasi yang siap menemani harimuiiiiii.",
     "primaryCta": "Jelajahi Cerita",
     "secondaryCta": "Tentang Kami"
   },

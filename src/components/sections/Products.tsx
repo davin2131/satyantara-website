@@ -39,6 +39,8 @@ export function Products() {
               subtitle={s.subtitle}
               price={s.price}
               delay={i * 120}
+              imageUrl={s.imageUrl}
+              imageAlt={s.imageAlt}
             />
           ))}
         </div>

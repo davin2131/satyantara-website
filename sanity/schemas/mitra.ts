@@ -59,6 +59,17 @@ export const mitra = defineType({
       validation: (r) => r.required(),
     }),
     defineField({
+      name: "image",
+      title: "Foto produk (opsional)",
+      type: "image",
+      options: { hotspot: true },
+      description:
+        "Kalau kosong, card pakai ilustrasi SVG otomatis sesuai tone. Upload foto asli untuk ganti.",
+      fields: [
+        { name: "alt", title: "Alt text", type: "string" },
+      ],
+    }),
+    defineField({
       name: "highlights",
       title: "Highlight (poin singkat)",
       type: "array",
