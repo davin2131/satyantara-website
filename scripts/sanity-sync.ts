@@ -73,6 +73,19 @@ type GalleryItemSrc = {
   imageAlt?: string;
 };
 
+type WayangEntrySrc = {
+  slug?: { current?: string };
+  name: string;
+  alias?: string;
+  category: "pandawa" | "kurawa" | "punakawan" | "dewa-pahlawan";
+  origin: "mahabharata" | "ramayana" | "lain";
+  weapon?: string;
+  summary: string;
+  description: string;
+  imageUrl?: string;
+  imageAlt?: string;
+};
+
 type SiteSettingsSrc = {
   hero?: {
     eyebrow?: string;
@@ -149,6 +162,18 @@ const QUERY = /* groq */ `{
   },
   "galleryItems": *[_type == "galleryItem" && !(_id in path("drafts.**"))] | order(order asc, _createdAt asc){
     title,
+    description,
+    "imageUrl": image.asset->url,
+    "imageAlt": image.alt
+  },
+  "wayangEntries": *[_type == "wayangEntry" && !(_id in path("drafts.**"))] | order(order asc, _createdAt asc){
+    "slug": slug,
+    name,
+    alias,
+    category,
+    origin,
+    weapon,
+    summary,
     description,
     "imageUrl": image.asset->url,
     "imageAlt": image.alt
@@ -345,6 +370,71 @@ ${entries}
 `;
 }
 
+function buildWayangTs(items: WayangEntrySrc[]) {
+  const optLine = (key: string, val?: string) =>
+    val ? `    ${key}: ${lit(val)},` : "";
+
+  const entries = items
+    .map((w) => {
+      const parts = [
+        `    slug: ${lit(w.slug?.current)},`,
+        `    name: ${lit(w.name)},`,
+        optLine("alias", w.alias),
+        `    category: ${lit(w.category)},`,
+        `    origin: ${lit(w.origin)},`,
+        optLine("weapon", w.weapon),
+        `    summary: ${lit(w.summary)},`,
+        `    description: ${lit(w.description)},`,
+        optLine("imageUrl", w.imageUrl),
+        optLine("imageAlt", w.imageAlt),
+      ].filter(Boolean);
+      return `  {\n${parts.join("\n")}\n  },`;
+    })
+    .join("\n");
+
+  return `// AUTO-GENERATED FROM SANITY. Edit content via Sanity Studio.
+// Run \`npm run sanity:sync\` to refresh from Sanity.
+
+export type WayangCategory =
+  | "pandawa"
+  | "kurawa"
+  | "punakawan"
+  | "dewa-pahlawan";
+
+export type WayangOrigin = "mahabharata" | "ramayana" | "lain";
+
+export type WayangEntry = {
+  slug: string;
+  name: string;
+  alias?: string;
+  category: WayangCategory;
+  origin: WayangOrigin;
+  weapon?: string;
+  summary: string;
+  description: string;
+  imageUrl?: string;
+  imageAlt?: string;
+};
+
+export const wayangCategoryLabels: Record<WayangCategory, string> = {
+  pandawa: "Pandawa",
+  kurawa: "Kurawa",
+  punakawan: "Punakawan",
+  "dewa-pahlawan": "Dewa & Pahlawan",
+};
+
+export const wayangOriginLabels: Record<WayangOrigin, string> = {
+  mahabharata: "Mahabharata",
+  ramayana: "Ramayana",
+  lain: "Lain-lain",
+};
+
+export const wayangEntries: WayangEntry[] = [
+${entries}
+];
+`;
+}
+
 function buildSiteTs(s: SiteSettingsSrc | undefined) {
   const v = s ?? {};
   return `// AUTO-GENERATED FROM SANITY. Edit content via Sanity Studio.
@@ -429,6 +519,7 @@ async function main() {
   const productsPath = path.join(ROOT, "src/data/products.ts");
   const sitePath = path.join(ROOT, "src/data/site.ts");
   const galleryPath = path.join(ROOT, "src/data/gallery.ts");
+  const wayangPath = path.join(ROOT, "src/data/wayang.ts");
 
   writeFileSync(productsPath, buildProductsTs(data), "utf8");
   console.log(`[sanity-sync] wrote ${productsPath}`);
@@ -438,6 +529,9 @@ async function main() {
 
   writeFileSync(galleryPath, buildGalleryTs(data.galleryItems ?? []), "utf8");
   console.log(`[sanity-sync] wrote ${galleryPath}`);
+
+  writeFileSync(wayangPath, buildWayangTs(data.wayangEntries ?? []), "utf8");
+  console.log(`[sanity-sync] wrote ${wayangPath}`);
 
   console.log("[sanity-sync] done.");
 }

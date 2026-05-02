@@ -4,6 +4,7 @@ import { mitra } from "./mitra";
 import { heroSlide } from "./heroSlide";
 import { siteSettings } from "./siteSettings";
 import { galleryItem } from "./gallery";
+import { wayangEntry } from "./wayangEntry";
 
 export const schemaTypes = [
   story,
@@ -11,5 +12,6 @@ export const schemaTypes = [
   mitra,
   heroSlide,
   galleryItem,
+  wayangEntry,
   siteSettings,
 ];

@@ -38,6 +38,7 @@ export default defineConfig({
             S.documentTypeListItem("mitra").title("Produk Mitra"),
             S.documentTypeListItem("heroSlide").title("Slide Carousel"),
             S.documentTypeListItem("galleryItem").title("Galeri"),
+            S.documentTypeListItem("wayangEntry").title("Ensiklopedia Wayang"),
           ]),
     }),
     visionTool(),
