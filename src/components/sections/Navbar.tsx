@@ -1,19 +1,39 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Gunungan } from "../Gunungan";
 
-const navItems = [
+type NavItem = {
+  label: string;
+  href: string;
+  /** When true, render with next/link (real page navigation) instead of an anchor link. */
+  page?: boolean;
+};
+
+const navItems: NavItem[] = [
   { label: "Beranda", href: "#beranda" },
   { label: "Tentang Kami", href: "#tentang-kami" },
   { label: "Layanan", href: "#layanan" },
+  { label: "Galeri", href: "/galeri", page: true },
   { label: "Kontak", href: "#kontak" },
 ];
+
+/**
+ * Resolve the URL for an anchor-style nav item so it works from any route.
+ * On the home page we keep plain `#anchor` (smooth scroll).
+ * On other routes we send the user back to home with `/#anchor`.
+ */
+function resolveAnchor(href: string, pathname: string | null): string {
+  if (!href.startsWith("#")) return href;
+  return pathname === "/" ? href : `/${href}`;
+}
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -32,7 +52,7 @@ export function Navbar() {
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2.5 sm:gap-6 sm:px-6 sm:py-3 md:px-8 lg:px-10">
         <Link
-          href="#beranda"
+          href={pathname === "/" ? "#beranda" : "/#beranda"}
           className="flex min-h-[44px] items-center gap-2 sm:gap-3"
           aria-label="Satyantara — beranda"
         >
@@ -43,17 +63,28 @@ export function Navbar() {
         </Link>
 
         <ul className="hidden items-center gap-9 lg:flex">
-          {navItems.map((item) => (
-            <li key={item.href}>
-              <a
-                href={item.href}
-                className="group relative text-[13px] font-medium tracking-[0.28em] uppercase text-cream/80 transition-colors hover:text-gold-300"
-              >
-                {item.label}
-                <span className="absolute -bottom-1 left-0 h-px w-0 bg-gold-400 transition-all duration-500 group-hover:w-full" />
-              </a>
-            </li>
-          ))}
+          {navItems.map((item) => {
+            const linkClass =
+              "group relative text-[13px] font-medium tracking-[0.28em] uppercase text-cream/80 transition-colors hover:text-gold-300";
+            const underline = (
+              <span className="absolute -bottom-1 left-0 h-px w-0 bg-gold-400 transition-all duration-500 group-hover:w-full" />
+            );
+            return (
+              <li key={item.href}>
+                {item.page ? (
+                  <Link href={item.href} className={linkClass}>
+                    {item.label}
+                    {underline}
+                  </Link>
+                ) : (
+                  <a href={resolveAnchor(item.href, pathname)} className={linkClass}>
+                    {item.label}
+                    {underline}
+                  </a>
+                )}
+              </li>
+            );
+          })}
         </ul>
 
         <div className="flex items-center gap-2 sm:gap-4">
@@ -101,17 +132,31 @@ export function Navbar() {
         }`}
       >
         <ul className="mx-auto flex max-w-7xl flex-col gap-1 px-5 py-4">
-          {navItems.map((item) => (
-            <li key={item.href}>
-              <a
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className="block rounded-lg px-3 py-3 text-sm font-medium tracking-[0.28em] uppercase text-cream/85 transition hover:bg-gold-500/10 hover:text-gold-300"
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
+          {navItems.map((item) => {
+            const itemClass =
+              "block rounded-lg px-3 py-3 text-sm font-medium tracking-[0.28em] uppercase text-cream/85 transition hover:bg-gold-500/10 hover:text-gold-300";
+            return (
+              <li key={item.href}>
+                {item.page ? (
+                  <Link
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    className={itemClass}
+                  >
+                    {item.label}
+                  </Link>
+                ) : (
+                  <a
+                    href={resolveAnchor(item.href, pathname)}
+                    onClick={() => setOpen(false)}
+                    className={itemClass}
+                  >
+                    {item.label}
+                  </a>
+                )}
+              </li>
+            );
+          })}
         </ul>
       </div>
     </header>
