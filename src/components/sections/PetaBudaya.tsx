@@ -292,8 +292,8 @@ function ProvinceModalBody({ province }: { province: ProvinceCulture }) {
   }
 
   return (
-    <div className="grid gap-0 md:grid-cols-[1.1fr_1fr]">
-      <div className="relative h-44 overflow-hidden bg-gradient-to-br from-coffee-700 via-coffee-800 to-coffee-950 sm:h-56 md:h-auto">
+    <div className="flex flex-col">
+      <div className="relative h-52 w-full overflow-hidden bg-gradient-to-br from-coffee-700 via-coffee-800 to-coffee-950 sm:h-72 md:h-80">
         {province.imageUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -306,23 +306,28 @@ function ProvinceModalBody({ province }: { province: ProvinceCulture }) {
             <ProvinceCrest region={province.region} />
           </div>
         )}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-coffee-950/80 via-coffee-950/15 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 px-5 py-4 sm:px-6 sm:py-5">
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-coffee-950 via-coffee-950/45 to-transparent" />
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-gold-400/60 to-transparent"
+        />
+      </div>
+
+      <div className="space-y-5 px-5 py-6 sm:px-8 sm:py-8">
+        <div>
           <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-gold-300/90 sm:text-xs">
             {provinceRegionLabels[province.region]} · Ibukota {province.capital}
           </p>
-          <h2 className="mt-1 font-display text-2xl text-cream sm:text-3xl">
+          <h2 className="mt-1.5 font-display text-3xl leading-tight text-cream sm:text-4xl">
             {province.name}
           </h2>
         </div>
-      </div>
 
-      <div className="space-y-5 px-5 py-6 sm:px-7 sm:py-8">
         <p className="text-sm leading-relaxed text-parchment/85 sm:text-base">
           {province.description}
         </p>
 
-        <ul className="space-y-3">
+        <ul className="grid gap-3 sm:grid-cols-2">
           {items.map((it) => (
             <li
               key={it.label}
