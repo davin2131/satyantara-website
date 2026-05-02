@@ -105,7 +105,7 @@ type SiteSettingsSrc = {
 };
 
 const QUERY = /* groq */ `{
-  "stories": *[_type == "story"] | order(order asc, _createdAt asc){
+  "stories": *[_type == "story" && !(_id in path("drafts.**"))] | order(order asc, _createdAt asc){
     "slug": slug,
     title,
     subtitle,
@@ -115,14 +115,14 @@ const QUERY = /* groq */ `{
     "imageUrl": image.asset->url,
     "imageAlt": image.alt
   },
-  "recommendations": *[_type == "recommendation"] | order(order asc, _createdAt asc){
+  "recommendations": *[_type == "recommendation" && !(_id in path("drafts.**"))] | order(order asc, _createdAt asc){
     "slug": slug,
     title,
     price,
     "imageUrl": image.asset->url,
     "imageAlt": image.alt
   },
-  "mitraProducts": *[_type == "mitra"] | order(order asc, _createdAt asc){
+  "mitraProducts": *[_type == "mitra" && !(_id in path("drafts.**"))] | order(order asc, _createdAt asc){
     "slug": slug,
     name,
     price,
@@ -134,7 +134,7 @@ const QUERY = /* groq */ `{
     "imageUrl": image.asset->url,
     "imageAlt": image.alt
   },
-  "heroSlides": *[_type == "heroSlide"] | order(order asc, _createdAt asc){
+  "heroSlides": *[_type == "heroSlide" && !(_id in path("drafts.**"))] | order(order asc, _createdAt asc){
     title,
     caption,
     "imageUrl": image.asset->url,
