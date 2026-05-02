@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "npm run sanity:sync && next build",
+  "buildCommand": "npm run sanity:sync && npm run sanity:build-studio && next build",
   "framework": "nextjs",
-  "installCommand": "npm install"
+  "installCommand": "npm install && cd sanity && npm install"
 }
