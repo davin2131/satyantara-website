@@ -7,7 +7,7 @@ import { useMitraModal } from "../AppShell";
 
 export function ProductMitra() {
   return (
-    <section className="section-glow relative px-4 py-16 sm:px-5 sm:py-24 lg:px-10">
+    <section className="section-glow relative px-4 py-10 sm:px-6 sm:py-12 md:px-8 lg:px-10 lg:py-16">
       <Ornament className="pointer-events-none absolute left-1/2 top-6 w-40 -translate-x-1/2 opacity-50 sm:top-10 sm:w-56" />
       <div className="mx-auto max-w-6xl">
         <Reveal>

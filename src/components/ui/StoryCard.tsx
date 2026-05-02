@@ -16,24 +16,24 @@ export function StoryCard({ index, slug, title, subtitle, price, delay = 0 }: Pr
   const { openStory } = useStoryModal();
 
   return (
-    <Reveal delay={delay}>
+    <Reveal delay={delay} className="h-full">
       <button
         type="button"
         onClick={() => openStory(slug)}
-        className="group block w-full text-left"
+        className="group block h-full w-full text-left"
       >
-        <article className="relative overflow-hidden rounded-3xl border border-gold-500/20 bg-coffee-800/60 p-3 transition-all duration-700 group-hover:-translate-y-1 group-hover:border-gold-400/60 group-hover:shadow-[0_30px_60px_-20px_rgba(212,162,78,0.25)]">
+        <article className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-gold-500/20 bg-coffee-800/60 p-3 transition-all duration-700 group-hover:-translate-y-1 group-hover:border-gold-400/60 group-hover:shadow-[0_30px_60px_-20px_rgba(212,162,78,0.25)]">
           <StoryArt index={index} />
-          <div className="px-4 pb-4 pt-4">
-            <h3 className="font-display text-2xl text-cream transition-colors group-hover:text-gold-200">
+          <div className="flex flex-1 flex-col px-3 pb-3 pt-4 sm:px-4 sm:pb-4">
+            <h3 className="font-display text-lg leading-tight text-cream transition-colors group-hover:text-gold-200 sm:text-xl md:text-2xl">
               {title}
             </h3>
             {subtitle && (
-              <p className="mt-1 text-xs uppercase tracking-[0.3em] text-cream/55">
+              <p className="mt-1 text-[10px] uppercase tracking-[0.3em] text-cream/55 sm:text-xs">
                 {subtitle}
               </p>
             )}
-            <p className="mt-3 text-sm text-gold-300">{price}</p>
+            <p className="mt-auto pt-3 text-xs text-gold-300 sm:text-sm">{price}</p>
           </div>
           <div className="absolute right-3 top-3 rounded-full bg-coffee-950/70 px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-gold-300 opacity-0 transition-opacity group-hover:opacity-100">
             Pelajari →
