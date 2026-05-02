@@ -107,7 +107,7 @@ export const siteSettings = defineType({
                     ],
                   },
                 },
-                { name: "href", title: "URL", type: "url" },
+                { name: "href", title: "URL", type: "string" },
               ],
               preview: { select: { title: "platform", subtitle: "href" } },
             },
