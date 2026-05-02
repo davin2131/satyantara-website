@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" name="viewport"/><meta content="noindex" name="robots"/><meta content="same-origin" name="referrer"/><link href="/studio/static/favicon.ico" rel="icon" sizes="any"/><link href="/studio/static/favicon.svg" rel="icon" type="image/svg+xml"/><link href="/studio/static/apple-touch-icon.png" rel="apple-touch-icon"/><link href="/studio/static/manifest.webmanifest" rel="manifest"/><title>Sanity Studio</title><script>
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"><meta content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" name="viewport"><meta content="noindex" name="robots"><meta content="same-origin" name="referrer"><link href="/studio/static/favicon.ico" rel="icon" sizes="any"><link href="/studio/static/favicon.svg" rel="icon" type="image/svg+xml"><link href="/studio/static/apple-touch-icon.png" rel="apple-touch-icon"><link href="/studio/static/manifest.webmanifest" rel="manifest"><title>Sanity Studio</title><script>
 ;(function () {
   var _caughtErrors = []
 
@@ -165,7 +165,7 @@
     return true
   })
 })()
-</script><link href="/studio/static/sanity-CpcWl0wV.css" rel="stylesheet"/><style>
+</script><style>
   @font-face {
     font-family: Inter;
     font-style: normal;
@@ -267,8 +267,32 @@
     margin: 0;
     -webkit-font-smoothing: antialiased;
   }
-</style><script src="https://core.sanity-cdn.com/bridge.js" async type="module" data-sanity-core></script>
-</head><body><div id="sanity"></div><script src="/studio/static/sanity-QHoVgVPs.js" type="module"></script><noscript><div class="sanity-app-no-js__root"><div class="sanity-app-no-js__content"><style type="text/css">
+</style><script type="application/json" id="__imports">{"imports":{"react":"/studio/vendor/react/index-CijJRqun.mjs","react/compiler-runtime":"/studio/vendor/react/compiler-runtime-CXBqGlQN.mjs","react/jsx-dev-runtime":"/studio/vendor/react/jsx-dev-runtime-DYLplPiq.mjs","react/jsx-runtime":"/studio/vendor/react/jsx-runtime-CInpRuN4.mjs","react/package.json":"/studio/vendor/react/package.json-C9u_SLlD.mjs","react-dom":"/studio/vendor/react-dom/index-Dc2VsVq7.mjs","react-dom/client":"/studio/vendor/react-dom/client-BTifGfEX.mjs","react-dom/package.json":"/studio/vendor/react-dom/package.json-DJr-B_rE.mjs","react-dom/server":"/studio/vendor/react-dom/server-BsxsyesJ.mjs","react-dom/static":"/studio/vendor/react-dom/static-B4c9UOBd.mjs","styled-components":"/studio/vendor/styled-components/index-8LjMyAkB.mjs","styled-components/package.json":"/studio/vendor/styled-components/package.json-CpxB6K-l.mjs","react-dom/server.browser":"/studio/vendor/react-dom/server.browser-aA8Xdow4.mjs","react-dom/static.browser":"/studio/vendor/react-dom/static.browser-B1q7wT8N.mjs","sanity":"https://sanity-cdn.com/v1/modules/sanity/default/%5E5.23.0/t1777710997","sanity/":"https://sanity-cdn.com/v1/modules/sanity/default/%5E5.23.0/t1777710997/","@sanity/vision":"https://sanity-cdn.com/v1/modules/@sanity__vision/default/%5E5.23.0/t1777710997","@sanity/vision/":"https://sanity-cdn.com/v1/modules/@sanity__vision/default/%5E5.23.0/t1777710997/"}}</script><script>
+  // auto-generated script to add import map with timestamp
+  const importsJson = document.getElementById('__imports')?.textContent;
+  const { imports = {}, ...rest } = importsJson ? JSON.parse(importsJson) : {};
+  const importMapEl = document.createElement('script');
+  importMapEl.type = 'importmap';
+  const newTimestamp = `/t${Math.floor(Date.now() / 1000)}`;
+  importMapEl.textContent = JSON.stringify({
+    imports: Object.fromEntries(
+      Object.entries(imports).map(([specifier, path]) => {
+        try {
+          const url = new URL(path);
+          if (/^sanity-cdn\.[a-zA-Z]+$/.test(url.hostname)) {
+            url.pathname = url.pathname.replace(/\/t\d+/, newTimestamp);
+          }
+          return [specifier, url.toString()];
+        } catch {
+          return [specifier, path];
+        }
+      })
+    ),
+    ...rest,
+  });
+  document.head.appendChild(importMapEl);
+</script><script src="https://core.sanity-cdn.com/bridge.js" async type="module" data-sanity-core></script>
+</head><body><div id="sanity"></div><script src="/studio/static/sanity-DUuBYxLY.js" type="module"></script><noscript><div class="sanity-app-no-js__root"><div class="sanity-app-no-js__content"><style type="text/css">
 .sanity-app-no-js__root {
   position: absolute;
   top: 0;
