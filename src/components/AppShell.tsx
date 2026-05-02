@@ -96,7 +96,16 @@ function StoryModalBody({ story }: { story: Story }) {
   return (
     <div className="grid gap-0 md:grid-cols-[minmax(220px,300px)_1fr]">
       <div className="relative">
-        <StoryHeroArt slug={story.slug} />
+        {story.imageUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={story.imageUrl}
+            alt={story.imageAlt ?? story.title}
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <StoryHeroArt slug={story.slug} />
+        )}
         <p className="absolute bottom-3 left-4 right-4 font-display text-sm italic text-cream/85">
           cerita {story.title.toLowerCase()}
         </p>
@@ -168,8 +177,17 @@ function MitraModalBody({ product }: { product: MitraProduct }) {
   return (
     <div className="p-0">
       <div className="relative">
-        <div className="aspect-[16/9] w-full">
-          <MitraHeroArt tone={product.tone} />
+        <div className="aspect-[16/9] w-full overflow-hidden">
+          {product.imageUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={product.imageUrl}
+              alt={product.imageAlt ?? product.name}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <MitraHeroArt tone={product.tone} />
+          )}
         </div>
         {product.badge && (
           <span className="absolute left-5 top-5 rounded-full bg-coffee-950/80 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-gold-300 backdrop-blur">
