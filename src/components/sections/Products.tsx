@@ -22,8 +22,8 @@ export function Products() {
               Satyantara&rsquo;s Products
             </h2>
             <p className="max-w-2xl text-sm text-parchment/75 sm:text-base">
-              Tiga lakon yang menjadi pintu masuk pengalaman budaya — dari
-              kelahiran sang Werkudara hingga lima saudara penegak dharma.
+              Dua lakon yang menjadi pintu masuk pengalaman budaya — dari
+              kisah sang kera putih hingga lima saudara penegak dharma.
             </p>
             <div className="gold-divider mt-4 w-full max-w-md" />
           </div>
