@@ -14,13 +14,11 @@ type NavItem = {
 
 const navItems: NavItem[] = [
   { label: "Beranda", href: "#beranda" },
-  { label: "Tentang Kami", href: "#tentang-kami" },
   { label: "Layanan", href: "#layanan" },
   { label: "Galeri", href: "/galeri", page: true },
   { label: "Ensiklopedia", href: "/ensiklopedia-wayang", page: true },
   { label: "Permainan", href: "/permainan", page: true },
   { label: "Peta Budaya", href: "/peta-budaya", page: true },
-  { label: "Kontak", href: "#kontak" },
 ];
 
 /**
