@@ -66,6 +66,13 @@ type SlideSrc = {
   imageAlt?: string;
 };
 
+type GalleryItemSrc = {
+  title: string;
+  description: string;
+  imageUrl?: string;
+  imageAlt?: string;
+};
+
 type SiteSettingsSrc = {
   hero?: {
     eyebrow?: string;
@@ -137,6 +144,12 @@ const QUERY = /* groq */ `{
   "heroSlides": *[_type == "heroSlide" && !(_id in path("drafts.**"))] | order(order asc, _createdAt asc){
     title,
     caption,
+    "imageUrl": image.asset->url,
+    "imageAlt": image.alt
+  },
+  "galleryItems": *[_type == "galleryItem" && !(_id in path("drafts.**"))] | order(order asc, _createdAt asc){
+    title,
+    description,
     "imageUrl": image.asset->url,
     "imageAlt": image.alt
   },
@@ -298,6 +311,40 @@ ${slides}
 `;
 }
 
+function buildGalleryTs(items: GalleryItemSrc[]) {
+  const imgLines = (u?: string, a?: string) => {
+    const parts: string[] = [];
+    if (u) parts.push(`    imageUrl: ${lit(u)},`);
+    if (a) parts.push(`    imageAlt: ${lit(a)},`);
+    return parts.join("\n");
+  };
+
+  const entries = items
+    .map(
+      (g) => `  {
+    title: ${lit(g.title)},
+    description: ${lit(g.description)},
+${imgLines(g.imageUrl, g.imageAlt)}
+  },`,
+    )
+    .join("\n");
+
+  return `// AUTO-GENERATED FROM SANITY. Edit content via Sanity Studio.
+// Run \`npm run sanity:sync\` to refresh from Sanity.
+
+export type GalleryItem = {
+  title: string;
+  description: string;
+  imageUrl?: string;
+  imageAlt?: string;
+};
+
+export const galleryItems: GalleryItem[] = [
+${entries}
+];
+`;
+}
+
 function buildSiteTs(s: SiteSettingsSrc | undefined) {
   const v = s ?? {};
   return `// AUTO-GENERATED FROM SANITY. Edit content via Sanity Studio.
@@ -381,12 +428,16 @@ async function main() {
 
   const productsPath = path.join(ROOT, "src/data/products.ts");
   const sitePath = path.join(ROOT, "src/data/site.ts");
+  const galleryPath = path.join(ROOT, "src/data/gallery.ts");
 
   writeFileSync(productsPath, buildProductsTs(data), "utf8");
   console.log(`[sanity-sync] wrote ${productsPath}`);
 
   writeFileSync(sitePath, buildSiteTs(data.siteSettings), "utf8");
   console.log(`[sanity-sync] wrote ${sitePath}`);
+
+  writeFileSync(galleryPath, buildGalleryTs(data.galleryItems ?? []), "utf8");
+  console.log(`[sanity-sync] wrote ${galleryPath}`);
 
   console.log("[sanity-sync] done.");
 }

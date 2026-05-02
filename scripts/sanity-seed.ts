@@ -7,6 +7,7 @@ import {
   mitraProducts,
   heroSlides,
 } from "../src/data/products";
+import { galleryItems } from "../src/data/gallery";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
@@ -193,11 +194,28 @@ async function seedSiteSettings() {
   });
 }
 
+async function seedGallery() {
+  console.log(`Seeding ${galleryItems.length} gallery items…`);
+  const tx = client.transaction();
+  galleryItems.forEach((g, i) => {
+    const slug = `gallery-${i + 1}`;
+    tx.createOrReplace({
+      _id: k("galleryItem", slug),
+      _type: "galleryItem",
+      order: i,
+      title: g.title,
+      description: g.description,
+    });
+  });
+  await tx.commit();
+}
+
 async function main() {
   await seedStories();
   await seedRecommendations();
   await seedMitra();
   await seedHeroSlides();
+  await seedGallery();
   await seedSiteSettings();
   console.log("Seed selesai.");
 }
