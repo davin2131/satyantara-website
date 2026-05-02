@@ -34,9 +34,17 @@ type StorySrc = {
   price: string;
   description: string;
   activities?: { name: string; detail: string }[];
+  imageUrl?: string;
+  imageAlt?: string;
 };
 
-type RecSrc = { slug: { current: string }; title: string; price: string };
+type RecSrc = {
+  slug: { current: string };
+  title: string;
+  price: string;
+  imageUrl?: string;
+  imageAlt?: string;
+};
 
 type MitraSrc = {
   slug: { current: string };
@@ -47,9 +55,16 @@ type MitraSrc = {
   tone: string;
   description: string;
   highlights?: string[];
+  imageUrl?: string;
+  imageAlt?: string;
 };
 
-type SlideSrc = { title: string; caption?: string };
+type SlideSrc = {
+  title: string;
+  caption?: string;
+  imageUrl?: string;
+  imageAlt?: string;
+};
 
 type SiteSettingsSrc = {
   hero?: {
@@ -93,12 +108,16 @@ const QUERY = /* groq */ `{
     subtitle,
     price,
     description,
-    activities[]{name, detail}
+    activities[]{name, detail},
+    "imageUrl": image.asset->url,
+    "imageAlt": image.alt
   },
   "recommendations": *[_type == "recommendation"] | order(order asc, _createdAt asc){
     "slug": slug,
     title,
-    price
+    price,
+    "imageUrl": image.asset->url,
+    "imageAlt": image.alt
   },
   "mitraProducts": *[_type == "mitra"] | order(order asc, _createdAt asc){
     "slug": slug,
@@ -108,11 +127,15 @@ const QUERY = /* groq */ `{
     badge,
     tone,
     description,
-    highlights
+    highlights,
+    "imageUrl": image.asset->url,
+    "imageAlt": image.alt
   },
   "heroSlides": *[_type == "heroSlide"] | order(order asc, _createdAt asc){
     title,
-    caption
+    caption,
+    "imageUrl": image.asset->url,
+    "imageAlt": image.alt
   },
   "siteSettings": *[_type == "siteSettings" && _id == "siteSettings"][0]{
     hero{eyebrow, tagline, primaryCta, secondaryCta},
@@ -143,6 +166,13 @@ function buildProductsTs(data: {
   mitraProducts: MitraSrc[];
   heroSlides: SlideSrc[];
 }) {
+  const imgLines = (u?: string, a?: string) => {
+    const parts: string[] = [];
+    if (u) parts.push(`    imageUrl: ${lit(u)},`);
+    if (a) parts.push(`    imageAlt: ${lit(a)},`);
+    return parts.join("\n");
+  };
+
   const stories = data.stories
     .map(
       (s) => `  {
@@ -151,6 +181,7 @@ function buildProductsTs(data: {
     subtitle: ${lit(s.subtitle)},
     price: ${lit(s.price)},
     description: ${lit(s.description)},
+${imgLines(s.imageUrl, s.imageAlt)}
     activities: [
 ${(s.activities ?? [])
   .map(
@@ -164,8 +195,12 @@ ${(s.activities ?? [])
 
   const recs = data.recommendations
     .map(
-      (r) =>
-        `  { slug: ${lit(r.slug?.current)}, title: ${lit(r.title)}, price: ${lit(r.price)} },`,
+      (r) => `  {
+    slug: ${lit(r.slug?.current)},
+    title: ${lit(r.title)},
+    price: ${lit(r.price)},
+${imgLines(r.imageUrl, r.imageAlt)}
+  },`,
     )
     .join("\n");
 
@@ -179,6 +214,7 @@ ${(s.activities ?? [])
     ${m.badge ? `badge: ${lit(m.badge)},` : ""}
     tone: ${lit(m.tone)} as MitraProduct["tone"],
     description: ${lit(m.description)},
+${imgLines(m.imageUrl, m.imageAlt)}
     highlights: [
 ${(m.highlights ?? []).map((h) => `      ${lit(h)},`).join("\n")}
     ],
@@ -188,8 +224,11 @@ ${(m.highlights ?? []).map((h) => `      ${lit(h)},`).join("\n")}
 
   const slides = data.heroSlides
     .map(
-      (s) =>
-        `  { title: ${lit(s.title)}, caption: ${lit(s.caption)} },`,
+      (s) => `  {
+    title: ${lit(s.title)},
+    caption: ${lit(s.caption)},
+${imgLines(s.imageUrl, s.imageAlt)}
+  },`,
     )
     .join("\n");
 
@@ -203,6 +242,16 @@ export type Story = {
   price: string;
   description: string;
   activities: { name: string; detail: string }[];
+  imageUrl?: string;
+  imageAlt?: string;
+};
+
+export type Recommendation = {
+  slug: string;
+  title: string;
+  price: string;
+  imageUrl?: string;
+  imageAlt?: string;
 };
 
 export type MitraProduct = {
@@ -214,21 +263,30 @@ export type MitraProduct = {
   tone: "amber" | "rose" | "emerald" | "indigo" | "ochre" | "rust";
   description: string;
   highlights: string[];
+  imageUrl?: string;
+  imageAlt?: string;
+};
+
+export type HeroSlide = {
+  title: string;
+  caption: string;
+  imageUrl?: string;
+  imageAlt?: string;
 };
 
 export const stories: Story[] = [
 ${stories}
 ];
 
-export const recommendations = [
+export const recommendations: Recommendation[] = [
 ${recs}
-] as const;
+];
 
 export const mitraProducts: MitraProduct[] = [
 ${mitra}
 ];
 
-export const heroSlides = [
+export const heroSlides: HeroSlide[] = [
 ${slides}
 ];
 `;

@@ -10,9 +10,20 @@ type Props = {
   subtitle?: string;
   price: string;
   delay?: number;
+  imageUrl?: string;
+  imageAlt?: string;
 };
 
-export function StoryCard({ index, slug, title, subtitle, price, delay = 0 }: Props) {
+export function StoryCard({
+  index,
+  slug,
+  title,
+  subtitle,
+  price,
+  delay = 0,
+  imageUrl,
+  imageAlt,
+}: Props) {
   const { openStory } = useStoryModal();
 
   return (
@@ -23,7 +34,19 @@ export function StoryCard({ index, slug, title, subtitle, price, delay = 0 }: Pr
         className="group block h-full w-full text-left"
       >
         <article className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-gold-500/20 bg-coffee-800/60 p-3 transition-all duration-700 group-hover:-translate-y-1 group-hover:border-gold-400/60 group-hover:shadow-[0_30px_60px_-20px_rgba(212,162,78,0.25)]">
-          <StoryArt index={index} />
+          {imageUrl ? (
+            <div className="relative aspect-square overflow-hidden rounded-2xl">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={imageUrl}
+                alt={imageAlt ?? title}
+                loading="lazy"
+                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+            </div>
+          ) : (
+            <StoryArt index={index} />
+          )}
           <div className="flex flex-1 flex-col px-3 pb-3 pt-4 sm:px-4 sm:pb-4">
             <h3 className="font-display text-lg leading-tight text-cream transition-colors group-hover:text-gold-200 sm:text-xl md:text-2xl">
               {title}
