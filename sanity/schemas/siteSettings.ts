@@ -27,6 +27,24 @@ export const siteSettings = defineType({
         { name: "headingLine3", title: "Heading baris 3 (warna emas)", type: "string" },
         { name: "body", title: "Paragraf", type: "text", rows: 4 },
         {
+          name: "mediaImage",
+          title: "Foto kolom kiri (opsional)",
+          type: "image",
+          options: { hotspot: true },
+          description:
+            "Kalau kosong, kolom kiri pakai heading teks default. Upload foto untuk ganti. Kalau URL Video di bawah terisi, video yg dipakai.",
+          fields: [
+            { name: "alt", title: "Alt text", type: "string" },
+          ],
+        },
+        {
+          name: "mediaVideoUrl",
+          title: "URL Video YouTube/Vimeo (opsional)",
+          type: "string",
+          description:
+            "Paste URL YouTube (spt https://www.youtube.com/watch?v=XXXX atau https://youtu.be/XXXX) atau Vimeo. Prioritas tertinggi — kalau terisi, override foto & heading teks.",
+        },
+        {
           name: "stats",
           title: "Statistik",
           type: "array",

@@ -80,6 +80,9 @@ type SiteSettingsSrc = {
     headingLine3?: string;
     body?: string;
     stats?: { value: string; label: string }[];
+    mediaImageUrl?: string;
+    mediaImageAlt?: string;
+    mediaVideoUrl?: string;
   };
   tentangKami?: {
     eyebrow?: string;
@@ -141,7 +144,10 @@ const QUERY = /* groq */ `{
     hero{eyebrow, tagline, primaryCta, secondaryCta},
     aboutBrief{
       eyebrow, headingLine1, headingLine2, headingLine3, body,
-      stats[]{value, label}
+      stats[]{value, label},
+      "mediaImageUrl": mediaImage.asset->url,
+      "mediaImageAlt": mediaImage.alt,
+      mediaVideoUrl
     },
     tentangKami{
       eyebrow, heading, body,
@@ -311,6 +317,9 @@ export type SiteCopy = {
     headingLine3: string;
     body: string;
     stats: { value: string; label: string }[];
+    mediaImageUrl?: string;
+    mediaImageAlt?: string;
+    mediaVideoUrl?: string;
   };
   tentangKami: {
     eyebrow: string;
@@ -342,6 +351,9 @@ export const siteCopy: SiteCopy = ${JSON.stringify(
         headingLine3: v.aboutBrief?.headingLine3 ?? "",
         body: v.aboutBrief?.body ?? "",
         stats: v.aboutBrief?.stats ?? [],
+        ...(v.aboutBrief?.mediaImageUrl ? { mediaImageUrl: v.aboutBrief.mediaImageUrl } : {}),
+        ...(v.aboutBrief?.mediaImageAlt ? { mediaImageAlt: v.aboutBrief.mediaImageAlt } : {}),
+        ...(v.aboutBrief?.mediaVideoUrl ? { mediaVideoUrl: v.aboutBrief.mediaVideoUrl } : {}),
       },
       tentangKami: {
         eyebrow: v.tentangKami?.eyebrow ?? "",

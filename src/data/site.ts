@@ -14,6 +14,9 @@ export type SiteCopy = {
     headingLine2: string;
     headingLine3: string;
     body: string;
+    mediaImageUrl?: string;
+    mediaImageAlt?: string;
+    mediaVideoUrl?: string;
     stats: { value: string; label: string }[];
   };
   tentangKami: {
