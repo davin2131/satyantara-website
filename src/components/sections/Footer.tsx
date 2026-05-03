@@ -22,7 +22,7 @@ export function Footer() {
             </div>
 
             <div className="relative flex flex-col items-center gap-6 sm:gap-8">
-              <p className="text-[10px] uppercase tracking-[0.4em] text-gold-400/80 sm:text-[11px] sm:tracking-[0.45em]">
+              <p className="text-[10px] uppercase tracking-[0.4em] text-gold-400 sm:text-[11px] sm:tracking-[0.45em]">
                 {c.callout}
               </p>
               <div className="flex items-center gap-3 sm:gap-4">

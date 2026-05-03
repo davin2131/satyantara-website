@@ -9,7 +9,7 @@ export function Recommendations() {
         <Reveal>
           <div className="mb-8 flex items-end justify-between gap-4 sm:mb-10 sm:gap-6">
             <div>
-              <p className="text-[10px] uppercase tracking-[0.4em] text-gold-400/80 sm:text-[11px] sm:tracking-[0.45em]">
+              <p className="text-[10px] uppercase tracking-[0.4em] text-gold-400 sm:text-[11px] sm:tracking-[0.45em]">
                 Untuk Sayners
               </p>
               <h3 className="mt-2 font-display text-2xl leading-tight text-cream min-[400px]:text-3xl sm:text-4xl">

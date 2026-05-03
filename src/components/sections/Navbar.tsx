@@ -19,12 +19,14 @@ const navItems: NavItem[] = [
   { label: "Ensiklopedia", href: "/ensiklopedia-wayang", page: true },
   { label: "Permainan", href: "/permainan", page: true },
   { label: "Peta Budaya", href: "/peta-budaya", page: true },
+  { label: "Jadwal", href: "/jadwal", page: true },
+  { label: "FAQ", href: "/faq", page: true },
 ];
 
 /**
  * Resolve the URL for an anchor-style nav item so it works from any route.
- * On the home page we keep plain `#anchor` (smooth scroll).
- * On other routes we send the user back to home with `/#anchor`.
+ * On the home page we keep plain `#anchor` (smooth scroll, no full reload).
+ * On other routes we use `/` + `#anchor` and rely on next/link for SPA-style nav.
  */
 function resolveAnchor(href: string, pathname: string | null): string {
   if (!href.startsWith("#")) return href;
@@ -36,6 +38,10 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const { count, openCart } = useCart();
+
+  // Cart hanya relevan di halaman komersial (Beranda).
+  // Tetap muncul kalau ada item, supaya user bisa checkout dari mana saja.
+  const showCart = pathname === "/" || count > 0;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -66,10 +72,10 @@ export function Navbar() {
           />
         </Link>
 
-        <ul className="hidden items-center gap-9 lg:flex">
+        <ul className="hidden items-center gap-7 lg:flex xl:gap-9">
           {navItems.map((item) => {
             const linkClass =
-              "group relative text-[13px] font-medium tracking-[0.28em] uppercase text-cream/80 transition-colors hover:text-gold-300";
+              "group relative text-[12px] font-medium tracking-[0.24em] uppercase text-cream/90 transition-colors hover:text-gold-300 xl:text-[13px] xl:tracking-[0.28em]";
             const underline = (
               <span className="absolute -bottom-1 left-0 h-px w-0 bg-gold-400 transition-all duration-500 group-hover:w-full" />
             );
@@ -81,10 +87,10 @@ export function Navbar() {
                     {underline}
                   </Link>
                 ) : (
-                  <a href={resolveAnchor(item.href, pathname)} className={linkClass}>
+                  <Link href={resolveAnchor(item.href, pathname)} className={linkClass}>
                     {item.label}
                     {underline}
-                  </a>
+                  </Link>
                 )}
               </li>
             );
@@ -92,33 +98,21 @@ export function Navbar() {
         </ul>
 
         <div className="flex items-center gap-2 sm:gap-4">
-          <button
-            type="button"
-            aria-label="Pencarian"
-            className="hidden h-10 w-10 items-center justify-center rounded-full border border-gold-500/30 text-cream/80 transition-all hover:border-gold-400 hover:text-gold-300 sm:inline-flex"
-          >
-            <SearchIcon className="h-4 w-4" />
-          </button>
-          <button
-            type="button"
-            aria-label="Wishlist"
-            className="hidden h-10 w-10 items-center justify-center rounded-full border border-gold-500/30 text-cream/80 transition-all hover:border-gold-400 hover:text-gold-300 sm:inline-flex"
-          >
-            <HeartIcon className="h-4 w-4" />
-          </button>
-          <button
-            type="button"
-            aria-label={`Keranjang (${count} item)`}
-            onClick={openCart}
-            className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-gold-500/30 text-cream/80 transition-all hover:border-gold-400 hover:text-gold-300"
-          >
-            <BagIcon className="h-4 w-4" />
-            {count > 0 && (
-              <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-gold-500 px-1 text-[10px] font-semibold text-coffee-950">
-                {count}
-              </span>
-            )}
-          </button>
+          {showCart && (
+            <button
+              type="button"
+              aria-label={`Keranjang (${count} item)`}
+              onClick={openCart}
+              className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-gold-500/30 text-cream/90 transition-all hover:border-gold-400 hover:text-gold-300"
+            >
+              <BagIcon className="h-4 w-4" />
+              {count > 0 && (
+                <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-gold-500 px-1 text-[10px] font-semibold text-coffee-950">
+                  {count}
+                </span>
+              )}
+            </button>
+          )}
 
           <button
             type="button"
@@ -135,13 +129,13 @@ export function Navbar() {
       {/* Mobile menu */}
       <div
         className={`overflow-hidden border-t border-gold-500/15 bg-coffee-950/95 backdrop-blur transition-[max-height,opacity] duration-500 lg:hidden ${
-          open ? "max-h-80 opacity-100" : "max-h-0 opacity-0"
+          open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
         <ul className="mx-auto flex max-w-7xl flex-col gap-1 px-5 py-4">
           {navItems.map((item) => {
             const itemClass =
-              "block rounded-lg px-3 py-3 text-sm font-medium tracking-[0.28em] uppercase text-cream/85 transition hover:bg-gold-500/10 hover:text-gold-300";
+              "block rounded-lg px-3 py-3 text-sm font-medium tracking-[0.28em] uppercase text-cream/90 transition hover:bg-gold-500/10 hover:text-gold-300";
             return (
               <li key={item.href}>
                 {item.page ? (
@@ -153,13 +147,13 @@ export function Navbar() {
                     {item.label}
                   </Link>
                 ) : (
-                  <a
+                  <Link
                     href={resolveAnchor(item.href, pathname)}
                     onClick={() => setOpen(false)}
                     className={itemClass}
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 )}
               </li>
             );
@@ -170,37 +164,6 @@ export function Navbar() {
   );
 }
 
-function SearchIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...props}
-    >
-      <circle cx="11" cy="11" r="7" />
-      <path d="m21 21-4.3-4.3" />
-    </svg>
-  );
-}
-function HeartIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      {...props}
-    >
-      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-    </svg>
-  );
-}
 function BagIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg

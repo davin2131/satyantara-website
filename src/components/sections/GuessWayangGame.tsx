@@ -159,7 +159,7 @@ export function GuessWayangGame() {
       <div className="relative mx-auto max-w-4xl">
         <Reveal>
           <div className="mb-10 flex flex-col items-center gap-4 text-center sm:mb-14 sm:gap-5">
-            <p className="flex items-center gap-2 text-[9px] font-medium uppercase tracking-[0.4em] text-gold-400/80 sm:gap-3 sm:text-[11px] sm:tracking-[0.5em]">
+            <p className="flex items-center gap-2 text-[9px] font-medium uppercase tracking-[0.4em] text-gold-400 sm:gap-3 sm:text-[11px] sm:tracking-[0.5em]">
               <span className="h-px w-6 bg-gold-500/60 sm:w-10" />
               Permainan Edukasi
               <span className="h-px w-6 bg-gold-500/60 sm:w-10" />
@@ -217,6 +217,12 @@ function IntroCard({
   onFilterChange: (f: CategoryFilter) => void;
   onStart: () => void;
 }) {
+  const filterCount =
+    filter === "all"
+      ? wayangEntries.length
+      : wayangEntries.filter((w) => w.category === filter).length;
+  const tooFewForFilter = filter !== "all" && filterCount < 4;
+
   return (
     <Reveal delay={80}>
       <div className="rounded-2xl border border-gold-500/20 bg-coffee-900/70 p-6 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8)] sm:p-10">
@@ -231,7 +237,7 @@ function IntroCard({
         </ul>
 
         <div className="mt-7">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-gold-300/80">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-gold-300">
             Pilih kategori soal
           </p>
           <div className="mt-3 flex flex-wrap gap-2 sm:gap-3">
@@ -245,7 +251,7 @@ function IntroCard({
                   className={`rounded-full border px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] transition-all sm:text-xs sm:tracking-[0.22em] ${
                     active
                       ? "border-gold-400/80 bg-gold-500/15 text-gold-200 shadow-[0_10px_30px_-15px_rgba(212,162,78,0.6)]"
-                      : "border-gold-500/20 bg-coffee-800/60 text-parchment/75 hover:border-gold-400/50 hover:text-cream"
+                      : "border-gold-500/20 bg-coffee-800/60 text-parchment/90 hover:border-gold-400/50 hover:text-cream"
                   }`}
                 >
                   {f.label}
@@ -253,6 +259,12 @@ function IntroCard({
               );
             })}
           </div>
+          <p className="mt-3 text-xs text-parchment/85 sm:text-sm">
+            Tersedia <span className="font-semibold text-gold-300">{filterCount}</span> tokoh dalam kategori ini.
+            {tooFewForFilter
+              ? " Soal akan dilengkapi dari kategori lain agar tetap bisa main."
+              : ""}
+          </p>
         </div>
 
         <button
@@ -291,7 +303,7 @@ function QuestionCard({
     <div className="space-y-6">
       <div className="flex flex-col gap-3 rounded-2xl border border-gold-500/20 bg-coffee-900/70 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
         <div>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-gold-300/80">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-gold-300">
             Soal {current + 1} dari {total}
           </p>
           <div className="mt-2 h-1.5 w-44 overflow-hidden rounded-full bg-coffee-800 sm:w-64">
@@ -302,7 +314,7 @@ function QuestionCard({
           </div>
         </div>
         <div className="text-left sm:text-right">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-gold-300/80">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-gold-300">
             Skor
           </p>
           <p className="mt-1 font-display text-2xl text-cream sm:text-3xl">
@@ -312,7 +324,7 @@ function QuestionCard({
       </div>
 
       <div className="rounded-2xl border border-gold-500/20 bg-coffee-900/70 p-6 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8)] sm:p-10">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-gold-300/80 sm:text-[11px]">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-gold-300 sm:text-[11px]">
           Petunjuk
         </p>
         <p className="mt-3 text-base leading-relaxed text-cream sm:text-xl">
@@ -414,7 +426,7 @@ function ResultCard({
   return (
     <Reveal>
       <div className="rounded-2xl border border-gold-500/20 bg-coffee-900/70 p-6 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8)] sm:p-10">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-gold-300/80 sm:text-[11px]">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-gold-300 sm:text-[11px]">
           Hasil Akhir
         </p>
         <div className="mt-2 flex flex-wrap items-baseline gap-x-5 gap-y-2">
@@ -444,7 +456,7 @@ function ResultCard({
                     : "border-rose-400/30 bg-rose-500/5"
                 }`}
               >
-                <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-gold-300/80">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-gold-300">
                   Soal {i + 1} · {right ? "Benar" : "Salah"}
                 </p>
                 <p className="mt-1.5 text-parchment/85">{q.clueText}</p>

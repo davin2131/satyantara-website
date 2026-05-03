@@ -15,13 +15,13 @@ export function Products() {
         <Reveal>
           <div className="mb-10 flex flex-col items-center gap-3 text-center sm:mb-14">
             <Ornament className="mb-2 w-32 opacity-80 sm:w-44" />
-            <span className="text-[10px] uppercase tracking-[0.4em] text-gold-400/80 sm:text-[11px] sm:tracking-[0.45em]">
+            <span className="text-[10px] uppercase tracking-[0.4em] text-gold-400 sm:text-[11px] sm:tracking-[0.45em]">
               Lakon Pilihan
             </span>
             <h2 className="font-display text-3xl leading-tight tracking-tight text-cream min-[400px]:text-4xl sm:text-5xl md:text-6xl">
               Satyantara&rsquo;s Products
             </h2>
-            <p className="max-w-2xl text-sm text-parchment/75 sm:text-base">
+            <p className="max-w-2xl text-sm text-parchment/90 sm:text-base">
               Dua lakon yang menjadi pintu masuk pengalaman budaya — dari
               kisah sang kera putih hingga lima saudara penegak dharma.
             </p>

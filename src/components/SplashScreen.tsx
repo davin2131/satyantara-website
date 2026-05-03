@@ -6,11 +6,37 @@ import { createPortal } from "react-dom";
 
 const TOTAL_DURATION = 3600;
 const FADE_OUT_AT = 3000;
+const STORAGE_KEY = "satyantara:splash-shown";
+
+function readAlreadyShown(): boolean {
+  if (typeof window === "undefined") return true;
+  try {
+    return window.sessionStorage.getItem(STORAGE_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
 
 export function SplashScreen() {
-  const [stage, setStage] = useState<"in" | "out" | "done">("in");
+  // Awalnya "pending" supaya server-render & first-paint tidak menampilkan splash;
+  // status sebenarnya ditentukan setelah mount untuk hindari hydration mismatch.
+  const [stage, setStage] = useState<"pending" | "in" | "out" | "done">("pending");
 
   useEffect(() => {
+    if (readAlreadyShown()) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setStage("done");
+      return;
+    }
+
+    try {
+      window.sessionStorage.setItem(STORAGE_KEY, "1");
+    } catch {
+      // ignore
+    }
+
+    setStage("in");
+
     const original = document.body.style.overflow;
     const originalHtml = document.documentElement.style.overflow;
     document.body.style.overflow = "hidden";
@@ -31,7 +57,7 @@ export function SplashScreen() {
     };
   }, []);
 
-  if (stage === "done" || typeof document === "undefined") return null;
+  if (stage === "pending" || stage === "done" || typeof document === "undefined") return null;
 
   return createPortal(
     <div

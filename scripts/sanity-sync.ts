@@ -236,6 +236,19 @@ const QUERY = /* groq */ `{
     "imageUrl": image.asset->url,
     "imageAlt": image.alt
   },
+  "events": *[_type == "event" && !(_id in path("drafts.**"))] | order(startDate asc){
+    "slug": coalesce(slug.current, _id),
+    title,
+    category,
+    startDate,
+    endDate,
+    location,
+    description,
+    registrationUrl,
+    isFeatured,
+    "imageUrl": image.asset->url,
+    "imageAlt": image.alt
+  },
   "siteSettings": *[_type == "siteSettings" && _id == "siteSettings"][0]{
     hero{eyebrow, tagline, primaryCta, secondaryCta},
     aboutBrief{
@@ -465,6 +478,82 @@ export type GalleryItem = {
 };
 
 export const galleryItems: GalleryItem[] = [
+${entries}
+];
+`;
+}
+
+type EventSrc = {
+  slug?: string;
+  title?: string;
+  category?: string;
+  startDate?: string;
+  endDate?: string;
+  location?: string;
+  description?: string;
+  registrationUrl?: string;
+  isFeatured?: boolean;
+  imageUrl?: string;
+  imageAlt?: string;
+};
+
+function buildEventsTs(items: EventSrc[]) {
+  const optLine = (key: string, val?: string) =>
+    val ? `    ${key}: ${lit(val)},` : "";
+
+  const entries = items
+    .filter((e) => e.title && e.startDate && e.location && e.description)
+    .map((e) => {
+      const parts = [
+        `    slug: ${lit(e.slug ?? e.title!.toLowerCase().replace(/[^a-z0-9]+/g, "-"))},`,
+        `    title: ${lit(e.title!)},`,
+        `    category: ${lit(e.category ?? "lainnya")},`,
+        `    startDate: ${lit(e.startDate!)},`,
+        optLine("endDate", e.endDate),
+        `    location: ${lit(e.location!)},`,
+        `    description: ${lit(e.description!)},`,
+        optLine("registrationUrl", e.registrationUrl),
+        e.isFeatured ? `    isFeatured: true,` : "",
+        optLine("imageUrl", e.imageUrl),
+        optLine("imageAlt", e.imageAlt),
+      ].filter(Boolean);
+      return `  {\n${parts.join("\n")}\n  },`;
+    })
+    .join("\n");
+
+  return `// AUTO-GENERATED FROM SANITY. Edit content via Sanity Studio (collection "Jadwal Acara").
+// Run \`npm run sanity:sync\` to refresh from Sanity.
+
+export type EventCategory =
+  | "pertunjukan"
+  | "workshop"
+  | "festival"
+  | "diskusi"
+  | "lainnya";
+
+export type SatyantaraEvent = {
+  slug: string;
+  title: string;
+  category: EventCategory;
+  startDate: string;
+  endDate?: string;
+  location: string;
+  description: string;
+  registrationUrl?: string;
+  imageUrl?: string;
+  imageAlt?: string;
+  isFeatured?: boolean;
+};
+
+export const eventCategoryLabels: Record<EventCategory, string> = {
+  pertunjukan: "Pertunjukan Wayang",
+  workshop: "Workshop",
+  festival: "Festival",
+  diskusi: "Diskusi & Talkshow",
+  lainnya: "Lainnya",
+};
+
+export const events: SatyantaraEvent[] = [
 ${entries}
 ];
 `;
@@ -712,6 +801,10 @@ async function main() {
     "utf8",
   );
   console.log(`[sanity-sync] wrote ${provincesPath}`);
+
+  const eventsPath = path.join(ROOT, "src/data/events.ts");
+  writeFileSync(eventsPath, buildEventsTs(data.events ?? []), "utf8");
+  console.log(`[sanity-sync] wrote ${eventsPath}`);
 
   console.log("[sanity-sync] done.");
 }

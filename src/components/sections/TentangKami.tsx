@@ -11,7 +11,7 @@ export function TentangKami() {
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <div className="flex flex-col items-center text-center">
-            <span className="text-[10px] uppercase tracking-[0.4em] text-gold-400/80 sm:text-[11px] sm:tracking-[0.45em]">
+            <span className="text-[10px] uppercase tracking-[0.4em] text-gold-400 sm:text-[11px] sm:tracking-[0.45em]">
               {c.eyebrow}
             </span>
             <h2 className="mt-3 font-display text-3xl tracking-[0.14em] text-cream min-[400px]:text-4xl sm:text-6xl sm:tracking-[0.18em] md:text-7xl">
@@ -84,7 +84,7 @@ function ValueCard({
         {icon}
       </span>
       <h4 className="font-display text-xl text-cream">{title}</h4>
-      <p className="mt-2 text-sm leading-relaxed text-parchment/75">{text}</p>
+      <p className="mt-2 text-sm leading-relaxed text-parchment/90">{text}</p>
     </div>
   );
 }

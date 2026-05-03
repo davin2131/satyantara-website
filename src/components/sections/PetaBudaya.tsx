@@ -110,7 +110,7 @@ export function PetaBudaya() {
       <div className="relative mx-auto max-w-7xl">
         <Reveal>
           <div className="mb-10 flex flex-col items-center gap-4 text-center sm:mb-14 sm:gap-5">
-            <p className="flex items-center gap-2 text-[9px] font-medium uppercase tracking-[0.4em] text-gold-400/80 sm:gap-3 sm:text-[11px] sm:tracking-[0.5em]">
+            <p className="flex items-center gap-2 text-[9px] font-medium uppercase tracking-[0.4em] text-gold-400 sm:gap-3 sm:text-[11px] sm:tracking-[0.5em]">
               <span className="h-px w-6 bg-gold-500/60 sm:w-10" />
               Jelajah Nusantara
               <span className="h-px w-6 bg-gold-500/60 sm:w-10" />
@@ -138,7 +138,7 @@ export function PetaBudaya() {
                   className={`rounded-full border px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] transition-all sm:px-4 sm:py-2 sm:text-xs sm:tracking-[0.22em] ${
                     activeFilter
                       ? "border-gold-400/80 bg-gold-500/15 text-gold-200 shadow-[0_10px_30px_-15px_rgba(212,162,78,0.6)]"
-                      : "border-gold-500/20 bg-coffee-800/60 text-parchment/75 hover:border-gold-400/50 hover:text-cream"
+                      : "border-gold-500/20 bg-coffee-800/60 text-parchment/90 hover:border-gold-400/50 hover:text-cream"
                   }`}
                 >
                   {f.label}
@@ -222,7 +222,7 @@ export function PetaBudaya() {
                   <p className="font-display text-base text-cream sm:text-lg">
                     {hoveredProvince.name}
                   </p>
-                  <p className="text-[10px] text-parchment/70 sm:text-xs">
+                  <p className="text-[10px] text-parchment/85 sm:text-xs">
                     Ibukota: {hoveredProvince.capital}
                   </p>
                 </div>
@@ -249,7 +249,7 @@ export function PetaBudaya() {
             <h2 className="font-display text-2xl text-cream sm:text-3xl">
               Daftar Provinsi
             </h2>
-            <p className="mt-2 text-sm text-parchment/75 sm:text-base">
+            <p className="mt-2 text-sm text-parchment/90 sm:text-base">
               Tekan nama provinsi untuk membuka detail budayanya. Pas untuk
               layar HP yang sempit.
             </p>
@@ -320,6 +320,8 @@ function ProvinceModalBody({ province }: { province: ProvinceCulture }) {
             <img
               src={src}
               alt={province.imageAlt ?? province.name}
+              loading="lazy"
+              decoding="async"
               className="h-full w-full object-cover"
             />
           ) : (
