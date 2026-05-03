@@ -2,7 +2,6 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { Reveal } from "../ui/Reveal";
-import { Gunungan } from "../Gunungan";
 import {
   wayangEntries,
   wayangCategoryLabels,
@@ -157,8 +156,6 @@ export function GuessWayangGame() {
       id="permainan"
       className="section-glow relative px-4 pb-16 pt-28 sm:px-6 sm:pb-20 sm:pt-32 md:px-8 lg:px-10 lg:pb-24 lg:pt-36"
     >
-      <Gunungan className="pointer-events-none absolute -left-24 top-32 h-[280px] w-[280px] opacity-[0.04] sm:h-[420px] sm:w-[420px] sm:opacity-[0.06]" />
-
       <div className="relative mx-auto max-w-4xl">
         <Reveal>
           <div className="mb-10 flex flex-col items-center gap-4 text-center sm:mb-14 sm:gap-5">
