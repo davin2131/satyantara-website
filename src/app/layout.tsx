@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -48,7 +49,10 @@ export default function RootLayout({
       lang="id"
       className={`${playfair.variable} ${inter.variable} antialiased`}
     >
-      <body className="min-h-screen overflow-x-hidden">{children}</body>
+      <body className="min-h-screen overflow-x-hidden">
+        {children}
+        <SpeedInsights />
+      </body>
     </html>
   );
 }
