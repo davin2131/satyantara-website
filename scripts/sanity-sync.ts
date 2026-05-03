@@ -38,6 +38,9 @@ type StorySrc = {
   imageAlt?: string;
   marketplaceUrl?: string;
   marketplaceLabel?: string;
+  requiresDate?: boolean;
+  availableDays?: string[];
+  bookingWeeks?: number;
 };
 
 type RecSrc = {
@@ -164,6 +167,9 @@ const QUERY = /* groq */ `{
     activities[]{name, detail},
     marketplaceUrl,
     marketplaceLabel,
+    requiresDate,
+    availableDays,
+    bookingWeeks,
     "imageUrl": image.asset->url,
     "imageAlt": image.alt
   },
@@ -274,7 +280,20 @@ function buildProductsTs(data: {
 
   const stories = data.stories
     .map(
-      (s) => `  {
+      (s) => {
+        const dateLines: string[] = [];
+        if (typeof s.requiresDate === "boolean") {
+          dateLines.push(`    requiresDate: ${s.requiresDate ? "true" : "false"},`);
+        }
+        if (Array.isArray(s.availableDays) && s.availableDays.length > 0) {
+          dateLines.push(
+            `    availableDays: [${s.availableDays.map((d) => lit(d)).join(", ")}],`,
+          );
+        }
+        if (typeof s.bookingWeeks === "number") {
+          dateLines.push(`    bookingWeeks: ${s.bookingWeeks},`);
+        }
+        return `  {
     slug: ${lit(s.slug?.current)},
     title: ${lit(s.title)},
     subtitle: ${lit(s.subtitle)},
@@ -283,6 +302,7 @@ function buildProductsTs(data: {
 ${imgLines(s.imageUrl, s.imageAlt)}
 ${optLine("marketplaceUrl", s.marketplaceUrl)}
 ${optLine("marketplaceLabel", s.marketplaceLabel)}
+${dateLines.join("\n")}
     activities: [
 ${(s.activities ?? [])
   .map(
@@ -290,7 +310,8 @@ ${(s.activities ?? [])
   )
   .join("\n")}
     ],
-  },`,
+  },`;
+      },
     )
     .join("\n");
 
@@ -340,6 +361,15 @@ ${imgLines(s.imageUrl, s.imageAlt)}
   return `// AUTO-GENERATED FROM SANITY. Edit content via Sanity Studio.
 // Run \`npm run sanity:sync\` to refresh from Sanity.
 
+export type WeekDay =
+  | "monday"
+  | "tuesday"
+  | "wednesday"
+  | "thursday"
+  | "friday"
+  | "saturday"
+  | "sunday";
+
 export type Story = {
   slug: string;
   title: string;
@@ -351,6 +381,9 @@ export type Story = {
   imageAlt?: string;
   marketplaceUrl?: string;
   marketplaceLabel?: string;
+  requiresDate?: boolean;
+  availableDays?: WeekDay[];
+  bookingWeeks?: number;
 };
 
 export type Recommendation = {

@@ -1,6 +1,15 @@
 // AUTO-GENERATED FROM SANITY. Edit content via Sanity Studio.
 // Run `npm run sanity:sync` to refresh from Sanity.
 
+export type WeekDay =
+  | "monday"
+  | "tuesday"
+  | "wednesday"
+  | "thursday"
+  | "friday"
+  | "saturday"
+  | "sunday";
+
 export type Story = {
   slug: string;
   title: string;
@@ -12,6 +21,9 @@ export type Story = {
   imageAlt?: string;
   marketplaceUrl?: string;
   marketplaceLabel?: string;
+  requiresDate?: boolean;
+  availableDays?: WeekDay[];
+  bookingWeeks?: number;
 };
 
 export type Recommendation = {
