@@ -41,6 +41,7 @@ export default defineConfig({
             S.documentTypeListItem("wayangEntry").title("Ensiklopedia Wayang"),
             S.documentTypeListItem("provinceCulture").title("Peta Budaya - Provinsi"),
             S.documentTypeListItem("event").title("Jadwal Acara"),
+            S.documentTypeListItem("faqGroup").title("FAQ - Pertanyaan Umum"),
           ]),
     }),
     visionTool(),

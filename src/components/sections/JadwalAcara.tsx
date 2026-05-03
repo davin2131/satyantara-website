@@ -8,10 +8,9 @@ import {
   type EventCategory,
   type SatyantaraEvent,
 } from "@/data/events";
+import { siteCopy } from "@/data/site";
 
 type Filter = "upcoming" | "past" | "all";
-
-const DEFAULT_WHATSAPP = "https://wa.me/6287862181294";
 
 function formatEventDate(iso: string, endIso?: string): string {
   const start = new Date(iso);
@@ -57,6 +56,8 @@ function categoryTone(category: EventCategory): string {
 export function JadwalAcara() {
   const [filter, setFilter] = useState<Filter>("upcoming");
   const [now, setNow] = useState<number | null>(null);
+  const copy = siteCopy.jadwalPage;
+  const whatsapp = siteCopy.navbar.ctaHref;
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -112,14 +113,14 @@ export function JadwalAcara() {
           <div className="mb-10 flex flex-col items-center gap-4 text-center sm:mb-14 sm:gap-5">
             <p className="flex items-center gap-2 text-[9px] font-medium uppercase tracking-[0.4em] text-gold-400 sm:gap-3 sm:text-[11px] sm:tracking-[0.5em]">
               <span className="h-px w-6 bg-gold-500/60 sm:w-10" />
-              Agenda Budaya
+              {copy.eyebrow}
               <span className="h-px w-6 bg-gold-500/60 sm:w-10" />
             </p>
             <h1 className="font-display text-4xl leading-tight text-cream min-[400px]:text-5xl sm:text-6xl md:text-7xl">
-              <span className="shimmer-text">JADWAL ACARA</span>
+              <span className="shimmer-text">{copy.title}</span>
             </h1>
             <p className="max-w-2xl text-sm leading-relaxed text-parchment/90 sm:text-base">
-              Pertunjukan wayang, workshop, festival, dan diskusi budaya yang akan dan sudah kami selenggarakan bersama sanggar mitra di Solo.
+              {copy.subtitle}
             </p>
           </div>
         </Reveal>
@@ -153,17 +154,19 @@ export function JadwalAcara() {
           <Reveal delay={120}>
             <div className="mx-auto max-w-xl rounded-2xl border border-gold-500/20 bg-coffee-900/60 px-6 py-12 text-center sm:px-10 sm:py-16">
               <p className="font-display text-2xl text-cream sm:text-3xl">
-                Belum Ada Acara Terjadwal
+                {copy.emptyTitle}
               </p>
-              <p className="mt-3 text-sm text-parchment/85 sm:text-base">
+              <p className="mt-3 whitespace-pre-line text-sm text-parchment/85 sm:text-base">
                 {filter === "upcoming"
-                  ? "Tim SATYANTARA sedang menyiapkan agenda pertunjukan dan workshop berikutnya. Hubungi kami via WhatsApp untuk update terbaru."
+                  ? copy.emptyBody
                   : filter === "past"
                     ? "Belum ada arsip acara yang ditampilkan."
                     : "Belum ada acara yang ditambahkan ke kalender."}
               </p>
               <a
-                href={DEFAULT_WHATSAPP}
+                href={whatsapp}
+                target="_blank"
+                rel="noreferrer"
                 className="mt-6 inline-flex items-center justify-center rounded-full bg-gradient-to-b from-gold-300 to-gold-500 px-6 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-coffee-950 transition hover:from-gold-400 hover:to-gold-600 sm:px-7 sm:text-sm"
               >
                 Tanyakan via WhatsApp
@@ -188,7 +191,7 @@ export function JadwalAcara() {
 
 function EventCard({ event, now }: { event: SatyantaraEvent; now: number }) {
   const isPast = new Date(event.startDate).getTime() < now;
-  const cta = event.registrationUrl ?? DEFAULT_WHATSAPP;
+  const cta = event.registrationUrl ?? siteCopy.navbar.ctaHref;
 
   return (
     <article
