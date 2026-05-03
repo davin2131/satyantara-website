@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Gunungan } from "../Gunungan";
 
 type NavItem = {
   label: string;
@@ -54,13 +53,15 @@ export function Navbar() {
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2.5 sm:gap-6 sm:px-6 sm:py-3 md:px-8 lg:px-10">
         <Link
           href={pathname === "/" ? "#beranda" : "/#beranda"}
-          className="flex min-h-[44px] items-center gap-2 sm:gap-3"
+          className="flex min-h-[44px] items-center"
           aria-label="Satyantara — beranda"
         >
-          <Gunungan className="h-9 w-auto drop-shadow-[0_0_18px_rgba(212,162,78,0.35)] sm:h-12" />
-          <span className="hidden font-display text-base font-semibold tracking-[0.28em] text-cream min-[400px]:block sm:text-lg sm:tracking-[0.32em]">
-            SATYANTARA
-          </span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/satyantara-logo.png"
+            alt="SATYANTARA"
+            className="h-10 w-auto drop-shadow-[0_0_18px_rgba(212,162,78,0.35)] sm:h-12"
+          />
         </Link>
 
         <ul className="hidden items-center gap-9 lg:flex">
