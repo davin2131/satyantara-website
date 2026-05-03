@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useCart } from "../cart/CartContext";
 
 type NavItem = {
   label: string;
@@ -34,6 +35,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const { count, openCart } = useCart();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -106,13 +108,16 @@ export function Navbar() {
           </button>
           <button
             type="button"
-            aria-label="Keranjang"
+            aria-label={`Keranjang (${count} item)`}
+            onClick={openCart}
             className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-gold-500/30 text-cream/80 transition-all hover:border-gold-400 hover:text-gold-300"
           >
             <BagIcon className="h-4 w-4" />
-            <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-gold-500 px-1 text-[10px] font-semibold text-coffee-950">
-              0
-            </span>
+            {count > 0 && (
+              <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-gold-500 px-1 text-[10px] font-semibold text-coffee-950">
+                {count}
+              </span>
+            )}
           </button>
 
           <button
