@@ -174,7 +174,7 @@ export function HeroCarousel() {
                       <h3 className="font-display text-xl leading-tight text-cream min-[400px]:text-2xl sm:text-4xl md:text-5xl">
                         {slide.title}
                       </h3>
-                      <p className="mt-1.5 line-clamp-2 max-w-xl text-xs text-parchment/75 sm:mt-2 sm:line-clamp-none sm:text-base">
+                      <p className="mt-1.5 line-clamp-2 max-w-xl text-xs text-parchment/90 sm:mt-2 sm:line-clamp-none sm:text-base">
                         {slide.caption}
                       </p>
                       {i === active && (

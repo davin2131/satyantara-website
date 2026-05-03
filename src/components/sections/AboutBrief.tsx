@@ -34,7 +34,7 @@ export function AboutBrief() {
     <section className="section-glow relative px-4 py-10 sm:px-6 sm:py-12 md:px-8 lg:px-10 lg:py-16">
       <div className="mx-auto grid max-w-6xl items-center gap-8 sm:gap-12 md:grid-cols-2">
         <Reveal>
-          <p className="mb-3 text-[10px] uppercase tracking-[0.4em] text-gold-400/80 sm:text-[11px] sm:tracking-[0.45em]">
+          <p className="mb-3 text-[10px] uppercase tracking-[0.4em] text-gold-400 sm:text-[11px] sm:tracking-[0.45em]">
             {c.eyebrow}
           </p>
           {hasMedia ? (
@@ -52,6 +52,8 @@ export function AboutBrief() {
                 <img
                   src={c.mediaImageUrl}
                   alt={c.mediaImageAlt ?? c.headingLine2}
+                  loading="lazy"
+                  decoding="async"
                   className="absolute inset-0 h-full w-full object-cover"
                 />
               )}

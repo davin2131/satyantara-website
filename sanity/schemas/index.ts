@@ -6,6 +6,7 @@ import { siteSettings } from "./siteSettings";
 import { galleryItem } from "./gallery";
 import { wayangEntry } from "./wayangEntry";
 import { provinceCulture } from "./provinceCulture";
+import { event } from "./event";
 
 export const schemaTypes = [
   story,
@@ -15,5 +16,6 @@ export const schemaTypes = [
   galleryItem,
   wayangEntry,
   provinceCulture,
+  event,
   siteSettings,
 ];

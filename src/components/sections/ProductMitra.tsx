@@ -13,13 +13,13 @@ export function ProductMitra() {
         <Reveal>
           <div className="mb-9 flex items-end justify-between gap-4 sm:mb-12 sm:gap-6">
             <div>
-              <p className="text-[10px] uppercase tracking-[0.4em] text-gold-400/80 sm:text-[11px] sm:tracking-[0.45em]">
+              <p className="text-[10px] uppercase tracking-[0.4em] text-gold-400 sm:text-[11px] sm:tracking-[0.45em]">
                 Karya Sanggar
               </p>
               <h2 className="mt-2 font-display text-2xl leading-tight text-cream min-[400px]:text-3xl sm:text-5xl md:text-6xl">
                 Product Mitra
               </h2>
-              <p className="mt-3 max-w-xl text-sm text-parchment/75 sm:text-base">
+              <p className="mt-3 max-w-xl text-sm text-parchment/90 sm:text-base">
                 Kerajinan tangan dari para perajin Solo dan sekitarnya — setiap
                 karya membawa cerita dan nilai luhur Nusantara.
               </p>

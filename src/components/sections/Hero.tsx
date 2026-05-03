@@ -26,7 +26,7 @@ export function Hero() {
       />
 
       <div className="relative mx-auto flex max-w-5xl flex-col items-center gap-6 px-4 text-center sm:gap-8 sm:px-6">
-        <div className="flex items-center gap-2 text-[9px] font-medium uppercase tracking-[0.4em] text-gold-400/80 sm:gap-3 sm:text-[11px] sm:tracking-[0.5em]">
+        <div className="flex items-center gap-2 text-[9px] font-medium uppercase tracking-[0.4em] text-gold-400 sm:gap-3 sm:text-[11px] sm:tracking-[0.5em]">
           <span className="h-px w-6 bg-gold-500/60 sm:w-10" />
           {c.eyebrow}
           <span className="h-px w-6 bg-gold-500/60 sm:w-10" />

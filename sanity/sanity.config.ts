@@ -40,6 +40,7 @@ export default defineConfig({
             S.documentTypeListItem("galleryItem").title("Galeri"),
             S.documentTypeListItem("wayangEntry").title("Ensiklopedia Wayang"),
             S.documentTypeListItem("provinceCulture").title("Peta Budaya - Provinsi"),
+            S.documentTypeListItem("event").title("Jadwal Acara"),
           ]),
     }),
     visionTool(),

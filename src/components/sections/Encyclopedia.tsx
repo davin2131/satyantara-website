@@ -68,7 +68,7 @@ export function Encyclopedia() {
       <div className="relative mx-auto max-w-6xl">
         <Reveal>
           <div className="mb-10 flex flex-col items-center gap-4 text-center sm:mb-14 sm:gap-5">
-            <p className="flex items-center gap-2 text-[9px] font-medium uppercase tracking-[0.4em] text-gold-400/80 sm:gap-3 sm:text-[11px] sm:tracking-[0.5em]">
+            <p className="flex items-center gap-2 text-[9px] font-medium uppercase tracking-[0.4em] text-gold-400 sm:gap-3 sm:text-[11px] sm:tracking-[0.5em]">
               <span className="h-px w-6 bg-gold-500/60 sm:w-10" />
               Pustaka Tokoh Wayang
               <span className="h-px w-6 bg-gold-500/60 sm:w-10" />
@@ -95,7 +95,7 @@ export function Encyclopedia() {
                   className={`rounded-full border px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] transition-all sm:text-xs sm:tracking-[0.22em] ${
                     isActive
                       ? "border-gold-400/80 bg-gold-500/15 text-gold-200 shadow-[0_10px_30px_-15px_rgba(212,162,78,0.6)]"
-                      : "border-gold-500/20 bg-coffee-900/50 text-parchment/75 hover:border-gold-400/50 hover:text-cream"
+                      : "border-gold-500/20 bg-coffee-900/50 text-parchment/90 hover:border-gold-400/50 hover:text-cream"
                   }`}
                 >
                   {f.label}
@@ -185,7 +185,7 @@ function WayangCard({
             {entry.name}
           </h3>
           {entry.alias && (
-            <span className="text-[11px] uppercase tracking-[0.22em] text-gold-300/80">
+            <span className="text-[11px] uppercase tracking-[0.22em] text-gold-300">
               {entry.alias}
             </span>
           )}
@@ -194,7 +194,7 @@ function WayangCard({
         <p className="text-sm leading-relaxed text-parchment/85">
           {entry.summary}
         </p>
-        <span className="mt-auto pt-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-gold-300/80 transition-colors group-hover:text-gold-200">
+        <span className="mt-auto pt-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-gold-300 transition-colors group-hover:text-gold-200">
           Baca lengkap →
         </span>
       </div>
@@ -213,6 +213,8 @@ function WayangModalBody({ entry }: { entry: WayangEntry }) {
             <img
               src={src}
               alt={entry.imageAlt ?? entry.name}
+              loading="lazy"
+              decoding="async"
               className="h-full w-full object-cover"
             />
           ) : (
@@ -225,7 +227,7 @@ function WayangModalBody({ entry }: { entry: WayangEntry }) {
       </div>
 
       <div className="p-5 pt-14 min-[400px]:p-6 sm:p-8 sm:pt-8">
-        <p className="text-[10px] uppercase tracking-[0.4em] text-gold-400/80 sm:text-[11px] sm:tracking-[0.45em]">
+        <p className="text-[10px] uppercase tracking-[0.4em] text-gold-400 sm:text-[11px] sm:tracking-[0.45em]">
           Tokoh Wayang
         </p>
         <div className="mt-2 flex flex-wrap items-baseline gap-x-4 gap-y-2 sm:gap-x-5">
@@ -255,7 +257,7 @@ function WayangModalBody({ entry }: { entry: WayangEntry }) {
 function MetaRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl border border-gold-500/15 bg-coffee-800/50 px-4 py-3">
-      <dt className="text-[10px] font-semibold uppercase tracking-[0.32em] text-gold-300/80">
+      <dt className="text-[10px] font-semibold uppercase tracking-[0.32em] text-gold-300">
         {label}
       </dt>
       <dd className="mt-1 text-sm text-cream">{value}</dd>

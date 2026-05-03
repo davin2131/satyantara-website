@@ -180,7 +180,7 @@ function StoryModalBody({
       </div>
 
       <div className="p-5 pt-14 min-[400px]:p-6 sm:p-8 sm:pt-8">
-        <p className="text-[10px] uppercase tracking-[0.4em] text-gold-400/80 sm:text-[11px] sm:tracking-[0.45em]">
+        <p className="text-[10px] uppercase tracking-[0.4em] text-gold-400 sm:text-[11px] sm:tracking-[0.45em]">
           Featured Lakon
         </p>
         <div className="mt-2 flex flex-wrap items-baseline gap-x-4 gap-y-2 sm:gap-x-5">
@@ -214,7 +214,7 @@ function StoryModalBody({
                 </span>
                 <div>
                   <p className="font-semibold text-cream">{a.name}</p>
-                  <p className="mt-1 text-sm text-parchment/70">{a.detail}</p>
+                  <p className="mt-1 text-sm text-parchment/85">{a.detail}</p>
                 </div>
               </li>
             ))}
@@ -354,7 +354,7 @@ function MitraModalBody({
       </div>
 
       <div className="p-5 pt-14 min-[400px]:p-6 sm:p-8 sm:pt-8">
-        <p className="text-[10px] uppercase tracking-[0.4em] text-gold-400/80 sm:text-[11px] sm:tracking-[0.45em]">
+        <p className="text-[10px] uppercase tracking-[0.4em] text-gold-400 sm:text-[11px] sm:tracking-[0.45em]">
           Product Mitra
         </p>
         <div className="mt-2 flex flex-wrap items-baseline gap-x-4 gap-y-2 sm:gap-x-5">

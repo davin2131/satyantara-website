@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Disallow: /studio/
+Disallow: /studio
+
+Sitemap: https://satyantara-website.vercel.app/sitemap.xml
