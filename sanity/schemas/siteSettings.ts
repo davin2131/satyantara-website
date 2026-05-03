@@ -163,5 +163,114 @@ export const siteSettings = defineType({
         { name: "tagline", title: "Tagline kanan bawah", type: "string" },
       ],
     }),
+    defineField({
+      name: "navbar",
+      title: "Section Navbar (Tombol CTA)",
+      type: "object",
+      fields: [
+        {
+          name: "ctaLabel",
+          title: "Label tombol CTA",
+          type: "string",
+          description:
+            "Mis. 'Pesan via WhatsApp' atau 'Hubungi Kami'. Tampil sebagai tombol gold di kanan navbar.",
+        },
+        {
+          name: "ctaHref",
+          title: "URL tombol CTA",
+          type: "string",
+          description:
+            "Mis. https://wa.me/6287862181294 (boleh tambahkan ?text= untuk pesan default).",
+        },
+        {
+          name: "exploreLabel",
+          title: "Label dropdown Eksplorasi",
+          type: "string",
+          description:
+            "Mis. 'Eksplorasi'. Mega-menu yang memuat Galeri, Ensiklopedia, Peta Budaya, Permainan.",
+        },
+        {
+          name: "exploreEyebrow",
+          title: "Eyebrow di mega-menu (kolom kiri)",
+          type: "string",
+          description: "Mis. 'Eksplorasi Budaya'.",
+        },
+        {
+          name: "exploreTitle",
+          title: "Judul di mega-menu (kolom kiri)",
+          type: "text",
+          rows: 3,
+          description: "Mis. 'Cerita Wayang & Solo, terangkum dalam satu eksplorasi.'",
+        },
+        {
+          name: "exploreBody",
+          title: "Deskripsi di mega-menu (kolom kiri)",
+          type: "text",
+          rows: 4,
+        },
+        {
+          name: "exploreFooterNotes",
+          title: "Trivia di footer mega-menu (rotasi otomatis)",
+          type: "array",
+          of: [{ type: "string" }],
+          description:
+            "Daftar trivia/kutipan yang muncul bergantian otomatis tiap ~5 detik. Tambahkan sebanyak yang kamu mau.",
+        },
+        {
+          name: "exploreFooterNote",
+          title: "Catatan footer (legacy / fallback)",
+          type: "string",
+          description:
+            "Dipakai HANYA kalau daftar trivia di atas kosong. Boleh dibiarkan kosong.",
+        },
+      ],
+    }),
+    defineField({
+      name: "faqPage",
+      title: "Halaman FAQ",
+      type: "object",
+      fields: [
+        { name: "eyebrow", title: "Eyebrow (label kecil di atas)", type: "string" },
+        { name: "title", title: "Judul halaman", type: "string" },
+        { name: "subtitle", title: "Subjudul / paragraf intro", type: "text", rows: 3 },
+        {
+          name: "ctaEyebrow",
+          title: "Eyebrow blok 'Masih ada pertanyaan?'",
+          type: "string",
+        },
+        {
+          name: "ctaTitle",
+          title: "Judul blok 'Masih ada pertanyaan?'",
+          type: "string",
+        },
+        {
+          name: "ctaBody",
+          title: "Paragraf blok 'Masih ada pertanyaan?'",
+          type: "text",
+          rows: 3,
+        },
+      ],
+    }),
+    defineField({
+      name: "jadwalPage",
+      title: "Halaman Jadwal Acara",
+      type: "object",
+      fields: [
+        { name: "eyebrow", title: "Eyebrow", type: "string" },
+        { name: "title", title: "Judul halaman", type: "string" },
+        { name: "subtitle", title: "Subjudul / paragraf intro", type: "text", rows: 3 },
+        {
+          name: "emptyTitle",
+          title: "Judul saat belum ada acara",
+          type: "string",
+        },
+        {
+          name: "emptyBody",
+          title: "Paragraf saat belum ada acara",
+          type: "text",
+          rows: 3,
+        },
+      ],
+    }),
   ],
 });

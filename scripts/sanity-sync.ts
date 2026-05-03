@@ -155,6 +155,37 @@ type SiteSettingsSrc = {
     copyright?: string;
     tagline?: string;
   };
+  navbar?: {
+    ctaLabel?: string;
+    ctaHref?: string;
+    exploreLabel?: string;
+    exploreEyebrow?: string;
+    exploreTitle?: string;
+    exploreBody?: string;
+    exploreFooterNotes?: string[];
+    exploreFooterNote?: string;
+  };
+  faqPage?: {
+    eyebrow?: string;
+    title?: string;
+    subtitle?: string;
+    ctaEyebrow?: string;
+    ctaTitle?: string;
+    ctaBody?: string;
+  };
+  jadwalPage?: {
+    eyebrow?: string;
+    title?: string;
+    subtitle?: string;
+    emptyTitle?: string;
+    emptyBody?: string;
+  };
+};
+
+type FaqGroupSrc = {
+  title: string;
+  order?: number;
+  items?: { question: string; answer: string }[];
 };
 
 const QUERY = /* groq */ `{
@@ -267,7 +298,18 @@ const QUERY = /* groq */ `{
       socials[]{platform, href},
       contacts[]{kind, label, value, href},
       copyright, tagline
-    }
+    },
+    navbar{
+      ctaLabel, ctaHref, exploreLabel, exploreEyebrow,
+      exploreTitle, exploreBody, exploreFooterNotes, exploreFooterNote
+    },
+    faqPage{eyebrow, title, subtitle, ctaEyebrow, ctaTitle, ctaBody},
+    jadwalPage{eyebrow, title, subtitle, emptyTitle, emptyBody}
+  },
+  "faqGroups": *[_type == "faqGroup" && !(_id in path("drafts.**"))] | order(order asc, _createdAt asc){
+    title,
+    order,
+    items[]{question, answer}
   }
 }`;
 
@@ -732,6 +774,31 @@ export type SiteCopy = {
     copyright: string;
     tagline: string;
   };
+  navbar: {
+    ctaLabel: string;
+    ctaHref: string;
+    exploreLabel: string;
+    exploreEyebrow: string;
+    exploreTitle: string;
+    exploreBody: string;
+    exploreFooterNotes: string[];
+    exploreFooterNote: string;
+  };
+  faqPage: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    ctaEyebrow: string;
+    ctaTitle: string;
+    ctaBody: string;
+  };
+  jadwalPage: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    emptyTitle: string;
+    emptyBody: string;
+  };
 };
 
 export const siteCopy: SiteCopy = ${JSON.stringify(
@@ -766,10 +833,115 @@ export const siteCopy: SiteCopy = ${JSON.stringify(
         copyright: v.footer?.copyright ?? "",
         tagline: v.footer?.tagline ?? "",
       },
+      navbar: {
+        ctaLabel: v.navbar?.ctaLabel ?? "Pesan via WhatsApp",
+        ctaHref: v.navbar?.ctaHref ?? "https://wa.me/6287862181294",
+        exploreLabel: v.navbar?.exploreLabel ?? "Eksplorasi",
+        exploreEyebrow: v.navbar?.exploreEyebrow ?? "Eksplorasi Budaya",
+        exploreTitle:
+          v.navbar?.exploreTitle ??
+          "Cerita Wayang & Solo,\nterangkum dalam\nsatu eksplorasi.",
+        exploreBody:
+          v.navbar?.exploreBody ??
+          "Pilih pintu masuk ke konten budaya SATYANTARA — dari arsip foto sanggar, kisah tokoh wayang Pandawa & Kurawa, hingga peta budaya 38 provinsi.",
+        exploreFooterNotes:
+          v.navbar?.exploreFooterNotes && v.navbar.exploreFooterNotes.length > 0
+            ? v.navbar.exploreFooterNotes
+            : [
+                "Tahukah kamu? Wayang Kulit diakui UNESCO sejak 2003.",
+                "Solo dijuluki 'The Spirit of Java' karena warisan budaya Mataram.",
+                "Punakawan (Semar, Gareng, Petruk, Bagong) hanya ada di wayang Jawa.",
+                "Mahabharata punya 18 parwa; lakon wayang biasanya pilih 1\u20132 bab.",
+                "Pakeliran semalam suntuk bisa tampilkan 5\u20136 jam cerita non-stop.",
+                "Gunungan dipakai dalang sebagai pembuka, jeda, dan penutup lakon.",
+              ],
+        exploreFooterNote:
+          v.navbar?.exploreFooterNote ??
+          "",
+      },
+      faqPage: {
+        eyebrow: v.faqPage?.eyebrow ?? "Pertanyaan Umum",
+        title: v.faqPage?.title ?? "FAQ",
+        subtitle:
+          v.faqPage?.subtitle ??
+          "Hal-hal yang paling sering ditanyakan Teman Satya — dari paket lakon, jadwal workshop, pembayaran, sampai cara kerjasama.",
+        ctaEyebrow: v.faqPage?.ctaEyebrow ?? "Masih Ada Pertanyaan?",
+        ctaTitle: v.faqPage?.ctaTitle ?? "Hubungi Kami Langsung",
+        ctaBody:
+          v.faqPage?.ctaBody ??
+          "Tim SATYANTARA siap membantu lewat WhatsApp atau email. Kami biasanya membalas dalam 1-2 hari kerja.",
+      },
+      jadwalPage: {
+        eyebrow: v.jadwalPage?.eyebrow ?? "Jadwal Acara",
+        title:
+          v.jadwalPage?.title ?? "Pertunjukan, Workshop & Festival",
+        subtitle:
+          v.jadwalPage?.subtitle ??
+          "Kalender pertunjukan wayang, workshop, festival budaya, dan diskusi yang dijadwalkan SATYANTARA. Pilih acara, daftar via WhatsApp atau link resmi.",
+        emptyTitle:
+          v.jadwalPage?.emptyTitle ?? "Belum ada acara terjadwal",
+        emptyBody:
+          v.jadwalPage?.emptyBody ??
+          "Tim SATYANTARA sedang menyusun jadwal terbaru. Sementara itu, Anda bisa hubungi kami langsung untuk request workshop privat atau pertunjukan grup.",
+      },
     },
     null,
     2,
   )};
+`;
+}
+
+function buildFaqTs(groups: FaqGroupSrc[]): string {
+  // Kalau Sanity belum ada faqGroup yang dipublish, fall back ke seed default
+  // supaya halaman /faq tidak kosong sebelum admin isi data.
+  const ordered = (Array.isArray(groups) ? groups : [])
+    .filter((g) => g && g.title && Array.isArray(g.items) && g.items.length > 0)
+    .map((g, i) => ({
+      title: g.title,
+      order: typeof g.order === "number" ? g.order : (i + 1) * 10,
+      items: (g.items ?? [])
+        .filter((it) => it && it.question && it.answer)
+        .map((it) => ({ q: it.question, a: it.answer })),
+    }))
+    .sort((a, b) => a.order - b.order);
+
+  const groupsLiteral =
+    ordered.length > 0
+      ? JSON.stringify(ordered, null, 2)
+      : `[
+  {
+    "title": "Tentang SATYANTARA",
+    "order": 10,
+    "items": [
+      {
+        "q": "Apa itu SATYANTARA?",
+        "a": "SATYANTARA adalah brand budaya yang lahir dari Solo (Surakarta). Kami merangkai cerita Wayang dan kearifan Jawa menjadi pengalaman edukatif yang ramah anak muda — dari workshop, lakon pertunjukan, sampai produk kerajinan dari sanggar mitra."
+      },
+      {
+        "q": "Siapa yang bisa ikut workshop SATYANTARA?",
+        "a": "Semua usia, terutama remaja, mahasiswa, dan keluarga. Workshop kami didesain supaya mudah diikuti pemula tanpa perlu latar belakang seni — cukup bawa rasa ingin tahu."
+      }
+    ]
+  }
+]`;
+
+  return `// AUTO-GENERATED FROM SANITY. Edit content via Sanity Studio.
+// FAQ content: collection "FAQ - Pertanyaan Umum" (faqGroup documents).
+// Page hero text: "Setting Halaman" -> "Halaman FAQ".
+// Run \`npm run sanity:sync\` to refresh from Sanity.
+
+export type FaqItem = {
+  q: string;
+  a: string;
+};
+
+export type FaqGroup = {
+  title: string;
+  order: number;
+  items: FaqItem[];
+};
+
+export const faqGroups: FaqGroup[] = ${groupsLiteral};
 `;
 }
 
@@ -805,6 +977,24 @@ async function main() {
   const eventsPath = path.join(ROOT, "src/data/events.ts");
   writeFileSync(eventsPath, buildEventsTs(data.events ?? []), "utf8");
   console.log(`[sanity-sync] wrote ${eventsPath}`);
+
+  // FAQ: hanya overwrite kalau Sanity sudah punya minimal 1 faqGroup yang valid.
+  // Kalau belum ada, biarkan seed default di src/data/faq.ts.
+  const faqList = (data.faqGroups ?? []) as FaqGroupSrc[];
+  const hasFaq =
+    Array.isArray(faqList) &&
+    faqList.some(
+      (g) => g && g.title && Array.isArray(g.items) && g.items.length > 0,
+    );
+  if (hasFaq) {
+    const faqPath = path.join(ROOT, "src/data/faq.ts");
+    writeFileSync(faqPath, buildFaqTs(faqList), "utf8");
+    console.log(`[sanity-sync] wrote ${faqPath}`);
+  } else {
+    console.log(
+      "[sanity-sync] no faqGroup published yet — keeping existing seed di src/data/faq.ts",
+    );
+  }
 
   console.log("[sanity-sync] done.");
 }
