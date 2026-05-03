@@ -1,4 +1,3 @@
-import { Gunungan } from "../Gunungan";
 import { siteCopy } from "@/data/site";
 
 export function Hero() {
@@ -33,7 +32,12 @@ export function Hero() {
           <span className="h-px w-6 bg-gold-500/60 sm:w-10" />
         </div>
 
-        <Gunungan className="h-44 w-auto drop-shadow-[0_0_40px_rgba(212,162,78,0.4)] min-[400px]:h-56 sm:h-72 md:h-96 sm:drop-shadow-[0_0_60px_rgba(212,162,78,0.45)]" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/satyantara-hero-logo.png"
+          alt="SATYANTARA"
+          className="h-44 w-auto drop-shadow-[0_0_40px_rgba(212,162,78,0.4)] min-[400px]:h-56 sm:h-72 md:h-96 sm:drop-shadow-[0_0_60px_rgba(212,162,78,0.45)]"
+        />
 
         <h1 className="font-display text-[2.4rem] leading-none tracking-tight text-cream min-[400px]:text-5xl sm:text-7xl md:text-8xl">
           <span className="shimmer-text">SATYANTARA</span>

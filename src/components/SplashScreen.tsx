@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { Gunungan } from "./Gunungan";
+
 
 const TOTAL_DURATION = 3600;
 const FADE_OUT_AT = 3000;
@@ -62,7 +62,12 @@ export function SplashScreen() {
       {/* Main content */}
       <div className="relative flex w-full max-w-[92vw] flex-col items-center gap-4 px-4 text-center min-[400px]:gap-5 sm:max-w-none sm:gap-6 sm:px-6">
         <div className="splash-logo">
-          <Gunungan className="h-40 w-auto min-[400px]:h-48 sm:h-64 md:h-80" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/satyantara-hero-logo.png"
+            alt="SATYANTARA"
+            className="h-40 w-auto min-[400px]:h-48 sm:h-64 md:h-80"
+          />
         </div>
 
         <div className="splash-eyebrow text-[9px] uppercase tracking-[0.45em] text-gold-300 min-[400px]:text-[10px] min-[400px]:tracking-[0.55em] sm:text-[11px] sm:tracking-[0.6em]">
@@ -84,7 +89,7 @@ export function SplashScreen() {
         <div className="splash-line h-px w-0 bg-gradient-to-r from-transparent via-gold-400 to-transparent" />
 
         <div className="splash-tagline text-xs italic tracking-wider text-cream/75 sm:text-sm md:text-base">
-          Sugeng Rawuh, Sayners.
+          Sugeng Rawuh, Teman Satya!
         </div>
       </div>
 
