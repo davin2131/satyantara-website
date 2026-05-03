@@ -73,6 +73,45 @@ export const story = defineType({
         "Contoh: 'Beli di Shopee' atau 'Beli di Tokopedia'. Default: 'Beli di Marketplace'.",
     }),
     defineField({
+      name: "requiresDate",
+      title: "Wajib pilih tanggal saat pemesanan",
+      type: "boolean",
+      description:
+        "Kalau aktif, pelanggan harus pilih tanggal sebelum bisa masuk keranjang. Cocok untuk lakon yang butuh booking jadwal pertunjukan.",
+      initialValue: true,
+    }),
+    defineField({
+      name: "availableDays",
+      title: "Hari yang tersedia (opsional)",
+      type: "array",
+      of: [{ type: "string" }],
+      options: {
+        list: [
+          { title: "Senin", value: "monday" },
+          { title: "Selasa", value: "tuesday" },
+          { title: "Rabu", value: "wednesday" },
+          { title: "Kamis", value: "thursday" },
+          { title: "Jumat", value: "friday" },
+          { title: "Sabtu", value: "saturday" },
+          { title: "Minggu", value: "sunday" },
+        ],
+      },
+      description:
+        "Pilih hari-hari yang bisa dipesan. Kalau dikosongkan, default Sabtu & Minggu. Hanya berlaku jika 'Wajib pilih tanggal' aktif.",
+      initialValue: ["saturday", "sunday"],
+      hidden: ({ parent }) => !parent?.requiresDate,
+    }),
+    defineField({
+      name: "bookingWeeks",
+      title: "Jumlah minggu ke depan yang ditampilkan",
+      type: "number",
+      description:
+        "Berapa minggu ke depan yang muncul sebagai opsi tanggal. Default 4 minggu (~8 tanggal kalau Sabtu+Minggu).",
+      initialValue: 4,
+      validation: (r) => r.min(1).max(26).integer(),
+      hidden: ({ parent }) => !parent?.requiresDate,
+    }),
+    defineField({
       name: "activities",
       title: "Activity",
       type: "array",

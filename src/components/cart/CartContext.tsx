@@ -13,7 +13,7 @@ import {
 export type CartKind = "lakon" | "rekomendasi" | "mitra";
 
 export type CartItem = {
-  id: string; // unique key: `${kind}:${slug}`
+  id: string; // unique key: `${kind}:${slug}` or `${kind}:${slug}:${bookingDate}`
   kind: CartKind;
   slug: string;
   name: string;
@@ -21,6 +21,8 @@ export type CartItem = {
   priceValue: number; // numeric IDR
   pricePer?: string;
   imageUrl?: string;
+  /** ISO date (YYYY-MM-DD) when this item is for a date-bound booking. */
+  bookingDate?: string;
   qty: number;
 };
 

@@ -1,11 +1,12 @@
 "use client";
 
-import { createContext, useCallback, useContext, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
 import { Modal } from "./ui/Modal";
 import { SplashScreen } from "./SplashScreen";
 import { stories, recommendations, mitraProducts, type Story, type MitraProduct } from "@/data/products";
 import { CartProvider, useCart, parsePriceIDR } from "./cart/CartContext";
 import { CartDrawer } from "./cart/CartDrawer";
+import { generateBookingDates } from "@/lib/bookingDates";
 
 type StoryModalCtx = {
   openStory: (slug: string) => void;
@@ -127,15 +128,34 @@ function StoryModalBody({
   const isLakon = stories.some((s) => s.slug === story.slug);
   const kind = isLakon ? "lakon" : "rekomendasi";
 
+  // Date booking (Lakon only). Default ON for lakons, OFF for rekomendasi.
+  const requiresDate =
+    isLakon && (story.requiresDate ?? true) && !hasMarketplace;
+  const availableDates = useMemo(
+    () =>
+      requiresDate
+        ? generateBookingDates({
+            availableDays: story.availableDays,
+            weeks: story.bookingWeeks,
+          })
+        : [],
+    [requiresDate, story.availableDays, story.bookingWeeks],
+  );
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const canAddToCart = !requiresDate || Boolean(selectedDate);
+
   function handleAddToCart() {
+    if (requiresDate && !selectedDate) return;
+    const idSuffix = selectedDate ? `:${selectedDate}` : "";
     addItem({
-      id: `${kind}:${story.slug}`,
+      id: `${kind}:${story.slug}${idSuffix}`,
       kind,
       slug: story.slug,
       name: story.title,
       priceLabel: story.price,
       priceValue: parsePriceIDR(story.price),
       imageUrl: story.imageUrl,
+      bookingDate: selectedDate ?? undefined,
     });
     onAddedToCart();
     openCart();
@@ -201,6 +221,52 @@ function StoryModalBody({
           </ul>
         </div>
 
+        {requiresDate && (
+          <div className="mt-7">
+            <h4 className="text-xs font-semibold uppercase tracking-[0.4em] text-gold-300">
+              Pilih Tanggal Pertunjukan
+            </h4>
+            {availableDates.length === 0 ? (
+              <p className="mt-3 rounded-2xl border border-amber-400/30 bg-amber-500/5 p-3 text-xs text-amber-200">
+                Belum ada tanggal yang tersedia. Hubungi WhatsApp kami untuk
+                jadwal khusus.
+              </p>
+            ) : (
+              <>
+                <p className="mt-2 text-[11px] text-cream/55">
+                  Klik tanggal yang Anda inginkan. Pemesanan terkonfirmasi
+                  setelah pembayaran via WhatsApp.
+                </p>
+                <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
+                  {availableDates.map((d) => {
+                    const active = selectedDate === d.iso;
+                    return (
+                      <button
+                        key={d.iso}
+                        type="button"
+                        onClick={() => setSelectedDate(d.iso)}
+                        aria-pressed={active}
+                        className={`rounded-xl border px-3 py-2 text-left text-xs transition ${
+                          active
+                            ? "border-gold-400 bg-gold-500/15 text-gold-200 shadow-[0_0_0_1px_rgba(212,162,78,0.6)]"
+                            : "border-gold-500/20 bg-coffee-800/40 text-cream/80 hover:border-gold-400/50 hover:bg-coffee-800/70"
+                        }`}
+                      >
+                        <span className="block font-semibold">
+                          {d.shortLabel.split(",")[0]}
+                        </span>
+                        <span className="block text-[11px] text-cream/60">
+                          {d.shortLabel.split(",").slice(1).join(",").trim()}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </>
+            )}
+          </div>
+        )}
+
         <div className="mt-6 flex flex-wrap items-center gap-3 sm:mt-7">
           {hasMarketplace ? (
             <a
@@ -216,10 +282,15 @@ function StoryModalBody({
             <button
               type="button"
               onClick={handleAddToCart}
-              className="group inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-full bg-gradient-to-b from-cream to-coffee-100 px-5 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-coffee-950 shadow-[0_15px_40px_-15px_rgba(232,221,184,0.6)] transition-transform hover:scale-[1.02] sm:flex-none sm:gap-3 sm:px-7 sm:text-sm sm:tracking-[0.18em]"
+              disabled={!canAddToCart}
+              className={`group inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-full px-5 py-3 text-xs font-semibold uppercase tracking-[0.16em] transition-transform sm:flex-none sm:gap-3 sm:px-7 sm:text-sm sm:tracking-[0.18em] ${
+                canAddToCart
+                  ? "bg-gradient-to-b from-cream to-coffee-100 text-coffee-950 shadow-[0_15px_40px_-15px_rgba(232,221,184,0.6)] hover:scale-[1.02]"
+                  : "cursor-not-allowed bg-coffee-800/60 text-cream/40"
+              }`}
             >
               <BagPlusIcon className="h-4 w-4" />
-              Masukkan ke Keranjang
+              {canAddToCart ? "Masukkan ke Keranjang" : "Pilih tanggal dulu"}
             </button>
           )}
           <IconButton ariaLabel="Tambah wishlist">
