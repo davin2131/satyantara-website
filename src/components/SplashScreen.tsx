@@ -70,22 +70,6 @@ export function SplashScreen() {
           />
         </div>
 
-        <div className="splash-eyebrow text-[9px] uppercase tracking-[0.45em] text-gold-300 min-[400px]:text-[10px] min-[400px]:tracking-[0.55em] sm:text-[11px] sm:tracking-[0.6em]">
-          Persembahan Dari
-        </div>
-
-        <h1 className="splash-title font-display text-[2.1rem] leading-none tracking-[0.04em] min-[400px]:text-4xl sm:text-6xl md:text-7xl lg:text-8xl">
-          {"SATYANTARA".split("").map((char, i) => (
-            <span
-              key={i}
-              className="splash-letter inline-block shimmer-text"
-              style={{ animationDelay: `${800 + i * 80}ms` }}
-            >
-              {char}
-            </span>
-          ))}
-        </h1>
-
         <div className="splash-line h-px w-0 bg-gradient-to-r from-transparent via-gold-400 to-transparent" />
 
         <div className="splash-tagline text-xs italic tracking-wider text-cream/75 sm:text-sm md:text-base">
