@@ -12,6 +12,33 @@ import {
   type WayangCategory,
 } from "@/data/wayang";
 
+// Slugs yang punya foto bawaan di /public/wayang/[slug].jpg.
+// Dipakai sebagai fallback kalau editor belum upload foto via Sanity Studio.
+// Foto Sanity (entry.imageUrl) selalu menang kalau ada.
+const WAYANG_LOCAL_PHOTOS = new Set<string>([
+  "yudistira",
+  "bima",
+  "arjuna",
+  "nakula",
+  "sadewa",
+  "duryudana",
+  "sengkuni",
+  "semar",
+  "gareng",
+  "petruk",
+  "bagong",
+  "anoman",
+  "sri-krishna",
+  "bathara-guru",
+  "drupadi",
+]);
+
+function resolveWayangPhoto(entry: WayangEntry): string | null {
+  if (entry.imageUrl) return entry.imageUrl;
+  if (WAYANG_LOCAL_PHOTOS.has(entry.slug)) return `/wayang/${entry.slug}.jpg`;
+  return null;
+}
+
 type FilterValue = "all" | WayangCategory;
 
 const filters: { value: FilterValue; label: string }[] = [
@@ -132,17 +159,20 @@ function WayangCard({
       className="group flex h-full w-full flex-col overflow-hidden rounded-2xl border border-gold-500/20 bg-coffee-900/70 text-left shadow-[0_20px_60px_-25px_rgba(0,0,0,0.7)] transition-all duration-500 hover:-translate-y-1 hover:border-gold-400/60 hover:shadow-[0_30px_70px_-20px_rgba(0,0,0,0.8)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-coffee-950"
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-coffee-800">
-        {entry.imageUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={entry.imageUrl}
-            alt={entry.imageAlt ?? entry.name}
-            loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-          />
-        ) : (
-          <WayangPlaceholder index={index} category={entry.category} />
-        )}
+        {(() => {
+          const src = resolveWayangPhoto(entry);
+          return src ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={src}
+              alt={entry.imageAlt ?? entry.name}
+              loading="lazy"
+              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+            />
+          ) : (
+            <WayangPlaceholder index={index} category={entry.category} />
+          );
+        })()}
         <span className="absolute left-3 top-3 rounded-full bg-coffee-950/80 px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.22em] text-gold-300 backdrop-blur sm:text-[10px]">
           {wayangCategoryLabels[entry.category]}
         </span>
@@ -179,16 +209,19 @@ function WayangModalBody({ entry }: { entry: WayangEntry }) {
   return (
     <div className="grid gap-0 md:grid-cols-[minmax(240px,320px)_1fr]">
       <div className="relative aspect-[4/3] md:aspect-auto md:min-h-[420px]">
-        {entry.imageUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={entry.imageUrl}
-            alt={entry.imageAlt ?? entry.name}
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <WayangPlaceholder index={0} category={entry.category} />
-        )}
+        {(() => {
+          const src = resolveWayangPhoto(entry);
+          return src ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={src}
+              alt={entry.imageAlt ?? entry.name}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <WayangPlaceholder index={0} category={entry.category} />
+          );
+        })()}
         <span className="absolute left-4 top-4 rounded-full bg-coffee-950/80 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-gold-300 backdrop-blur">
           {wayangCategoryLabels[entry.category]}
         </span>
