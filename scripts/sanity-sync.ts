@@ -840,7 +840,7 @@ export const siteCopy: SiteCopy = ${JSON.stringify(
         exploreEyebrow: v.navbar?.exploreEyebrow ?? "Eksplorasi Budaya",
         exploreTitle:
           v.navbar?.exploreTitle ??
-          "Cerita Wayang & Solo,\\nterangkum dalam\\nsatu eksplorasi.",
+          "Cerita Wayang & Solo,\nterangkum dalam\nsatu eksplorasi.",
         exploreBody:
           v.navbar?.exploreBody ??
           "Pilih pintu masuk ke konten budaya SATYANTARA — dari arsip foto sanggar, kisah tokoh wayang Pandawa & Kurawa, hingga peta budaya 38 provinsi.",

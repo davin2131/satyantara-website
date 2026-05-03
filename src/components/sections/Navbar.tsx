@@ -82,6 +82,36 @@ export function Navbar() {
   const desktopWrapperRef = useRef<HTMLLIElement | null>(null);
   const exploreButtonRef = useRef<HTMLButtonElement | null>(null);
   const megapanelRef = useRef<HTMLDivElement | null>(null);
+  const closeTimerRef = useRef<number | null>(null);
+
+  // Hover dengan delay supaya cursor sempat masuk dari trigger ke panel
+  // (mega-menu pattern: open instan, close debounced ~140ms).
+  const cancelHoverClose = () => {
+    if (closeTimerRef.current !== null) {
+      window.clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+  };
+  const openExploreHover = () => {
+    cancelHoverClose();
+    setExploreOpen(true);
+  };
+  const scheduleExploreClose = () => {
+    cancelHoverClose();
+    closeTimerRef.current = window.setTimeout(() => {
+      setExploreOpen(false);
+      closeTimerRef.current = null;
+    }, 140);
+  };
+
+  // Cleanup timer saat unmount.
+  useEffect(() => {
+    return () => {
+      if (closeTimerRef.current !== null) {
+        window.clearTimeout(closeTimerRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -182,8 +212,9 @@ export function Navbar() {
           {/* Eksplorasi (mega-menu trigger) */}
           <li
             ref={desktopWrapperRef}
-            onMouseEnter={() => setExploreOpen(true)}
-            onMouseLeave={() => setExploreOpen(false)}
+            onMouseEnter={openExploreHover}
+            onMouseLeave={scheduleExploreClose}
+            onFocus={openExploreHover}
             className="relative"
           >
             <button
@@ -283,8 +314,8 @@ export function Navbar() {
         role="region"
         aria-label={navbar.exploreLabel}
         aria-hidden={!exploreOpen}
-        onMouseEnter={() => setExploreOpen(true)}
-        onMouseLeave={() => setExploreOpen(false)}
+        onMouseEnter={openExploreHover}
+        onMouseLeave={scheduleExploreClose}
         className={`absolute inset-x-0 top-full hidden overflow-hidden border-b border-gold-500/20 bg-coffee-950/97 backdrop-blur-md shadow-[0_30px_60px_-20px_rgba(0,0,0,0.7)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] lg:block ${
           exploreOpen
             ? "pointer-events-auto translate-y-0 opacity-100"
