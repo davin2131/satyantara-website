@@ -57,6 +57,22 @@ export const story = defineType({
       ],
     }),
     defineField({
+      name: "marketplaceUrl",
+      title: "Link Marketplace (opsional)",
+      type: "url",
+      description:
+        "Kalau diisi (mis. link Shopee/Tokopedia/Lazada), tombol di modal akan jadi 'Beli di Marketplace' dan langsung membuka link ini. Kalau dikosongkan, produk masuk Keranjang lalu checkout via WhatsApp.",
+      validation: (r) =>
+        r.uri({ scheme: ["http", "https"], allowRelative: false }),
+    }),
+    defineField({
+      name: "marketplaceLabel",
+      title: "Label tombol marketplace (opsional)",
+      type: "string",
+      description:
+        "Contoh: 'Beli di Shopee' atau 'Beli di Tokopedia'. Default: 'Beli di Marketplace'.",
+    }),
+    defineField({
       name: "activities",
       title: "Activity",
       type: "array",

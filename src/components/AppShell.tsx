@@ -3,7 +3,9 @@
 import { createContext, useCallback, useContext, useState, type ReactNode } from "react";
 import { Modal } from "./ui/Modal";
 import { SplashScreen } from "./SplashScreen";
-import { stories, mitraProducts, type Story, type MitraProduct } from "@/data/products";
+import { stories, recommendations, mitraProducts, type Story, type MitraProduct } from "@/data/products";
+import { CartProvider, useCart, parsePriceIDR } from "./cart/CartContext";
+import { CartDrawer } from "./cart/CartDrawer";
 
 type StoryModalCtx = {
   openStory: (slug: string) => void;
@@ -43,12 +45,13 @@ export function AppShell({ children }: { children: ReactNode }) {
       setActiveStory(found);
       return;
     }
-    // Fallback for recommendation lakon yang ceritanya belum dibuka
+    // Fallback: try matching against Recommendations (they use the same modal)
+    const rec = recommendations.find((r) => r.slug === slug);
     setActiveStory({
       slug,
-      title: prettify(slug),
+      title: rec?.title ?? prettify(slug),
       subtitle: "Lakon ini sedang disiapkan, Sayners.",
-      price: "Rp 1.000.000",
+      price: rec?.price ?? "Rp 1.000.000",
       description:
         "Cerita lengkap dari lakon ini akan segera hadir di SATYANTARA. Pantau terus website dan media sosial kami untuk update terbaru — atau ikut newsletter Sayners agar tidak ketinggalan saat lakon ini dirilis.",
       activities: [
@@ -57,6 +60,10 @@ export function AppShell({ children }: { children: ReactNode }) {
         { name: "Sneak Peek", detail: "Follow Instagram @satyantara untuk preview eksklusif." },
         { name: "Newsletter", detail: "Daftar via email untuk dapat early-bird harga." },
       ],
+      imageUrl: rec?.imageUrl,
+      imageAlt: rec?.imageAlt,
+      marketplaceUrl: rec?.marketplaceUrl,
+      marketplaceLabel: rec?.marketplaceLabel,
     });
   }, []);
   const openMitra = useCallback((slug: string) => {
@@ -65,34 +72,75 @@ export function AppShell({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <StoryModalContext.Provider value={{ openStory }}>
-      <MitraModalContext.Provider value={{ openMitra }}>
-        <SplashScreen />
-        {children}
+    <CartProvider>
+      <StoryModalContext.Provider value={{ openStory }}>
+        <MitraModalContext.Provider value={{ openMitra }}>
+          <SplashScreen />
+          {children}
 
-        <Modal
-          open={activeStory !== null}
-          onClose={() => setActiveStory(null)}
-          ariaLabel={activeStory?.title}
-          size="lg"
-        >
-          {activeStory && <StoryModalBody story={activeStory} />}
-        </Modal>
+          <Modal
+            open={activeStory !== null}
+            onClose={() => setActiveStory(null)}
+            ariaLabel={activeStory?.title}
+            size="lg"
+          >
+            {activeStory && (
+              <StoryModalBody
+                story={activeStory}
+                onAddedToCart={() => setActiveStory(null)}
+              />
+            )}
+          </Modal>
 
-        <Modal
-          open={activeMitra !== null}
-          onClose={() => setActiveMitra(null)}
-          ariaLabel={activeMitra?.name}
-          size="md"
-        >
-          {activeMitra && <MitraModalBody product={activeMitra} />}
-        </Modal>
-      </MitraModalContext.Provider>
-    </StoryModalContext.Provider>
+          <Modal
+            open={activeMitra !== null}
+            onClose={() => setActiveMitra(null)}
+            ariaLabel={activeMitra?.name}
+            size="md"
+          >
+            {activeMitra && (
+              <MitraModalBody
+                product={activeMitra}
+                onAddedToCart={() => setActiveMitra(null)}
+              />
+            )}
+          </Modal>
+
+          <CartDrawer />
+        </MitraModalContext.Provider>
+      </StoryModalContext.Provider>
+    </CartProvider>
   );
 }
 
-function StoryModalBody({ story }: { story: Story }) {
+function StoryModalBody({
+  story,
+  onAddedToCart,
+}: {
+  story: Story;
+  onAddedToCart: () => void;
+}) {
+  const { addItem, openCart } = useCart();
+  const hasMarketplace = Boolean(story.marketplaceUrl);
+  const marketplaceLabel = story.marketplaceLabel || "Beli di Marketplace";
+  // Determine if this is a real Lakon or a Rekomendasi (sharing the same modal)
+  const isLakon = stories.some((s) => s.slug === story.slug);
+  const kind = isLakon ? "lakon" : "rekomendasi";
+
+  function handleAddToCart() {
+    addItem({
+      id: `${kind}:${story.slug}`,
+      kind,
+      slug: story.slug,
+      name: story.title,
+      priceLabel: story.price,
+      priceValue: parsePriceIDR(story.price),
+      imageUrl: story.imageUrl,
+    });
+    onAddedToCart();
+    openCart();
+  }
+
   return (
     <div className="grid gap-0 md:grid-cols-[minmax(220px,300px)_1fr]">
       <div className="relative">
@@ -154,13 +202,26 @@ function StoryModalBody({ story }: { story: Story }) {
         </div>
 
         <div className="mt-6 flex flex-wrap items-center gap-3 sm:mt-7">
-          <button
-            type="button"
-            className="group inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-full bg-gradient-to-b from-cream to-coffee-100 px-5 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-coffee-950 shadow-[0_15px_40px_-15px_rgba(232,221,184,0.6)] transition-transform hover:scale-[1.02] sm:flex-none sm:gap-3 sm:px-7 sm:text-sm sm:tracking-[0.18em]"
-          >
-            <BagPlusIcon className="h-4 w-4" />
-            Masukkan ke Keranjang
-          </button>
+          {hasMarketplace ? (
+            <a
+              href={story.marketplaceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-full bg-gradient-to-b from-orange-400 to-orange-600 px-5 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-coffee-950 shadow-[0_15px_40px_-15px_rgba(251,146,60,0.6)] transition-transform hover:scale-[1.02] sm:flex-none sm:gap-3 sm:px-7 sm:text-sm sm:tracking-[0.18em]"
+            >
+              <ExternalLinkIcon className="h-4 w-4" />
+              {marketplaceLabel}
+            </a>
+          ) : (
+            <button
+              type="button"
+              onClick={handleAddToCart}
+              className="group inline-flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-full bg-gradient-to-b from-cream to-coffee-100 px-5 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-coffee-950 shadow-[0_15px_40px_-15px_rgba(232,221,184,0.6)] transition-transform hover:scale-[1.02] sm:flex-none sm:gap-3 sm:px-7 sm:text-sm sm:tracking-[0.18em]"
+            >
+              <BagPlusIcon className="h-4 w-4" />
+              Masukkan ke Keranjang
+            </button>
+          )}
           <IconButton ariaLabel="Tambah wishlist">
             <HeartIcon className="h-4 w-4" />
           </IconButton>
@@ -173,7 +234,32 @@ function StoryModalBody({ story }: { story: Story }) {
   );
 }
 
-function MitraModalBody({ product }: { product: MitraProduct }) {
+function MitraModalBody({
+  product,
+  onAddedToCart,
+}: {
+  product: MitraProduct;
+  onAddedToCart: () => void;
+}) {
+  const { addItem, openCart } = useCart();
+  const hasMarketplace = Boolean(product.marketplaceUrl);
+  const marketplaceLabel = product.marketplaceLabel || "Beli di Marketplace";
+
+  function handleAddToCart() {
+    addItem({
+      id: `mitra:${product.slug}`,
+      kind: "mitra",
+      slug: product.slug,
+      name: product.name,
+      priceLabel: product.price,
+      priceValue: parsePriceIDR(product.price),
+      pricePer: product.pricePer,
+      imageUrl: product.imageUrl,
+    });
+    onAddedToCart();
+    openCart();
+  }
+
   return (
     <div className="p-0">
       <div className="relative">
@@ -234,13 +320,26 @@ function MitraModalBody({ product }: { product: MitraProduct }) {
         </div>
 
         <div className="mt-6 flex flex-wrap items-center gap-3 sm:mt-7">
-          <button
-            type="button"
-            className="inline-flex items-center gap-3 rounded-full bg-gradient-to-b from-gold-300 to-gold-500 px-6 py-2.5 text-sm font-semibold tracking-[0.18em] uppercase text-coffee-950 shadow-[0_15px_40px_-15px_rgba(212,162,78,0.6)] transition-transform hover:scale-[1.02]"
-          >
-            <BagPlusIcon className="h-4 w-4" />
-            Pesan Sekarang
-          </button>
+          {hasMarketplace ? (
+            <a
+              href={product.marketplaceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 rounded-full bg-gradient-to-b from-orange-400 to-orange-600 px-6 py-2.5 text-sm font-semibold tracking-[0.18em] uppercase text-coffee-950 shadow-[0_15px_40px_-15px_rgba(251,146,60,0.6)] transition-transform hover:scale-[1.02]"
+            >
+              <ExternalLinkIcon className="h-4 w-4" />
+              {marketplaceLabel}
+            </a>
+          ) : (
+            <button
+              type="button"
+              onClick={handleAddToCart}
+              className="inline-flex items-center gap-3 rounded-full bg-gradient-to-b from-gold-300 to-gold-500 px-6 py-2.5 text-sm font-semibold tracking-[0.18em] uppercase text-coffee-950 shadow-[0_15px_40px_-15px_rgba(212,162,78,0.6)] transition-transform hover:scale-[1.02]"
+            >
+              <BagPlusIcon className="h-4 w-4" />
+              Masukkan ke Keranjang
+            </button>
+          )}
           <IconButton ariaLabel="Tambah wishlist">
             <HeartIcon className="h-4 w-4" />
           </IconButton>
@@ -425,6 +524,23 @@ function BagPlusIcon(props: React.SVGProps<SVGSVGElement>) {
       <path d="M16 10a4 4 0 0 1-8 0" />
       <line x1="12" y1="13" x2="12" y2="19" />
       <line x1="9" y1="16" x2="15" y2="16" />
+    </svg>
+  );
+}
+function ExternalLinkIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+      <polyline points="15 3 21 3 21 9" />
+      <line x1="10" y1="14" x2="21" y2="3" />
     </svg>
   );
 }

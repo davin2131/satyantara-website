@@ -31,6 +31,21 @@ export const recommendation = defineType({
       validation: (r) => r.required(),
     }),
     defineField({
+      name: "marketplaceUrl",
+      title: "Link Marketplace (opsional)",
+      type: "url",
+      description:
+        "Kalau diisi (mis. Shopee/Tokopedia), tombol di modal jadi 'Beli di Marketplace' dan buka link langsung. Kalau dikosongkan, masuk Keranjang lalu checkout WhatsApp.",
+      validation: (r) =>
+        r.uri({ scheme: ["http", "https"], allowRelative: false }),
+    }),
+    defineField({
+      name: "marketplaceLabel",
+      title: "Label tombol marketplace (opsional)",
+      type: "string",
+      description: "Contoh: 'Beli di Shopee'. Default: 'Beli di Marketplace'.",
+    }),
+    defineField({
       name: "image",
       title: "Foto (opsional)",
       type: "image",

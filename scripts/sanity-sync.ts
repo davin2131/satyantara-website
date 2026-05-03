@@ -36,6 +36,8 @@ type StorySrc = {
   activities?: { name: string; detail: string }[];
   imageUrl?: string;
   imageAlt?: string;
+  marketplaceUrl?: string;
+  marketplaceLabel?: string;
 };
 
 type RecSrc = {
@@ -44,6 +46,8 @@ type RecSrc = {
   price: string;
   imageUrl?: string;
   imageAlt?: string;
+  marketplaceUrl?: string;
+  marketplaceLabel?: string;
 };
 
 type MitraSrc = {
@@ -57,6 +61,8 @@ type MitraSrc = {
   highlights?: string[];
   imageUrl?: string;
   imageAlt?: string;
+  marketplaceUrl?: string;
+  marketplaceLabel?: string;
 };
 
 type SlideSrc = {
@@ -156,6 +162,8 @@ const QUERY = /* groq */ `{
     price,
     description,
     activities[]{name, detail},
+    marketplaceUrl,
+    marketplaceLabel,
     "imageUrl": image.asset->url,
     "imageAlt": image.alt
   },
@@ -163,6 +171,8 @@ const QUERY = /* groq */ `{
     "slug": slug,
     title,
     price,
+    marketplaceUrl,
+    marketplaceLabel,
     "imageUrl": image.asset->url,
     "imageAlt": image.alt
   },
@@ -175,6 +185,8 @@ const QUERY = /* groq */ `{
     tone,
     description,
     highlights,
+    marketplaceUrl,
+    marketplaceLabel,
     "imageUrl": image.asset->url,
     "imageAlt": image.alt
   },
@@ -257,6 +269,9 @@ function buildProductsTs(data: {
     return parts.join("\n");
   };
 
+  const optLine = (key: string, val?: string) =>
+    val ? `    ${key}: ${lit(val)},` : "";
+
   const stories = data.stories
     .map(
       (s) => `  {
@@ -266,6 +281,8 @@ function buildProductsTs(data: {
     price: ${lit(s.price)},
     description: ${lit(s.description)},
 ${imgLines(s.imageUrl, s.imageAlt)}
+${optLine("marketplaceUrl", s.marketplaceUrl)}
+${optLine("marketplaceLabel", s.marketplaceLabel)}
     activities: [
 ${(s.activities ?? [])
   .map(
@@ -284,6 +301,8 @@ ${(s.activities ?? [])
     title: ${lit(r.title)},
     price: ${lit(r.price)},
 ${imgLines(r.imageUrl, r.imageAlt)}
+${optLine("marketplaceUrl", r.marketplaceUrl)}
+${optLine("marketplaceLabel", r.marketplaceLabel)}
   },`,
     )
     .join("\n");
@@ -299,6 +318,8 @@ ${imgLines(r.imageUrl, r.imageAlt)}
     tone: ${lit(m.tone)} as MitraProduct["tone"],
     description: ${lit(m.description)},
 ${imgLines(m.imageUrl, m.imageAlt)}
+${optLine("marketplaceUrl", m.marketplaceUrl)}
+${optLine("marketplaceLabel", m.marketplaceLabel)}
     highlights: [
 ${(m.highlights ?? []).map((h) => `      ${lit(h)},`).join("\n")}
     ],
@@ -328,6 +349,8 @@ export type Story = {
   activities: { name: string; detail: string }[];
   imageUrl?: string;
   imageAlt?: string;
+  marketplaceUrl?: string;
+  marketplaceLabel?: string;
 };
 
 export type Recommendation = {
@@ -336,6 +359,8 @@ export type Recommendation = {
   price: string;
   imageUrl?: string;
   imageAlt?: string;
+  marketplaceUrl?: string;
+  marketplaceLabel?: string;
 };
 
 export type MitraProduct = {
@@ -349,6 +374,8 @@ export type MitraProduct = {
   highlights: string[];
   imageUrl?: string;
   imageAlt?: string;
+  marketplaceUrl?: string;
+  marketplaceLabel?: string;
 };
 
 export type HeroSlide = {

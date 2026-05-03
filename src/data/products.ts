@@ -10,6 +10,8 @@ export type Story = {
   activities: { name: string; detail: string }[];
   imageUrl?: string;
   imageAlt?: string;
+  marketplaceUrl?: string;
+  marketplaceLabel?: string;
 };
 
 export type Recommendation = {
@@ -18,6 +20,8 @@ export type Recommendation = {
   price: string;
   imageUrl?: string;
   imageAlt?: string;
+  marketplaceUrl?: string;
+  marketplaceLabel?: string;
 };
 
 export type MitraProduct = {
@@ -31,6 +35,8 @@ export type MitraProduct = {
   highlights: string[];
   imageUrl?: string;
   imageAlt?: string;
+  marketplaceUrl?: string;
+  marketplaceLabel?: string;
 };
 
 export type HeroSlide = {
