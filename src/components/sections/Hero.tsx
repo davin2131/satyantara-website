@@ -39,10 +39,6 @@ export function Hero() {
           className="h-44 w-auto drop-shadow-[0_0_40px_rgba(212,162,78,0.4)] min-[400px]:h-56 sm:h-72 md:h-96 sm:drop-shadow-[0_0_60px_rgba(212,162,78,0.45)]"
         />
 
-        <h1 className="font-display text-[2.4rem] leading-none tracking-tight text-cream min-[400px]:text-5xl sm:text-7xl md:text-8xl">
-          <span className="shimmer-text">SATYANTARA</span>
-        </h1>
-
         <p className="max-w-2xl text-sm leading-relaxed text-parchment/80 sm:text-base md:text-lg">
           {c.tagline}
         </p>
