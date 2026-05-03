@@ -74,6 +74,17 @@ export function Navbar() {
   const navbar = siteCopy.navbar;
   const isExploreActive = exploreItems.some((item) => pathname === item.href);
 
+  // Trivia rotasi di footer mega-menu. Pakai array kalau ada, fallback ke
+  // exploreFooterNote (legacy single string) kalau array kosong.
+  const triviaList: string[] =
+    navbar.exploreFooterNotes && navbar.exploreFooterNotes.length > 0
+      ? navbar.exploreFooterNotes
+      : navbar.exploreFooterNote
+        ? [navbar.exploreFooterNote]
+        : [];
+  const [triviaIndex, setTriviaIndex] = useState(0);
+  const [triviaVisible, setTriviaVisible] = useState(true);
+
   // Cart hanya relevan di halaman komersial (Beranda).
   // Tetap muncul kalau ada item, supaya user bisa checkout dari mana saja.
   const showCart = pathname === "/" || count > 0;
@@ -159,6 +170,21 @@ export function Navbar() {
     document.addEventListener("mousedown", onClick);
     return () => document.removeEventListener("mousedown", onClick);
   }, [exploreOpen]);
+
+  // Rotasi trivia di footer mega-menu: hanya jalan saat panel terbuka,
+  // ganti tiap 5 detik dengan fade transition (220ms fade-out → swap → fade-in).
+  useEffect(() => {
+    if (!exploreOpen) return;
+    if (triviaList.length <= 1) return;
+    const interval = window.setInterval(() => {
+      setTriviaVisible(false);
+      window.setTimeout(() => {
+        setTriviaIndex((i) => (i + 1) % triviaList.length);
+        setTriviaVisible(true);
+      }, 220);
+    }, 5000);
+    return () => window.clearInterval(interval);
+  }, [exploreOpen, triviaList.length]);
 
   // Body scroll lock saat mobile drawer terbuka.
   useEffect(() => {
@@ -333,13 +359,6 @@ export function Navbar() {
             <p className="text-[13px] leading-[1.55] text-parchment/90">
               {navbar.exploreBody}
             </p>
-            <Link
-              href="/galeri"
-              onClick={() => setExploreOpen(false)}
-              className="mt-4 inline-flex items-center gap-2 border-b border-gold-500/40 pb-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-300 transition hover:border-gold-300 hover:text-gold-200"
-            >
-              Lihat semua <span aria-hidden>→</span>
-            </Link>
           </aside>
 
           <div>
@@ -371,20 +390,22 @@ export function Navbar() {
                 </li>
               ))}
             </ul>
-            <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-gold-500/15 pt-4">
-              <span className="text-[12px] text-parchment/80">
-                {navbar.exploreFooterNote}
-              </span>
-              <a
-                href={navbar.ctaHref}
-                target="_blank"
-                rel="noreferrer"
-                onClick={() => setExploreOpen(false)}
-                className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-300 transition hover:text-gold-200"
+            {triviaList.length > 0 ? (
+              <div
+                className="mt-5 border-t border-gold-500/15 pt-4"
+                role="region"
+                aria-live="polite"
+                aria-atomic="true"
               >
-                {navbar.exploreFooterCta} <span aria-hidden>→</span>
-              </a>
-            </div>
+                <p
+                  className={`min-h-[1.5em] text-[12px] text-parchment/80 transition-opacity duration-200 ease-out ${
+                    triviaVisible ? "opacity-100" : "opacity-0"
+                  }`}
+                >
+                  {triviaList[triviaIndex] ?? triviaList[0]}
+                </p>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

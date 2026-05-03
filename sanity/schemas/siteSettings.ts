@@ -209,16 +209,19 @@ export const siteSettings = defineType({
           rows: 4,
         },
         {
-          name: "exploreFooterNote",
-          title: "Catatan footer mega-menu",
-          type: "string",
-          description: "Mis. 'Tahukah kamu? Wayang Kulit diakui UNESCO sejak 2003.'",
+          name: "exploreFooterNotes",
+          title: "Trivia di footer mega-menu (rotasi otomatis)",
+          type: "array",
+          of: [{ type: "string" }],
+          description:
+            "Daftar trivia/kutipan yang muncul bergantian otomatis tiap ~5 detik. Tambahkan sebanyak yang kamu mau.",
         },
         {
-          name: "exploreFooterCta",
-          title: "Label CTA footer mega-menu",
+          name: "exploreFooterNote",
+          title: "Catatan footer (legacy / fallback)",
           type: "string",
-          description: "Mis. 'Pesan workshop'.",
+          description:
+            "Dipakai HANYA kalau daftar trivia di atas kosong. Boleh dibiarkan kosong.",
         },
       ],
     }),

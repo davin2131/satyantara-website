@@ -39,8 +39,8 @@ export type SiteCopy = {
     exploreEyebrow: string;
     exploreTitle: string;
     exploreBody: string;
+    exploreFooterNotes: string[];
     exploreFooterNote: string;
-    exploreFooterCta: string;
   };
   faqPage: {
     eyebrow: string;
@@ -159,8 +159,15 @@ export const siteCopy: SiteCopy = {
     "exploreEyebrow": "Eksplorasi Budaya",
     "exploreTitle": "Cerita Wayang & Solo,\nterangkum dalam\nsatu eksplorasi.",
     "exploreBody": "Pilih pintu masuk ke konten budaya SATYANTARA — dari arsip foto sanggar, kisah tokoh wayang Pandawa & Kurawa, hingga peta budaya 38 provinsi.",
-    "exploreFooterNote": "Tahukah kamu? Wayang Kulit diakui UNESCO sejak 2003.",
-    "exploreFooterCta": "Pesan workshop"
+    "exploreFooterNotes": [
+      "Tahukah kamu? Wayang Kulit diakui UNESCO sejak 2003.",
+      "Solo dijuluki 'The Spirit of Java' karena warisan budaya Mataram.",
+      "Punakawan (Semar, Gareng, Petruk, Bagong) hanya ada di wayang Jawa.",
+      "Mahabharata punya 18 parwa; lakon wayang biasanya pilih 1\u20132 bab.",
+      "Pakeliran semalam suntuk bisa tampilkan 5\u20136 jam cerita non-stop.",
+      "Gunungan dipakai dalang sebagai pembuka, jeda, dan penutup lakon."
+    ],
+    "exploreFooterNote": ""
   },
   "faqPage": {
     "eyebrow": "Pertanyaan Umum",
