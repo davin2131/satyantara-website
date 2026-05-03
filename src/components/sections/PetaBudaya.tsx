@@ -13,6 +13,28 @@ import {
 } from "@/data/provinces";
 import { provincePaths, MAP_VIEWBOX } from "@/data/indonesiaMap";
 
+// Slugs yang punya foto landmark bawaan di /public/provinces/[slug].jpg.
+// Foto Sanity (province.imageUrl) selalu menang kalau editor upload via Studio.
+const PROVINCE_LOCAL_PHOTOS = new Set<string>([
+  "aceh", "sumatera-utara", "sumatera-barat", "riau", "jambi",
+  "sumatera-selatan", "bengkulu", "lampung", "bangka-belitung", "kepulauan-riau",
+  "dki-jakarta", "jawa-barat", "jawa-tengah", "diy", "jawa-timur", "banten",
+  "bali", "ntb", "ntt",
+  "kalimantan-barat", "kalimantan-tengah", "kalimantan-selatan",
+  "kalimantan-timur", "kalimantan-utara",
+  "sulawesi-utara", "sulawesi-tengah", "sulawesi-selatan", "sulawesi-tenggara",
+  "gorontalo", "sulawesi-barat",
+  "maluku", "maluku-utara",
+  "papua", "papua-pegunungan", "papua-selatan", "papua-tengah",
+  "papua-barat", "papua-barat-daya",
+]);
+
+function resolveProvincePhoto(p: ProvinceCulture): string | null {
+  if (p.imageUrl) return p.imageUrl;
+  if (PROVINCE_LOCAL_PHOTOS.has(p.slug)) return `/provinces/${p.slug}.jpg`;
+  return null;
+}
+
 type RegionFilter = "all" | ProvinceRegion;
 
 const regionFilters: { value: RegionFilter; label: string }[] = [
@@ -294,18 +316,21 @@ function ProvinceModalBody({ province }: { province: ProvinceCulture }) {
   return (
     <div className="flex flex-col">
       <div className="relative h-52 w-full overflow-hidden bg-gradient-to-br from-coffee-700 via-coffee-800 to-coffee-950 sm:h-72 md:h-80">
-        {province.imageUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={province.imageUrl}
-            alt={province.imageAlt ?? province.name}
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center">
-            <ProvinceCrest region={province.region} />
-          </div>
-        )}
+        {(() => {
+          const src = resolveProvincePhoto(province);
+          return src ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={src}
+              alt={province.imageAlt ?? province.name}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center">
+              <ProvinceCrest region={province.region} />
+            </div>
+          );
+        })()}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-coffee-950 via-coffee-950/45 to-transparent" />
         <span
           aria-hidden
