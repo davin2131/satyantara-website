@@ -17,9 +17,9 @@ export default function Home() {
       <main>
         <Hero />
         <SectionDivider variant="diamond" />
-        <HeroCarousel />
-        <SectionDivider variant="lotus" />
         <AboutBrief />
+        <SectionDivider variant="lotus" />
+        <HeroCarousel />
         <SectionDivider variant="wayang" />
         <Products />
         <SectionDivider variant="diamond" />
