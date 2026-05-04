@@ -155,38 +155,12 @@ export function HeroCarousel() {
                       <CarouselArt index={i} />
                     )}
 
-                    {/* Vignette + active glow */}
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-coffee-950 via-coffee-950/55 to-transparent" />
                     {i === active && (
-                      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_55%,rgba(212,162,78,0.16)_0%,transparent_70%)]" />
+                      <div
+                        aria-hidden
+                        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_55%,rgba(212,162,78,0.16)_0%,transparent_70%)]"
+                      />
                     )}
-
-                    {/* Caption */}
-                    <div
-                      className="absolute inset-x-0 bottom-0 p-4 min-[400px]:p-5 sm:p-8"
-                      style={{
-                        opacity: i === active ? 1 - Math.abs(dragOffset) * 0.6 : 0.45,
-                        transition: isDragging
-                          ? "none"
-                          : "opacity 700ms ease-out",
-                      }}
-                    >
-                      <p className="mb-1.5 text-[9px] uppercase tracking-[0.4em] text-gold-300 min-[400px]:text-[10px] sm:mb-2 sm:text-[11px] sm:tracking-[0.45em]">
-                        Lakon {String(i + 1).padStart(2, "0")} / 05
-                      </p>
-                      <h3 className="font-display text-xl leading-tight text-cream min-[400px]:text-2xl sm:text-4xl md:text-5xl">
-                        {slide.title}
-                      </h3>
-                      <p className="mt-1.5 line-clamp-2 max-w-xl text-xs text-parchment/90 sm:mt-2 sm:line-clamp-none sm:text-base">
-                        {slide.caption}
-                      </p>
-                      {i === active && (
-                        <div className="mt-2.5 hidden items-center gap-2 rounded-full border border-gold-500/40 bg-coffee-950/60 px-3 py-1 text-[10px] uppercase tracking-[0.32em] text-gold-300 backdrop-blur min-[400px]:inline-flex sm:text-[11px]">
-                          <SparkIcon className="h-3 w-3" />
-                          Geser untuk lakon lain
-                        </div>
-                      )}
-                    </div>
                   </div>
                 </div>
               );
@@ -215,21 +189,6 @@ export function HeroCarousel() {
             <ArrowIcon className="h-4 w-4 sm:h-5 sm:w-5" direction="right" />
           </button>
 
-          {/* Slide counter — big cinematic number */}
-          <div className="pointer-events-none absolute right-3 top-3 z-50 flex items-baseline gap-1 font-display sm:right-8 sm:top-6">
-            <span className="text-2xl text-gold-300 min-[400px]:text-3xl sm:text-5xl">
-              {String(active + 1).padStart(2, "0")}
-            </span>
-            <span className="text-xs text-gold-500/40 sm:text-base">
-              / {String(heroSlides.length).padStart(2, "0")}
-            </span>
-          </div>
-
-          {/* Section eyebrow */}
-          <div className="pointer-events-none absolute left-3 top-4 z-50 flex items-center gap-2 text-[9px] uppercase tracking-[0.35em] text-gold-300/90 min-[400px]:left-4 min-[400px]:text-[10px] min-[400px]:tracking-[0.45em] sm:left-8 sm:top-7">
-            <span className="block h-px w-6 bg-gold-500/60 sm:w-10" />
-            Lakon Budaya Solo
-          </div>
         </div>
 
         {/* Indicators (progress dashes) */}
@@ -275,19 +234,6 @@ function ArrowIcon({
       }}
     >
       <path d="M5 12h14M13 5l7 7-7 7" />
-    </svg>
-  );
-}
-
-function SparkIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      className={className}
-      aria-hidden
-    >
-      <path d="M12 2 L13.5 9 L20 10.5 L13.5 12 L12 19 L10.5 12 L4 10.5 L10.5 9 Z" />
     </svg>
   );
 }

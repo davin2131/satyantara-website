@@ -51,34 +51,18 @@ export function Gallery() {
 
 function GalleryCard({ item, index }: { item: GalleryItem; index: number }) {
   return (
-    <figure className="group flex h-full flex-col overflow-hidden rounded-2xl border border-gold-500/20 bg-coffee-900/70 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.7)] transition-all duration-500 hover:-translate-y-1 hover:border-gold-400/60 hover:shadow-[0_30px_70px_-20px_rgba(0,0,0,0.8)]">
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-coffee-800">
-        {item.imageUrl ? (
-          <Image
-            src={item.imageUrl}
-            alt={item.imageAlt ?? item.title}
-            fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-          />
-        ) : (
-          <GalleryPlaceholder index={index} />
-        )}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-coffee-950/70 via-transparent to-transparent"
+    <figure className="group relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-gold-500/20 bg-coffee-900/70 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.7)] transition-all duration-500 hover:-translate-y-1 hover:border-gold-400/60 hover:shadow-[0_30px_70px_-20px_rgba(0,0,0,0.8)]">
+      {item.imageUrl ? (
+        <Image
+          src={item.imageUrl}
+          alt={item.imageAlt ?? item.title}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
         />
-      </div>
-
-      <figcaption className="flex flex-1 flex-col gap-3 px-5 py-5 sm:px-6 sm:py-6">
-        <h3 className="font-display text-xl leading-tight text-cream sm:text-2xl">
-          {item.title}
-        </h3>
-        <span className="block h-px w-10 bg-gold-500/60" aria-hidden />
-        <p className="text-sm leading-relaxed text-parchment/85">
-          {item.description}
-        </p>
-      </figcaption>
+      ) : (
+        <GalleryPlaceholder index={index} />
+      )}
     </figure>
   );
 }
