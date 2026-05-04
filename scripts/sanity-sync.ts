@@ -137,6 +137,12 @@ type SiteSettingsSrc = {
     mediaImageAlt?: string;
     mediaVideoUrl?: string;
   };
+  mengapaKami?: {
+    eyebrow?: string;
+    title?: string;
+    subtitle?: string;
+    items?: { icon?: string; title?: string; body?: string }[];
+  };
   tentangKami?: {
     eyebrow?: string;
     heading?: string;
@@ -309,6 +315,10 @@ const QUERY = /* groq */ `{
       "mediaImageUrl": mediaImage.asset->url,
       "mediaImageAlt": mediaImage.alt,
       mediaVideoUrl
+    },
+    mengapaKami{
+      eyebrow, title, subtitle,
+      items[]{icon, title, body}
     },
     tentangKami{
       eyebrow, heading, body,
@@ -822,6 +832,16 @@ export type SiteCopy = {
     mediaImageAlt?: string;
     mediaVideoUrl?: string;
   };
+  mengapaKami: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    items: {
+      icon: "sanggar" | "dalang" | "whatsapp" | "budaya" | "wayang" | "topeng" | "gamelan";
+      title: string;
+      body: string;
+    }[];
+  };
   tentangKami: {
     eyebrow: string;
     heading: string;
@@ -899,6 +919,41 @@ export const siteCopy: SiteCopy = ${JSON.stringify(
         ...(v.aboutBrief?.mediaImageUrl ? { mediaImageUrl: v.aboutBrief.mediaImageUrl } : {}),
         ...(v.aboutBrief?.mediaImageAlt ? { mediaImageAlt: v.aboutBrief.mediaImageAlt } : {}),
         ...(v.aboutBrief?.mediaVideoUrl ? { mediaVideoUrl: v.aboutBrief.mediaVideoUrl } : {}),
+      },
+      mengapaKami: {
+        eyebrow: v.mengapaKami?.eyebrow ?? "Mengapa Satyantara",
+        title: v.mengapaKami?.title ?? "Lebih dari Sekadar Toko Budaya",
+        subtitle:
+          v.mengapaKami?.subtitle ??
+          "Kami menjembatani Anda dengan sanggar, dalang, dan pengrajin terpercaya di Solo — semua dalam satu tempat yang mudah diakses.",
+        items: ((v.mengapaKami?.items ?? []) as {
+          icon?: string;
+          title?: string;
+          body?: string;
+        }[])
+          .filter((it) => it && it.title && it.body)
+          .map((it) => ({
+            icon: ([
+              "sanggar",
+              "dalang",
+              "whatsapp",
+              "budaya",
+              "wayang",
+              "topeng",
+              "gamelan",
+            ].includes(it.icon ?? "")
+              ? it.icon
+              : "sanggar") as
+              | "sanggar"
+              | "dalang"
+              | "whatsapp"
+              | "budaya"
+              | "wayang"
+              | "topeng"
+              | "gamelan",
+            title: it.title!,
+            body: it.body!,
+          })),
       },
       tentangKami: {
         eyebrow: v.tentangKami?.eyebrow ?? "",

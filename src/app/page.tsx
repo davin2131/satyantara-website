@@ -6,7 +6,7 @@ import { AboutBrief } from "@/components/sections/AboutBrief";
 import { Products } from "@/components/sections/Products";
 import { Recommendations } from "@/components/sections/Recommendations";
 import { ProductMitra } from "@/components/sections/ProductMitra";
-import { TentangKami } from "@/components/sections/TentangKami";
+import { MengapaSatyantara } from "@/components/sections/MengapaSatyantara";
 import { Footer } from "@/components/sections/Footer";
 import { SectionDivider } from "@/components/ui/Ornament";
 
@@ -27,7 +27,7 @@ export default function Home() {
         <SectionDivider variant="lotus" />
         <ProductMitra />
         <SectionDivider variant="wayang" />
-        <TentangKami />
+        <MengapaSatyantara />
       </main>
       <Footer />
     </AppShell>
