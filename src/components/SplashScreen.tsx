@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -88,10 +89,12 @@ export function SplashScreen() {
       {/* Main content */}
       <div className="relative flex w-full max-w-[92vw] flex-col items-center gap-4 px-4 text-center min-[400px]:gap-5 sm:max-w-none sm:gap-6 sm:px-6">
         <div className="splash-logo">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src="/satyantara-hero-logo.png"
             alt="SATYANTARA"
+            width={713}
+            height={556}
+            priority
             className="h-40 w-auto min-[400px]:h-48 sm:h-64 md:h-80"
           />
         </div>

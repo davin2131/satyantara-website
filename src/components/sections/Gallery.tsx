@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Reveal } from "../ui/Reveal";
 import { galleryItems, type GalleryItem } from "@/data/gallery";
 
@@ -53,12 +54,12 @@ function GalleryCard({ item, index }: { item: GalleryItem; index: number }) {
     <figure className="group flex h-full flex-col overflow-hidden rounded-2xl border border-gold-500/20 bg-coffee-900/70 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.7)] transition-all duration-500 hover:-translate-y-1 hover:border-gold-400/60 hover:shadow-[0_30px_70px_-20px_rgba(0,0,0,0.8)]">
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-coffee-800">
         {item.imageUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={item.imageUrl}
             alt={item.imageAlt ?? item.title}
-            loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
           />
         ) : (
           <GalleryPlaceholder index={index} />

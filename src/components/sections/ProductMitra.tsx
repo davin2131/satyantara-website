@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { mitraProducts, type MitraProduct } from "@/data/products";
 import { Reveal } from "../ui/Reveal";
 import { Ornament } from "../ui/Ornament";
@@ -67,12 +68,12 @@ function MitraCard({ product, delay }: { product: MitraProduct; delay: number })
       <article className="relative overflow-hidden rounded-2xl border border-gold-500/15 bg-coffee-800/40 p-2 transition-all duration-500 group-hover:-translate-y-1 group-hover:border-gold-400/50 group-hover:shadow-[0_20px_40px_-15px_rgba(212,162,78,0.25)]">
         <div className="relative aspect-square overflow-hidden rounded-xl">
           {product.imageUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <Image
               src={product.imageUrl}
               alt={product.imageAlt ?? product.name}
-              loading="lazy"
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+              fill
+              sizes="(max-width: 400px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, 180px"
+              className="object-cover transition-transform duration-500 group-hover:scale-110"
             />
           ) : (
             <MitraArt palette={palette} />

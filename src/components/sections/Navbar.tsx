@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -215,10 +216,12 @@ export function Navbar() {
           className="flex min-h-[44px] items-center"
           aria-label="Satyantara — beranda"
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src="/satyantara-logo.png"
             alt="SATYANTARA"
+            width={773}
+            height={256}
+            priority
             className="h-10 w-auto drop-shadow-[0_0_18px_rgba(212,162,78,0.35)] sm:h-12"
           />
         </Link>

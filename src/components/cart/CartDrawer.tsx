@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect } from "react";
 import { useCart, formatIDR } from "./CartContext";
 import { siteCopy } from "@/data/site";
@@ -138,11 +139,12 @@ export function CartDrawer() {
                 >
                   <div className="relative h-20 w-20 flex-none overflow-hidden rounded-xl bg-coffee-950/60">
                     {it.imageUrl ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
+                      <Image
                         src={it.imageUrl}
                         alt={it.name}
-                        className="h-full w-full object-cover"
+                        fill
+                        sizes="80px"
+                        className="object-cover"
                       />
                     ) : (
                       <div className="flex h-full w-full items-center justify-center text-gold-500/50">

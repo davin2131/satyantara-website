@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Reveal } from "./Reveal";
 import { useStoryModal } from "../AppShell";
 
@@ -36,12 +37,12 @@ export function StoryCard({
         <article className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-gold-500/20 bg-coffee-800/60 p-3 transition-all duration-700 group-hover:-translate-y-1 group-hover:border-gold-400/60 group-hover:shadow-[0_30px_60px_-20px_rgba(212,162,78,0.25)]">
           {imageUrl ? (
             <div className="relative aspect-square overflow-hidden rounded-2xl">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={imageUrl}
                 alt={imageAlt ?? title}
-                loading="lazy"
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
             </div>
           ) : (

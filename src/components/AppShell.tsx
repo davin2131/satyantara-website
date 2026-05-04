@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from "react";
 import { Modal } from "./ui/Modal";
 import { SplashScreen } from "./SplashScreen";
@@ -165,11 +166,12 @@ function StoryModalBody({
     <div className="grid gap-0 md:grid-cols-[minmax(220px,300px)_1fr]">
       <div className="relative">
         {story.imageUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={story.imageUrl}
             alt={story.imageAlt ?? story.title}
-            className="h-full w-full object-cover"
+            fill
+            sizes="(max-width: 768px) 100vw, 300px"
+            className="object-cover"
           />
         ) : (
           <StoryHeroArt slug={story.slug} />
@@ -336,11 +338,12 @@ function MitraModalBody({
       <div className="relative">
         <div className="aspect-[16/9] w-full overflow-hidden">
           {product.imageUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <Image
               src={product.imageUrl}
               alt={product.imageAlt ?? product.name}
-              className="h-full w-full object-cover"
+              fill
+              sizes="(max-width: 768px) 100vw, 720px"
+              className="object-cover"
             />
           ) : (
             <MitraHeroArt tone={product.tone} />
