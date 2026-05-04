@@ -920,13 +920,8 @@ export const siteCopy: SiteCopy = ${JSON.stringify(
         ...(v.aboutBrief?.mediaImageAlt ? { mediaImageAlt: v.aboutBrief.mediaImageAlt } : {}),
         ...(v.aboutBrief?.mediaVideoUrl ? { mediaVideoUrl: v.aboutBrief.mediaVideoUrl } : {}),
       },
-      mengapaKami: {
-        eyebrow: v.mengapaKami?.eyebrow ?? "Mengapa Satyantara",
-        title: v.mengapaKami?.title ?? "Lebih dari Sekadar Toko Budaya",
-        subtitle:
-          v.mengapaKami?.subtitle ??
-          "Kami menjembatani Anda dengan sanggar, dalang, dan pengrajin terpercaya di Solo — semua dalam satu tempat yang mudah diakses.",
-        items: ((v.mengapaKami?.items ?? []) as {
+      mengapaKami: (() => {
+        const cleanedItems = ((v.mengapaKami?.items ?? []) as {
           icon?: string;
           title?: string;
           body?: string;
@@ -942,7 +937,7 @@ export const siteCopy: SiteCopy = ${JSON.stringify(
               "topeng",
               "gamelan",
             ].includes(it.icon ?? "")
-              ? it.icon
+              ? it.icon!
               : "sanggar") as
               | "sanggar"
               | "dalang"
@@ -953,8 +948,38 @@ export const siteCopy: SiteCopy = ${JSON.stringify(
               | "gamelan",
             title: it.title!,
             body: it.body!,
-          })),
-      },
+          }));
+        const defaultItems = [
+          {
+            icon: "sanggar" as const,
+            title: "Sanggar Terpercaya Solo",
+            body: "Setiap lakon dan produk kurasi langsung dari sanggar wayang & komunitas budaya yang aktif di Surakarta.",
+          },
+          {
+            icon: "dalang" as const,
+            title: "Dalang & Pengrajin Asli",
+            body: "Kami bekerja langsung dengan dalang, pembuat wayang, perajin topeng, dan musisi gamelan — bukan reseller.",
+          },
+          {
+            icon: "whatsapp" as const,
+            title: "Pesan Mudah lewat WhatsApp",
+            body: "Tidak perlu rumit. Pilih lakon atau produk, isi keranjang, lanjut chat WhatsApp untuk konfirmasi & pembayaran.",
+          },
+          {
+            icon: "budaya" as const,
+            title: "Mendukung Pelaku Budaya",
+            body: "Setiap pesanan ikut menjaga keberlangsungan tradisi wayang, gamelan, dan ragam kesenian Solo.",
+          },
+        ];
+        return {
+          eyebrow: v.mengapaKami?.eyebrow ?? "Mengapa Satyantara",
+          title: v.mengapaKami?.title ?? "Lebih dari Sekadar Toko Budaya",
+          subtitle:
+            v.mengapaKami?.subtitle ??
+            "Kami menjembatani Anda dengan sanggar, dalang, dan pengrajin terpercaya di Solo — semua dalam satu tempat yang mudah diakses.",
+          items: cleanedItems.length > 0 ? cleanedItems : defaultItems,
+        };
+      })(),
       tentangKami: {
         eyebrow: v.tentangKami?.eyebrow ?? "",
         heading: v.tentangKami?.heading ?? "",
