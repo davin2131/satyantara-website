@@ -62,8 +62,63 @@ export const siteSettings = defineType({
       ],
     }),
     defineField({
+      name: "mengapaKami",
+      title: "Section Mengapa Satyantara (homepage)",
+      type: "object",
+      description:
+        "Section value-prop di Beranda. Atur eyebrow, judul, subjudul, dan kartu (rekomendasi 3-4 kartu).",
+      fields: [
+        { name: "eyebrow", title: "Eyebrow", type: "string" },
+        { name: "title", title: "Judul", type: "string" },
+        {
+          name: "subtitle",
+          title: "Subjudul / paragraf intro",
+          type: "text",
+          rows: 3,
+        },
+        {
+          name: "items",
+          title: "Kartu value (rekomendasi 3-4)",
+          type: "array",
+          of: [
+            {
+              type: "object",
+              fields: [
+                {
+                  name: "icon",
+                  title: "Ikon",
+                  type: "string",
+                  options: {
+                    list: [
+                      { title: "Sanggar (rumah joglo)", value: "sanggar" },
+                      { title: "Dalang / Pengrajin (orang)", value: "dalang" },
+                      { title: "WhatsApp / Chat", value: "whatsapp" },
+                      { title: "Budaya / Hati", value: "budaya" },
+                      { title: "Wayang", value: "wayang" },
+                      { title: "Topeng", value: "topeng" },
+                      { title: "Gamelan", value: "gamelan" },
+                    ],
+                  },
+                },
+                { name: "title", title: "Judul kartu", type: "string" },
+                {
+                  name: "body",
+                  title: "Deskripsi singkat",
+                  type: "text",
+                  rows: 3,
+                },
+              ],
+              preview: { select: { title: "title", subtitle: "body" } },
+            },
+          ],
+        },
+      ],
+    }),
+    defineField({
       name: "tentangKami",
-      title: "Section Tentang Kami",
+      title: "Section Tentang Kami (legacy, sudah tidak ditampilkan di Beranda)",
+      description:
+        "Field lama. Section ini sudah diganti oleh 'Section Mengapa Satyantara'. Konten tetap disimpan tapi tidak dirender. Halaman Tentang Kami yang lengkap ada di /tentang-kami (lihat field 'Halaman Tentang Kami').",
       type: "object",
       fields: [
         { name: "eyebrow", title: "Eyebrow", type: "string" },

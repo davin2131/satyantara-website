@@ -19,6 +19,16 @@ export type SiteCopy = {
     mediaVideoUrl?: string;
     stats: { value: string; label: string }[];
   };
+  mengapaKami: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    items: {
+      icon: "sanggar" | "dalang" | "whatsapp" | "budaya" | "wayang" | "topeng" | "gamelan";
+      title: string;
+      body: string;
+    }[];
+  };
   tentangKami: {
     eyebrow: string;
     heading: string;
@@ -103,6 +113,33 @@ export const siteCopy: SiteCopy = {
       {
         "label": "Sayners",
         "value": "5K+"
+      }
+    ]
+  },
+  "mengapaKami": {
+    "eyebrow": "Mengapa Satyantara",
+    "title": "Lebih dari Sekadar Toko Budaya",
+    "subtitle": "Kami menjembatani Anda dengan sanggar, dalang, dan pengrajin terpercaya di Solo — semua dalam satu tempat yang mudah diakses.",
+    "items": [
+      {
+        "icon": "sanggar",
+        "title": "Sanggar Terpercaya Solo",
+        "body": "Setiap lakon dan produk kurasi langsung dari sanggar wayang & komunitas budaya yang aktif di Surakarta."
+      },
+      {
+        "icon": "dalang",
+        "title": "Dalang & Pengrajin Asli",
+        "body": "Kami bekerja langsung dengan dalang, pembuat wayang, perajin topeng, dan musisi gamelan — bukan reseller."
+      },
+      {
+        "icon": "whatsapp",
+        "title": "Pesan Mudah lewat WhatsApp",
+        "body": "Tidak perlu rumit. Pilih lakon atau produk, isi keranjang, lanjut chat WhatsApp untuk konfirmasi & pembayaran."
+      },
+      {
+        "icon": "budaya",
+        "title": "Mendukung Pelaku Budaya",
+        "body": "Setiap pesanan ikut menjaga keberlangsungan tradisi wayang, gamelan, dan ragam kesenian Solo."
       }
     ]
   },
