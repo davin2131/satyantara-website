@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { AppShell } from "@/components/AppShell";
 import { Navbar } from "@/components/sections/Navbar";
@@ -29,12 +30,12 @@ export default function NotFound() {
             <span className="h-px w-6 bg-gold-500/60 sm:w-10" />
           </p>
 
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src="/satyantara-hero-logo.png"
             alt="SATYANTARA"
-            loading="eager"
-            decoding="async"
+            width={713}
+            height={556}
+            priority
             className="h-32 w-auto opacity-90 drop-shadow-[0_0_40px_rgba(212,162,78,0.4)] sm:h-44"
           />
 

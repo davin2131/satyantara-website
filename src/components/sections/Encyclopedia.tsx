@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useMemo, useState } from "react";
 import { Reveal } from "../ui/Reveal";
 import { Modal } from "../ui/Modal";
@@ -159,12 +160,12 @@ function WayangCard({
         {(() => {
           const src = resolveWayangPhoto(entry);
           return src ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <Image
               src={src}
               alt={entry.imageAlt ?? entry.name}
-              loading="lazy"
-              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
             />
           ) : (
             <WayangPlaceholder index={index} category={entry.category} />
@@ -209,13 +210,12 @@ function WayangModalBody({ entry }: { entry: WayangEntry }) {
         {(() => {
           const src = resolveWayangPhoto(entry);
           return src ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <Image
               src={src}
               alt={entry.imageAlt ?? entry.name}
-              loading="lazy"
-              decoding="async"
-              className="h-full w-full object-cover"
+              fill
+              sizes="(max-width: 768px) 100vw, 320px"
+              className="object-cover"
             />
           ) : (
             <WayangPlaceholder index={0} category={entry.category} />

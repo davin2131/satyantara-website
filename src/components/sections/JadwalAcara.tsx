@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { Reveal } from "../ui/Reveal";
 import {
@@ -202,14 +203,13 @@ function EventCard({ event, now }: { event: SatyantaraEvent; now: number }) {
       }`}
     >
       {event.imageUrl && (
-        <div className="aspect-video w-full overflow-hidden rounded-xl bg-coffee-800 sm:aspect-square sm:w-48 sm:flex-none">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+        <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-coffee-800 sm:aspect-square sm:w-48 sm:flex-none">
+          <Image
             src={event.imageUrl}
             alt={event.imageAlt ?? event.title}
-            loading="lazy"
-            decoding="async"
-            className="h-full w-full object-cover"
+            fill
+            sizes="(max-width: 640px) 100vw, 192px"
+            className="object-cover"
           />
         </div>
       )}

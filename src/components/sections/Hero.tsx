@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { siteCopy } from "@/data/site";
 
 export function Hero() {
@@ -32,10 +33,12 @@ export function Hero() {
           <span className="h-px w-6 bg-gold-500/60 sm:w-10" />
         </div>
 
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src="/satyantara-hero-logo.png"
           alt="SATYANTARA"
+          width={713}
+          height={556}
+          priority
           className="h-44 w-auto drop-shadow-[0_0_40px_rgba(212,162,78,0.4)] min-[400px]:h-56 sm:h-72 md:h-96 sm:drop-shadow-[0_0_60px_rgba(212,162,78,0.45)]"
         />
 

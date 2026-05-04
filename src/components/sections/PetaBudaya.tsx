@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useMemo, useState } from "react";
 import { Reveal } from "../ui/Reveal";
 import { Modal } from "../ui/Modal";
@@ -316,13 +317,12 @@ function ProvinceModalBody({ province }: { province: ProvinceCulture }) {
         {(() => {
           const src = resolveProvincePhoto(province);
           return src ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <Image
               src={src}
               alt={province.imageAlt ?? province.name}
-              loading="lazy"
-              decoding="async"
-              className="h-full w-full object-cover"
+              fill
+              sizes="(max-width: 768px) 100vw, 768px"
+              className="object-cover"
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center">

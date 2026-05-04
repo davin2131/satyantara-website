@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { heroSlides } from "@/data/products";
 
@@ -141,11 +142,13 @@ export function HeroCarousel() {
                 >
                   <div className="relative h-full w-full overflow-hidden rounded-xl border border-gold-500/30 shadow-[0_30px_60px_-25px_rgba(0,0,0,0.7),0_0_0_1px_rgba(212,162,78,0.1)] sm:rounded-2xl">
                     {slide.imageUrl ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
+                      <Image
                         src={slide.imageUrl}
                         alt={slide.imageAlt ?? slide.title}
-                        className="absolute inset-0 h-full w-full object-cover"
+                        fill
+                        sizes="(max-width: 640px) 88vw, (max-width: 1024px) 68vw, 62vw"
+                        priority={i === 0}
+                        className="object-cover"
                         draggable={false}
                       />
                     ) : (

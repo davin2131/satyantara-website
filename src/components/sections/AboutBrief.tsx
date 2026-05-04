@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Reveal } from "../ui/Reveal";
 import { siteCopy } from "@/data/site";
 
@@ -48,13 +49,12 @@ export function AboutBrief() {
                   className="absolute inset-0 h-full w-full"
                 />
               ) : (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={c.mediaImageUrl}
+                <Image
+                  src={c.mediaImageUrl!}
                   alt={c.mediaImageAlt ?? c.headingLine2}
-                  loading="lazy"
-                  decoding="async"
-                  className="absolute inset-0 h-full w-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover"
                 />
               )}
             </div>
