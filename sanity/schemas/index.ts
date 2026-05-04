@@ -8,6 +8,7 @@ import { wayangEntry } from "./wayangEntry";
 import { provinceCulture } from "./provinceCulture";
 import { event } from "./event";
 import { faqGroup } from "./faqGroup";
+import { legalPage } from "./legalPage";
 
 export const schemaTypes = [
   story,
@@ -19,5 +20,6 @@ export const schemaTypes = [
   provinceCulture,
   event,
   faqGroup,
+  legalPage,
   siteSettings,
 ];

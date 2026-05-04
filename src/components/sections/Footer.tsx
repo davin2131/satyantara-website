@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Reveal } from "../ui/Reveal";
 import { siteCopy } from "@/data/site";
 
@@ -64,7 +65,34 @@ export function Footer() {
           </div>
         </Reveal>
 
-        <div className="flex flex-col items-center justify-between gap-3 border-t border-gold-500/15 pt-6 text-center text-xs text-cream/55 sm:flex-row sm:text-left">
+        <nav
+          aria-label="Tautan legal"
+          className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 border-t border-gold-500/15 pt-6 text-xs text-cream/70"
+        >
+          <Link
+            href="/tentang-kami"
+            className="transition hover:text-gold-300"
+          >
+            Tentang Kami
+          </Link>
+          <span aria-hidden className="text-gold-500/30">
+            ·
+          </span>
+          <Link href="/privasi" className="transition hover:text-gold-300">
+            Kebijakan Privasi
+          </Link>
+          <span aria-hidden className="text-gold-500/30">
+            ·
+          </span>
+          <Link
+            href="/syarat-ketentuan"
+            className="transition hover:text-gold-300"
+          >
+            Syarat & Ketentuan
+          </Link>
+        </nav>
+
+        <div className="flex flex-col items-center justify-between gap-3 pt-2 text-center text-xs text-cream/55 sm:flex-row sm:text-left">
           <p>{c.copyright.replace(/^©\s*/, `© ${new Date().getFullYear()} `)}</p>
           <p className="tracking-[0.3em] uppercase text-gold-400/60">{c.tagline}</p>
         </div>

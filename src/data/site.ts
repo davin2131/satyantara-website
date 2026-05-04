@@ -41,6 +41,25 @@ export type SiteCopy = {
     exploreBody: string;
     exploreFooterNotes: string[];
     exploreFooterNote: string;
+    exploreThumbs?: {
+      galeri?: { url?: string; alt?: string };
+      ensiklopedia?: { url?: string; alt?: string };
+      peta?: { url?: string; alt?: string };
+      permainan?: { url?: string; alt?: string };
+    };
+  };
+  tentangKamiPage: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    heroImageUrl?: string;
+    heroImageAlt?: string;
+    sections: { heading: string; body: string; imageUrl?: string; imageAlt?: string }[];
+    visi: string;
+    misi: string[];
+    team: { name: string; role: string; bio: string; photoUrl?: string; photoAlt?: string }[];
+    ctaTitle: string;
+    ctaBody: string;
   };
   faqPage: {
     eyebrow: string;
@@ -168,6 +187,34 @@ export const siteCopy: SiteCopy = {
       "Gunungan dipakai dalang sebagai pembuka, jeda, dan penutup lakon."
     ],
     "exploreFooterNote": ""
+  },
+  "tentangKamiPage": {
+    "eyebrow": "Akar Cerita Kami",
+    "title": "Tentang SATYANTARA",
+    "subtitle": "Ruang digital yang menjaga cerita wayang dan kearifan Solo agar tetap hidup di keseharian generasi baru.",
+    "sections": [
+      {
+        "heading": "Lahir dari Solo, untuk Cerita yang Tak Pernah Padam",
+        "body": "SATYANTARA tumbuh dari kerinduan akan ruang yang merawat cerita wayang dan budaya Jawa secara utuh — bukan sekadar tampilan, tapi juga makna. Dari Kota Solo, kami merangkai pertunjukan, lakon, kerajinan, dan edukasi menjadi satu pengalaman yang mudah ditemui generasi baru."
+      },
+      {
+        "heading": "Bekerja Bersama Sanggar & Pengrajin",
+        "body": "Setiap karya, dari wayang kulit hingga merchandise, lahir dari kerja sama erat dengan sanggar lokal, dalang, dan pengrajin. Kami percaya cerita budaya hanya hidup ketika para penjaganya juga bisa hidup layak — itu sebabnya kemitraan dan transparansi jadi pondasi kami."
+      },
+      {
+        "heading": "Edukasi yang Mengundang Bertanya",
+        "body": "Lewat ensiklopedia tokoh wayang, peta budaya 38 provinsi, jadwal acara, dan permainan tebak tokoh, kami ingin Teman Satya tidak hanya menonton — tapi penasaran, ikut bertanya, dan akhirnya jatuh cinta pada cerita yang sudah lebih dulu ada di sekitar mereka."
+      }
+    ],
+    "visi": "Menjadi rumah digital tempat cerita wayang dan budaya Solo terus tumbuh, dikenal, dan diwariskan.",
+    "misi": [
+      "Menyajikan cerita wayang dan tokohnya secara mudah diakses untuk semua usia.",
+      "Bermitra dengan sanggar, dalang, dan pengrajin lokal Solo agar karya mereka punya panggung digital.",
+      "Membuka pintu kolaborasi budaya bagi sekolah, komunitas, dan brand yang ingin belajar bersama."
+    ],
+    "team": [],
+    "ctaTitle": "Mari Bercerita Bersama",
+    "ctaBody": "Punya pertanyaan, ide kolaborasi, atau ingin mengundang SATYANTARA? Sapa kami lewat WhatsApp atau email — tim kami siap menjawab."
   },
   "faqPage": {
     "eyebrow": "Pertanyaan Umum",

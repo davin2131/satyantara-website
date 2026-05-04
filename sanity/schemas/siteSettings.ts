@@ -170,17 +170,53 @@ export const siteSettings = defineType({
       fields: [
         {
           name: "ctaLabel",
-          title: "Label tombol CTA",
+          title: "Label tombol CTA (legacy, sudah tidak ditampilkan)",
           type: "string",
           description:
-            "Mis. 'Pesan via WhatsApp' atau 'Hubungi Kami'. Tampil sebagai tombol gold di kanan navbar.",
+            "Field lama untuk tombol 'Pesan via WhatsApp'. Tombol di kanan-atas navbar sudah dihapus, jadi field ini tidak lagi tampil. URL WhatsApp utama masih dipakai oleh halaman FAQ & Jadwal — silakan tetap isi 'URL tombol CTA' di bawah.",
         },
         {
           name: "ctaHref",
-          title: "URL tombol CTA",
+          title: "URL WhatsApp utama",
           type: "string",
           description:
-            "Mis. https://wa.me/6287862181294 (boleh tambahkan ?text= untuk pesan default).",
+            "Dipakai oleh tombol kontak di halaman FAQ & Jadwal. Mis. https://wa.me/6287862181294 (boleh tambahkan ?text= untuk pesan default).",
+        },
+        {
+          name: "exploreThumbGaleri",
+          title: "Foto card Galeri (mega-menu)",
+          type: "image",
+          options: { hotspot: true },
+          description:
+            "Foto kotak kecil di card 'Galeri' pada mega-menu Eksplorasi. Kalau kosong pakai default.",
+          fields: [{ name: "alt", title: "Alt text", type: "string" }],
+        },
+        {
+          name: "exploreThumbEnsiklopedia",
+          title: "Foto card Ensiklopedia Wayang (mega-menu)",
+          type: "image",
+          options: { hotspot: true },
+          description:
+            "Foto kotak kecil di card 'Ensiklopedia Wayang' pada mega-menu Eksplorasi. Kalau kosong pakai default.",
+          fields: [{ name: "alt", title: "Alt text", type: "string" }],
+        },
+        {
+          name: "exploreThumbPeta",
+          title: "Foto card Peta Budaya (mega-menu)",
+          type: "image",
+          options: { hotspot: true },
+          description:
+            "Foto kotak kecil di card 'Peta Budaya' pada mega-menu Eksplorasi. Kalau kosong pakai default.",
+          fields: [{ name: "alt", title: "Alt text", type: "string" }],
+        },
+        {
+          name: "exploreThumbPermainan",
+          title: "Foto card Permainan (mega-menu)",
+          type: "image",
+          options: { hotspot: true },
+          description:
+            "Foto kotak kecil di card 'Permainan' pada mega-menu Eksplorasi. Kalau kosong pakai default.",
+          fields: [{ name: "alt", title: "Alt text", type: "string" }],
         },
         {
           name: "exploreLabel",
@@ -246,6 +282,96 @@ export const siteSettings = defineType({
         {
           name: "ctaBody",
           title: "Paragraf blok 'Masih ada pertanyaan?'",
+          type: "text",
+          rows: 3,
+        },
+      ],
+    }),
+    defineField({
+      name: "tentangKamiPage",
+      title: "Halaman Tentang Kami (lengkap, /tentang-kami)",
+      type: "object",
+      description:
+        "Konten halaman dedicated /tentang-kami. Berbeda dari section 'Tentang Kami' yang ada di Beranda — yang ini lebih panjang (cerita, visi & misi, foto, tim, kontak).",
+      fields: [
+        { name: "eyebrow", title: "Eyebrow", type: "string" },
+        { name: "title", title: "Judul halaman", type: "string" },
+        { name: "subtitle", title: "Subjudul / paragraf intro", type: "text", rows: 3 },
+        {
+          name: "heroImage",
+          title: "Foto hero (opsional)",
+          type: "image",
+          options: { hotspot: true },
+          fields: [{ name: "alt", title: "Alt text", type: "string" }],
+        },
+        {
+          name: "sections",
+          title: "Section / cerita panjang",
+          type: "array",
+          description:
+            "Tiap section punya judul + paragraf + foto opsional. Tampil berurutan, foto bergantian kiri-kanan.",
+          of: [
+            {
+              type: "object",
+              fields: [
+                { name: "heading", title: "Judul section", type: "string" },
+                { name: "body", title: "Paragraf", type: "text", rows: 6 },
+                {
+                  name: "image",
+                  title: "Foto (opsional)",
+                  type: "image",
+                  options: { hotspot: true },
+                  fields: [{ name: "alt", title: "Alt text", type: "string" }],
+                },
+              ],
+              preview: { select: { title: "heading", subtitle: "body" } },
+            },
+          ],
+        },
+        {
+          name: "visi",
+          title: "Visi (1 kalimat)",
+          type: "text",
+          rows: 3,
+        },
+        {
+          name: "misi",
+          title: "Misi (poin per baris)",
+          type: "array",
+          of: [{ type: "string" }],
+          description: "Tambahkan misi sebagai daftar — masing-masing poin satu baris.",
+        },
+        {
+          name: "team",
+          title: "Tim / Founder (opsional)",
+          type: "array",
+          of: [
+            {
+              type: "object",
+              fields: [
+                { name: "name", title: "Nama", type: "string" },
+                { name: "role", title: "Peran/Posisi", type: "string" },
+                { name: "bio", title: "Bio singkat", type: "text", rows: 3 },
+                {
+                  name: "photo",
+                  title: "Foto",
+                  type: "image",
+                  options: { hotspot: true },
+                  fields: [{ name: "alt", title: "Alt text", type: "string" }],
+                },
+              ],
+              preview: { select: { title: "name", subtitle: "role" } },
+            },
+          ],
+        },
+        {
+          name: "ctaTitle",
+          title: "Judul blok kontak",
+          type: "string",
+        },
+        {
+          name: "ctaBody",
+          title: "Paragraf blok kontak",
           type: "text",
           rows: 3,
         },
