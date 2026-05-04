@@ -164,6 +164,27 @@ type SiteSettingsSrc = {
     exploreBody?: string;
     exploreFooterNotes?: string[];
     exploreFooterNote?: string;
+    exploreThumbGaleriUrl?: string;
+    exploreThumbGaleriAlt?: string;
+    exploreThumbEnsiklopediaUrl?: string;
+    exploreThumbEnsiklopediaAlt?: string;
+    exploreThumbPetaUrl?: string;
+    exploreThumbPetaAlt?: string;
+    exploreThumbPermainanUrl?: string;
+    exploreThumbPermainanAlt?: string;
+  };
+  tentangKamiPage?: {
+    eyebrow?: string;
+    title?: string;
+    subtitle?: string;
+    heroImageUrl?: string;
+    heroImageAlt?: string;
+    sections?: { heading?: string; body?: string; imageUrl?: string; imageAlt?: string }[];
+    visi?: string;
+    misi?: string[];
+    team?: { name?: string; role?: string; bio?: string; photoUrl?: string; photoAlt?: string }[];
+    ctaTitle?: string;
+    ctaBody?: string;
   };
   faqPage?: {
     eyebrow?: string;
@@ -301,7 +322,32 @@ const QUERY = /* groq */ `{
     },
     navbar{
       ctaLabel, ctaHref, exploreLabel, exploreEyebrow,
-      exploreTitle, exploreBody, exploreFooterNotes, exploreFooterNote
+      exploreTitle, exploreBody, exploreFooterNotes, exploreFooterNote,
+      "exploreThumbGaleriUrl": exploreThumbGaleri.asset->url,
+      "exploreThumbGaleriAlt": exploreThumbGaleri.alt,
+      "exploreThumbEnsiklopediaUrl": exploreThumbEnsiklopedia.asset->url,
+      "exploreThumbEnsiklopediaAlt": exploreThumbEnsiklopedia.alt,
+      "exploreThumbPetaUrl": exploreThumbPeta.asset->url,
+      "exploreThumbPetaAlt": exploreThumbPeta.alt,
+      "exploreThumbPermainanUrl": exploreThumbPermainan.asset->url,
+      "exploreThumbPermainanAlt": exploreThumbPermainan.alt
+    },
+    tentangKamiPage{
+      eyebrow, title, subtitle,
+      "heroImageUrl": heroImage.asset->url,
+      "heroImageAlt": heroImage.alt,
+      sections[]{
+        heading, body,
+        "imageUrl": image.asset->url,
+        "imageAlt": image.alt
+      },
+      visi, misi,
+      team[]{
+        name, role, bio,
+        "photoUrl": photo.asset->url,
+        "photoAlt": photo.alt
+      },
+      ctaTitle, ctaBody
     },
     faqPage{eyebrow, title, subtitle, ctaEyebrow, ctaTitle, ctaBody},
     jadwalPage{eyebrow, title, subtitle, emptyTitle, emptyBody}
@@ -310,8 +356,23 @@ const QUERY = /* groq */ `{
     title,
     order,
     items[]{question, answer}
+  },
+  "legalPages": *[_type == "legalPage" && !(_id in path("drafts.**"))]{
+    kind,
+    title,
+    lastUpdated,
+    intro,
+    sections[]{heading, paragraphs}
   }
 }`;
+
+type LegalPageSrc = {
+  kind?: "privacy" | "terms";
+  title?: string;
+  lastUpdated?: string;
+  intro?: string;
+  sections?: { heading?: string; paragraphs?: string[] }[];
+};
 
 function lit(s: unknown) {
   return JSON.stringify(s ?? "");
@@ -783,6 +844,25 @@ export type SiteCopy = {
     exploreBody: string;
     exploreFooterNotes: string[];
     exploreFooterNote: string;
+    exploreThumbs?: {
+      galeri?: { url?: string; alt?: string };
+      ensiklopedia?: { url?: string; alt?: string };
+      peta?: { url?: string; alt?: string };
+      permainan?: { url?: string; alt?: string };
+    };
+  };
+  tentangKamiPage: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    heroImageUrl?: string;
+    heroImageAlt?: string;
+    sections: { heading: string; body: string; imageUrl?: string; imageAlt?: string }[];
+    visi: string;
+    misi: string[];
+    team: { name: string; role: string; bio: string; photoUrl?: string; photoAlt?: string }[];
+    ctaTitle: string;
+    ctaBody: string;
   };
   faqPage: {
     eyebrow: string;
@@ -858,6 +938,107 @@ export const siteCopy: SiteCopy = ${JSON.stringify(
         exploreFooterNote:
           v.navbar?.exploreFooterNote ??
           "",
+        ...(v.navbar &&
+        (v.navbar.exploreThumbGaleriUrl ||
+          v.navbar.exploreThumbEnsiklopediaUrl ||
+          v.navbar.exploreThumbPetaUrl ||
+          v.navbar.exploreThumbPermainanUrl)
+          ? {
+              exploreThumbs: {
+                ...(v.navbar.exploreThumbGaleriUrl
+                  ? {
+                      galeri: {
+                        url: v.navbar.exploreThumbGaleriUrl,
+                        ...(v.navbar.exploreThumbGaleriAlt
+                          ? { alt: v.navbar.exploreThumbGaleriAlt }
+                          : {}),
+                      },
+                    }
+                  : {}),
+                ...(v.navbar.exploreThumbEnsiklopediaUrl
+                  ? {
+                      ensiklopedia: {
+                        url: v.navbar.exploreThumbEnsiklopediaUrl,
+                        ...(v.navbar.exploreThumbEnsiklopediaAlt
+                          ? { alt: v.navbar.exploreThumbEnsiklopediaAlt }
+                          : {}),
+                      },
+                    }
+                  : {}),
+                ...(v.navbar.exploreThumbPetaUrl
+                  ? {
+                      peta: {
+                        url: v.navbar.exploreThumbPetaUrl,
+                        ...(v.navbar.exploreThumbPetaAlt
+                          ? { alt: v.navbar.exploreThumbPetaAlt }
+                          : {}),
+                      },
+                    }
+                  : {}),
+                ...(v.navbar.exploreThumbPermainanUrl
+                  ? {
+                      permainan: {
+                        url: v.navbar.exploreThumbPermainanUrl,
+                        ...(v.navbar.exploreThumbPermainanAlt
+                          ? { alt: v.navbar.exploreThumbPermainanAlt }
+                          : {}),
+                      },
+                    }
+                  : {}),
+              },
+            }
+          : {}),
+      },
+      tentangKamiPage: {
+        eyebrow: v.tentangKamiPage?.eyebrow ?? "Akar Cerita Kami",
+        title: v.tentangKamiPage?.title ?? "Tentang SATYANTARA",
+        subtitle:
+          v.tentangKamiPage?.subtitle ??
+          "Ruang digital yang menjaga cerita wayang dan kearifan Solo agar tetap hidup di keseharian generasi baru.",
+        ...(v.tentangKamiPage?.heroImageUrl
+          ? { heroImageUrl: v.tentangKamiPage.heroImageUrl }
+          : {}),
+        ...(v.tentangKamiPage?.heroImageAlt
+          ? { heroImageAlt: v.tentangKamiPage.heroImageAlt }
+          : {}),
+        sections:
+          (v.tentangKamiPage?.sections ?? [])
+            .filter((s) => s && s.heading && s.body)
+            .map((s) => ({
+              heading: s.heading!,
+              body: s.body!,
+              ...(s.imageUrl ? { imageUrl: s.imageUrl } : {}),
+              ...(s.imageAlt ? { imageAlt: s.imageAlt } : {}),
+            })),
+        visi:
+          v.tentangKamiPage?.visi ??
+          "Menjadi rumah digital tempat cerita wayang dan budaya Solo terus tumbuh, dikenal, dan diwariskan.",
+        misi:
+          (v.tentangKamiPage?.misi ?? []).filter(
+            (m): m is string => typeof m === "string" && m.length > 0,
+          ).length > 0
+            ? (v.tentangKamiPage!.misi as string[]).filter(
+                (m) => typeof m === "string" && m.length > 0,
+              )
+            : [
+                "Menyajikan cerita wayang dan tokohnya secara mudah diakses untuk semua usia.",
+                "Bermitra dengan sanggar, dalang, dan pengrajin lokal Solo agar karya mereka punya panggung digital.",
+                "Membuka pintu kolaborasi budaya bagi sekolah, komunitas, dan brand yang ingin belajar bersama.",
+              ],
+        team:
+          (v.tentangKamiPage?.team ?? [])
+            .filter((t) => t && t.name && t.role)
+            .map((t) => ({
+              name: t.name!,
+              role: t.role!,
+              bio: t.bio ?? "",
+              ...(t.photoUrl ? { photoUrl: t.photoUrl } : {}),
+              ...(t.photoAlt ? { photoAlt: t.photoAlt } : {}),
+            })),
+        ctaTitle: v.tentangKamiPage?.ctaTitle ?? "Mari Bercerita Bersama",
+        ctaBody:
+          v.tentangKamiPage?.ctaBody ??
+          "Punya pertanyaan, ide kolaborasi, atau ingin mengundang SATYANTARA? Sapa kami lewat WhatsApp atau email — tim kami siap menjawab.",
       },
       faqPage: {
         eyebrow: v.faqPage?.eyebrow ?? "Pertanyaan Umum",
@@ -996,7 +1177,86 @@ async function main() {
     );
   }
 
+  const legalList = (data.legalPages ?? []) as LegalPageSrc[];
+  const hasLegal =
+    Array.isArray(legalList) &&
+    legalList.some(
+      (l) =>
+        l &&
+        (l.kind === "privacy" || l.kind === "terms") &&
+        l.title &&
+        Array.isArray(l.sections) &&
+        l.sections.length > 0,
+    );
+  if (hasLegal) {
+    const legalPath = path.join(ROOT, "src/data/legal.ts");
+    writeFileSync(legalPath, buildLegalTs(legalList), "utf8");
+    console.log(`[sanity-sync] wrote ${legalPath}`);
+  } else {
+    console.log(
+      "[sanity-sync] no legalPage published yet — keeping existing seed di src/data/legal.ts",
+    );
+  }
+
   console.log("[sanity-sync] done.");
+}
+
+function buildLegalTs(items: LegalPageSrc[]): string {
+  const cleaned = (Array.isArray(items) ? items : [])
+    .filter(
+      (l) =>
+        l &&
+        (l.kind === "privacy" || l.kind === "terms") &&
+        l.title &&
+        Array.isArray(l.sections) &&
+        l.sections.length > 0,
+    )
+    .map((l) => ({
+      kind: l.kind!,
+      title: l.title!,
+      lastUpdated: l.lastUpdated ?? "",
+      intro: l.intro ?? "",
+      sections: (l.sections ?? [])
+        .filter(
+          (s) =>
+            s &&
+            s.heading &&
+            Array.isArray(s.paragraphs) &&
+            s.paragraphs.length > 0,
+        )
+        .map((s) => ({
+          heading: s.heading!,
+          paragraphs: s.paragraphs!.filter(
+            (p): p is string => typeof p === "string" && p.length > 0,
+          ),
+        })),
+    }));
+
+  const literal =
+    cleaned.length > 0 ? JSON.stringify(cleaned, null, 2) : "[]";
+
+  return `// AUTO-GENERATED FROM SANITY. Edit content via Sanity Studio (collection "Halaman Legal").
+// Run \`npm run sanity:sync\` to refresh from Sanity.
+
+export type LegalPageKind = "privacy" | "terms";
+
+export type LegalPage = {
+  kind: LegalPageKind;
+  title: string;
+  lastUpdated: string;
+  intro: string;
+  sections: { heading: string; paragraphs: string[] }[];
+};
+
+export const legalPages: LegalPage[] = ${literal};
+
+export function getLegalPage(
+  kind: LegalPageKind,
+  fallback: LegalPage,
+): LegalPage {
+  return legalPages.find((p) => p.kind === kind) ?? fallback;
+}
+`;
 }
 
 main().catch((err) => {

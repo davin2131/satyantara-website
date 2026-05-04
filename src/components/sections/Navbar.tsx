@@ -25,32 +25,46 @@ const navItems: NavItem[] = [
   { label: "Beranda", href: "#beranda" },
   { label: "Jadwal", href: "/jadwal", page: true },
   { label: "FAQ", href: "/faq", page: true },
+  { label: "Tentang Kami", href: "/tentang-kami", page: true },
 ];
 
-const exploreItems: ExploreItem[] = [
+type ExploreKey = "galeri" | "ensiklopedia" | "peta" | "permainan";
+
+const defaultExploreThumbs: Record<ExploreKey, string> = {
+  galeri: "/wayang/bima.jpg",
+  ensiklopedia: "/wayang/arjuna.jpg",
+  peta: "/provinces/jawa-tengah.jpg",
+  permainan: "/wayang/anoman.jpg",
+};
+
+const baseExploreItems: (ExploreItem & { key: ExploreKey })[] = [
   {
+    key: "galeri",
     label: "Galeri",
     href: "/galeri",
     description: "Arsip foto pertunjukan wayang, workshop, dan momen sanggar.",
-    thumb: "/wayang/bima.jpg",
+    thumb: defaultExploreThumbs.galeri,
   },
   {
+    key: "ensiklopedia",
     label: "Ensiklopedia Wayang",
     href: "/ensiklopedia-wayang",
     description: "15 tokoh: Pandawa, Kurawa, Punakawan, Dewa & Pahlawan.",
-    thumb: "/wayang/arjuna.jpg",
+    thumb: defaultExploreThumbs.ensiklopedia,
   },
   {
+    key: "peta",
     label: "Peta Budaya",
     href: "/peta-budaya",
     description: "38 provinsi Indonesia: tarian, musik, rumah adat, kuliner.",
-    thumb: "/provinces/jawa-tengah.jpg",
+    thumb: defaultExploreThumbs.peta,
   },
   {
+    key: "permainan",
     label: "Permainan",
     href: "/permainan",
     description: "Tebak Tokoh — gamifikasi edukasi, 10 soal acak per sesi.",
-    thumb: "/wayang/anoman.jpg",
+    thumb: defaultExploreThumbs.permainan,
   },
 ];
 
@@ -73,6 +87,15 @@ export function Navbar() {
   const { count, openCart } = useCart();
 
   const navbar = siteCopy.navbar;
+  const exploreItems: ExploreItem[] = baseExploreItems.map((item) => {
+    const override = navbar.exploreThumbs?.[item.key];
+    return {
+      label: item.label,
+      href: item.href,
+      description: item.description,
+      thumb: override?.url ?? item.thumb,
+    };
+  });
   const isExploreActive = exploreItems.some((item) => pathname === item.href);
 
   // Trivia rotasi di footer mega-menu. Pakai array kalau ada, fallback ke
@@ -273,7 +296,7 @@ export function Navbar() {
             </button>
           </li>
 
-          {/* Jadwal & FAQ */}
+          {/* Jadwal, FAQ, Tentang Kami */}
           {navItems.slice(1).map((item) => (
             <li key={item.href}>
               <Link
@@ -311,17 +334,6 @@ export function Navbar() {
               )}
             </button>
           )}
-
-          {/* Pesan via WhatsApp — gold pill, desktop only */}
-          <a
-            href={navbar.ctaHref}
-            target="_blank"
-            rel="noreferrer"
-            className="hidden items-center gap-2 rounded-full bg-gradient-to-b from-gold-300 to-gold-500 px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-coffee-950 shadow-[0_14px_32px_-12px_rgba(212,162,78,0.6)] transition-all duration-300 hover:from-gold-400 hover:to-gold-600 hover:shadow-[0_18px_40px_-12px_rgba(212,162,78,0.75)] lg:inline-flex xl:px-6 xl:text-[11px]"
-          >
-            <WhatsappIcon className="h-4 w-4" />
-            <span>{navbar.ctaLabel}</span>
-          </a>
 
           <button
             type="button"
@@ -500,7 +512,7 @@ export function Navbar() {
             </div>
           </div>
 
-          {/* Jadwal & FAQ */}
+          {/* Jadwal, FAQ, Tentang Kami */}
           {navItems.slice(1).map((item) => (
             <Link
               key={item.href}
@@ -512,19 +524,6 @@ export function Navbar() {
             </Link>
           ))}
 
-          {/* WhatsApp CTA — large pill in drawer footer */}
-          <div className="mt-3 border-t border-gold-500/15 pt-4">
-            <a
-              href={navbar.ctaHref}
-              target="_blank"
-              rel="noreferrer"
-              onClick={() => setMobileOpen(false)}
-              className="flex min-h-[52px] w-full items-center justify-center gap-2 rounded-full bg-gradient-to-b from-gold-300 to-gold-500 px-6 py-3 text-xs font-semibold uppercase tracking-[0.22em] text-coffee-950 shadow-[0_14px_32px_-12px_rgba(212,162,78,0.6)] transition hover:from-gold-400 hover:to-gold-600"
-            >
-              <WhatsappIcon className="h-5 w-5" />
-              <span>{navbar.ctaLabel}</span>
-            </a>
-          </div>
         </div>
       </div>
     </header>
@@ -598,10 +597,4 @@ function ChevronDownIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-function WhatsappIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden {...props}>
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.768.967-.94 1.165-.174.198-.347.223-.644.075-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.71.306 1.263.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.247-.694.247-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12.05 21.785h-.004A9.87 9.87 0 0 1 7.1 20.45l-.355-.21-3.677.964.984-3.59-.232-.367a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.892-9.884a9.82 9.82 0 0 1 6.993 2.898 9.82 9.82 0 0 1 2.892 6.994c-.003 5.45-4.437 9.884-9.886 9.884zm8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.892a11.821 11.821 0 0 0-3.48-8.414z" />
-    </svg>
-  );
-}
+
