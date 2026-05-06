@@ -2,6 +2,14 @@ import Link from "next/link";
 import { Reveal } from "../ui/Reveal";
 import { siteCopy } from "@/data/site";
 
+function normalizeExternalHref(href: string): string {
+  const v = href.trim();
+  if (!v || v === "#") return v;
+  if (/^(https?:\/\/|mailto:|tel:|sms:)/i.test(v)) return v;
+  if (v.startsWith("//")) return `https:${v}`;
+  return `https://${v.replace(/^\/+/, "")}`;
+}
+
 export function Footer() {
   const c = siteCopy.footer;
   return (
@@ -31,7 +39,7 @@ export function Footer() {
                   <SocialButton
                     key={s.platform}
                     label={socialLabel(s.platform)}
-                    href={s.href}
+                    href={normalizeExternalHref(s.href)}
                     tone={socialTone(s.platform)}
                   >
                     {socialIcon(s.platform)}
@@ -57,7 +65,7 @@ export function Footer() {
                   icon={contactIcon(ct.kind)}
                   label={ct.label}
                   value={ct.value}
-                  href={ct.href}
+                  href={normalizeExternalHref(ct.href)}
                   accent={contactAccent(ct.kind)}
                 />
               ))}
