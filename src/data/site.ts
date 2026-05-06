@@ -14,10 +14,10 @@ export type SiteCopy = {
     headingLine2: string;
     headingLine3: string;
     body: string;
+    stats: { value: string; label: string }[];
     mediaImageUrl?: string;
     mediaImageAlt?: string;
     mediaVideoUrl?: string;
-    stats: { value: string; label: string }[];
   };
   mengapaKami: {
     eyebrow: string;
@@ -90,8 +90,8 @@ export type SiteCopy = {
 
 export const siteCopy: SiteCopy = {
   "hero": {
-    "eyebrow": "Halo Teman Satya",
-    "tagline": "Ruang digital yang merangkai cerita Wayang dan kearifan Solo menjadi pengalaman, produk, dan kreasi yang siap menemani harimuiiiiii.",
+    "eyebrow": "Sugeng Rawuh, Teman Satya !",
+    "tagline": "Ruang digital yang merangkai cerita Wayang dan kearifan Solo menjadi pengalaman, produk, dan kreasi yang siap menemani harimu.",
     "primaryCta": "Jelajahi Cerita",
     "secondaryCta": "Tentang Kami"
   },
@@ -100,21 +100,18 @@ export const siteCopy: SiteCopy = {
     "headingLine1": "Satyantara",
     "headingLine2": "Brand Budaya",
     "headingLine3": "Indonesia.",
-    "body": "Halo, Sayners! Selamat datang di website digital kami. SATYANTARA hadir dan selalu siap untuk menemani hari harimu, mari lakukan aktivitas positif yang kaya akan pengetahuan. Isi hari hari mu dengan SATYANTARA.",
+    "body": "Halo, Teman Satya! Selamat datang di website digital kami. SATYANTARA hadir dan selalu siap untuk menemani hari harimu, mari lakukan aktivitas positif yang kaya akan pengetahuan. Isi hari hari mu dengan SATYANTARA.",
     "stats": [
       {
-        "label": "Sanggar Mitra",
+        "label": "Produk Sanggar Mitra",
         "value": "12+"
       },
       {
         "label": "Lakon Cerita",
-        "value": "40+"
-      },
-      {
-        "label": "Sayners",
-        "value": "5K+"
+        "value": "2"
       }
-    ]
+    ],
+    "mediaImageUrl": "https://cdn.sanity.io/images/4tij5rov/production/c37a5bca42277c3f0996ea015b2e781dc709c7a3-8192x10424.png"
   },
   "mengapaKami": {
     "eyebrow": "Mengapa Satyantara",
@@ -169,34 +166,30 @@ export const siteCopy: SiteCopy = {
     "callout": "Ikuti Cerita Kami",
     "socials": [
       {
-        "href": "#",
+        "href": "https://www.youtube.com/@satyantara",
         "platform": "youtube"
       },
       {
-        "href": "#",
-        "platform": "telegram"
-      },
-      {
-        "href": "#",
+        "href": "https://www.instagram.com/satyantara.edutrip",
         "platform": "instagram"
       },
       {
-        "href": "#",
-        "platform": "facebook"
+        "href": "www.tiktok.com/@satyantara.edutrip",
+        "platform": "tiktok"
       }
     ],
     "contacts": [
       {
-        "href": "https://wa.me/",
+        "href": "https://wa.me/6281345617070",
         "kind": "whatsapp",
         "label": "WhatsApp",
-        "value": "+62 8xx-xxxx-xxxx"
+        "value": "+62 813-4561-7070"
       },
       {
-        "href": "mailto:hello@satyantara.id",
+        "href": "mailto:satyantarasolo@gmail.com",
         "kind": "email",
         "label": "Email",
-        "value": "hello@satyantara.id"
+        "value": "satyantarasolo@gmail.com"
       },
       {
         "href": "#",
@@ -206,7 +199,7 @@ export const siteCopy: SiteCopy = {
       }
     ],
     "copyright": "© SATYANTARA. Semua hak cipta dilindungi.",
-    "tagline": "Crafted in Solo · Indonesia"
+    "tagline": ""
   },
   "navbar": {
     "ctaLabel": "Pesan via WhatsApp",
@@ -219,30 +212,31 @@ export const siteCopy: SiteCopy = {
       "Tahukah kamu? Wayang Kulit diakui UNESCO sejak 2003.",
       "Solo dijuluki 'The Spirit of Java' karena warisan budaya Mataram.",
       "Punakawan (Semar, Gareng, Petruk, Bagong) hanya ada di wayang Jawa.",
-      "Mahabharata punya 18 parwa; lakon wayang biasanya pilih 1\u20132 bab.",
-      "Pakeliran semalam suntuk bisa tampilkan 5\u20136 jam cerita non-stop.",
+      "Mahabharata punya 18 parwa; lakon wayang biasanya pilih 1–2 bab.",
+      "Pakeliran semalam suntuk bisa tampilkan 5–6 jam cerita non-stop.",
       "Gunungan dipakai dalang sebagai pembuka, jeda, dan penutup lakon."
     ],
-    "exploreFooterNote": ""
+    "exploreFooterNote": "",
+    "exploreThumbs": {
+      "galeri": {
+        "url": "https://cdn.sanity.io/images/4tij5rov/production/115a8f0048dfb29819ba4f4c9682b097b03a7dba-1200x1200.jpg"
+      },
+      "ensiklopedia": {
+        "url": "https://cdn.sanity.io/images/4tij5rov/production/549d06aa171c1f8182cc742606f6a65bc24bc795-736x1020.jpg"
+      },
+      "peta": {
+        "url": "https://cdn.sanity.io/images/4tij5rov/production/b6848ac2212769b300c72e7e2157d691edd6e990-1280x1280.webp"
+      },
+      "permainan": {
+        "url": "https://cdn.sanity.io/images/4tij5rov/production/a3b82624eb2833b8fc016d25c867db5e8c009ef1-225x225.png"
+      }
+    }
   },
   "tentangKamiPage": {
     "eyebrow": "Akar Cerita Kami",
     "title": "Tentang SATYANTARA",
     "subtitle": "Ruang digital yang menjaga cerita wayang dan kearifan Solo agar tetap hidup di keseharian generasi baru.",
-    "sections": [
-      {
-        "heading": "Lahir dari Solo, untuk Cerita yang Tak Pernah Padam",
-        "body": "SATYANTARA tumbuh dari kerinduan akan ruang yang merawat cerita wayang dan budaya Jawa secara utuh — bukan sekadar tampilan, tapi juga makna. Dari Kota Solo, kami merangkai pertunjukan, lakon, kerajinan, dan edukasi menjadi satu pengalaman yang mudah ditemui generasi baru."
-      },
-      {
-        "heading": "Bekerja Bersama Sanggar & Pengrajin",
-        "body": "Setiap karya, dari wayang kulit hingga merchandise, lahir dari kerja sama erat dengan sanggar lokal, dalang, dan pengrajin. Kami percaya cerita budaya hanya hidup ketika para penjaganya juga bisa hidup layak — itu sebabnya kemitraan dan transparansi jadi pondasi kami."
-      },
-      {
-        "heading": "Edukasi yang Mengundang Bertanya",
-        "body": "Lewat ensiklopedia tokoh wayang, peta budaya 38 provinsi, jadwal acara, dan permainan tebak tokoh, kami ingin Teman Satya tidak hanya menonton — tapi penasaran, ikut bertanya, dan akhirnya jatuh cinta pada cerita yang sudah lebih dulu ada di sekitar mereka."
-      }
-    ],
+    "sections": [],
     "visi": "Menjadi rumah digital tempat cerita wayang dan budaya Solo terus tumbuh, dikenal, dan diwariskan.",
     "misi": [
       "Menyajikan cerita wayang dan tokohnya secara mudah diakses untuk semua usia.",
