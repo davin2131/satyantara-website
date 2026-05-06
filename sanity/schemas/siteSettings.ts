@@ -177,6 +177,7 @@ export const siteSettings = defineType({
                       { title: "Telegram", value: "telegram" },
                       { title: "Instagram", value: "instagram" },
                       { title: "Facebook", value: "facebook" },
+                      { title: "TikTok", value: "tiktok" },
                     ],
                   },
                 },

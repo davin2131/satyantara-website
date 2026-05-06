@@ -101,23 +101,34 @@ export function Footer() {
   );
 }
 
-function socialIcon(p: "youtube" | "telegram" | "instagram" | "facebook") {
+type SocialPlatform =
+  | "youtube"
+  | "telegram"
+  | "instagram"
+  | "facebook"
+  | "tiktok";
+
+function socialIcon(p: SocialPlatform) {
   if (p === "telegram") return <TelegramIcon className="h-5 w-5" />;
   if (p === "instagram") return <InstagramIcon className="h-5 w-5" />;
   if (p === "facebook") return <FacebookIcon className="h-5 w-5" />;
+  if (p === "tiktok") return <TikTokIcon className="h-5 w-5" />;
   return <YouTubeIcon className="h-5 w-5" />;
 }
 
-function socialLabel(p: "youtube" | "telegram" | "instagram" | "facebook") {
+function socialLabel(p: SocialPlatform) {
+  if (p === "tiktok") return "TikTok";
+  if (p === "youtube") return "YouTube";
   return p.charAt(0).toUpperCase() + p.slice(1);
 }
 
 function socialTone(
-  p: "youtube" | "telegram" | "instagram" | "facebook",
-): "rose" | "sky" | "amber" | "blue" {
+  p: SocialPlatform,
+): "rose" | "sky" | "amber" | "blue" | "slate" {
   if (p === "telegram") return "sky";
   if (p === "instagram") return "amber";
   if (p === "facebook") return "blue";
+  if (p === "tiktok") return "slate";
   return "rose";
 }
 
@@ -144,13 +155,14 @@ function SocialButton({
   href: string;
   label: string;
   children: React.ReactNode;
-  tone: "rose" | "sky" | "amber" | "blue";
+  tone: "rose" | "sky" | "amber" | "blue" | "slate";
 }) {
   const toneMap = {
     rose: "hover:bg-rose-600/30 hover:border-rose-400/60 hover:text-rose-200",
     sky: "hover:bg-sky-600/30 hover:border-sky-400/60 hover:text-sky-200",
     amber: "hover:bg-amber-600/30 hover:border-amber-400/60 hover:text-amber-200",
     blue: "hover:bg-blue-600/30 hover:border-blue-400/60 hover:text-blue-200",
+    slate: "hover:bg-slate-700/40 hover:border-slate-300/60 hover:text-slate-100",
   } as const;
   return (
     <a
@@ -233,6 +245,13 @@ function FacebookIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
       <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+    </svg>
+  );
+}
+function TikTokIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5.8 20.1a6.34 6.34 0 0 0 10.86-4.43V8.93a8.16 8.16 0 0 0 4.77 1.52V7a4.84 4.84 0 0 1-1.84-.31z" />
     </svg>
   );
 }

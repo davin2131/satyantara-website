@@ -37,7 +37,7 @@ export type SiteCopy = {
   };
   footer: {
     callout: string;
-    socials: { platform: "youtube" | "telegram" | "instagram" | "facebook"; href: string }[];
+    socials: { platform: "youtube" | "telegram" | "instagram" | "facebook" | "tiktok"; href: string }[];
     contacts: { kind: "whatsapp" | "email" | "sanggar"; label: string; value: string; href: string }[];
     copyright: string;
     tagline: string;
