@@ -166,6 +166,7 @@ async function seedSiteSettings() {
         { _type: "object", platform: "telegram", href: "#" },
         { _type: "object", platform: "instagram", href: "#" },
         { _type: "object", platform: "facebook", href: "#" },
+        { _type: "object", platform: "tiktok", href: "#" },
       ],
       contacts: [
         {
