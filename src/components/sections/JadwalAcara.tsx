@@ -72,14 +72,18 @@ export function JadwalAcara() {
         past: [] as SatyantaraEvent[],
       };
     }
+    // Pakai endDate kalau ada (untuk acara multi-hari supaya tetap tampil
+    // di "Mendatang" sampai event-nya benar-benar selesai), fallback ke startDate.
+    const endTs = (e: SatyantaraEvent) =>
+      new Date(e.endDate ?? e.startDate).getTime();
     const upcoming = events
-      .filter((e) => new Date(e.startDate).getTime() >= now)
+      .filter((e) => endTs(e) >= now)
       .sort(
         (a, b) =>
           new Date(a.startDate).getTime() - new Date(b.startDate).getTime(),
       );
     const past = events
-      .filter((e) => new Date(e.startDate).getTime() < now)
+      .filter((e) => endTs(e) < now)
       .sort(
         (a, b) =>
           new Date(b.startDate).getTime() - new Date(a.startDate).getTime(),
@@ -191,7 +195,8 @@ export function JadwalAcara() {
 }
 
 function EventCard({ event, now }: { event: SatyantaraEvent; now: number }) {
-  const isPast = new Date(event.startDate).getTime() < now;
+  const isPast =
+    new Date(event.endDate ?? event.startDate).getTime() < now;
   const cta = event.registrationUrl ?? siteCopy.navbar.ctaHref;
 
   return (
